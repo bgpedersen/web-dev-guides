@@ -1,4 +1,4 @@
-# Web Development wiki
+# Web Development Guide
 
 A collection of useful links and guides for developing web projects.
 

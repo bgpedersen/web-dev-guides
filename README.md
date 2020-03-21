@@ -9,17 +9,17 @@ _Created by Bjarne Gerhardt-Pedersen_ (
 
 Languages
 
-* [JavaScript](https://github.com/bgpedersen/web-dev-guides/JavaScript)
-* [Typescript](https://github.com/bgpedersen/web-dev-guides/Typescript)
-* [CSS and SCSS](https://github.com/bgpedersen/web-dev-guides/CSS-and-SCSS)
-* [HTML](https://github.com/bgpedersen/web-dev-guides/HTML)
-* [Bash and Git](https://github.com/bgpedersen/web-dev-guides/Bash-and-Git)
+* [JavaScript](javascript.md)
+* [Typescript](typescript.md)
+* [CSS and SCSS](css-and-scss.md)
+* [HTML](html.md)
+* [Bash and Git](bash-and-git.md)
 
 Frameworks
 
-* [Angular](https://github.com/bgpedersen/web-dev-guides/Angular)
-* [AngularJS](https://github.com/bgpedersen/web-dev-guides/AngularJS)
+* [Angular](angular.md)
+* [AngularJS](angularjs.md)
 
 Tools & Editors
 
-* [Visual Studio Code](https://github.com/bgpedersen/web-dev-guides/Visual-Studio-Code)
+* [Visual Studio Code](visual-studio-code.md)

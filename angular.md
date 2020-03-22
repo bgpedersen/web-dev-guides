@@ -18,6 +18,9 @@
     - [Testing: References](#testing-references)
     - [Testing: Versions](#testing-versions)
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
+    - [Testing: Equal to](#testing-equal-to)
+    - [Testing: Async](#testing-async)
+    - [Testing: Mock service injection with stubs](#testing-mock-service-injection-with-stubs)
   - [Webpack](#webpack)
     - [Webpack: References](#webpack-references)
     - [Webpack: Analyze your bundle with webpack analyzer](#webpack-analyze-your-bundle-with-webpack-analyzer)
@@ -192,9 +195,128 @@ Be sure to update Jasmine to the lastest version (currently 3.5) to use the 3.5 
 
 ### Testing: Disable, focus, pending
 
-- Focus: To only run/focus on, a particular test, add `f` in front, as in `fdescribe` and `fit`.
-- Disable: To disable a test, add `x` in front, as in `xdescribe` and `xit`.
-- Pending: To disable and pending a test, add function call inside: `pending('with your pending message)`
+Focus: Run only these. Add `f` in front of either `describe` or `it`
+
+```typescript
+fdescribe('the unit', () => {
+  fit('should do', () => {});
+});
+```
+
+Disable: Disable these. Add `x` in front of either `describe` or `it`
+
+```typescript
+xdescribe('the unit', () => {
+  xit('should do', () => {});
+});
+```
+
+Pending: To mark and disable a test, add function call inside: `pending('with your pending message)`
+
+```typescript
+describe('the unit', () => {
+  it('should do', () => {
+    pending('with your pending message');
+  });
+});
+```
+
+### Testing: Equal to
+
+Equal to a Class or Type
+
+```typescript
+let id = 'a string';
+expect(id).toBeInstanceOf(String); // jasmine 3.5
+expect(id).toEqual(jasmine.any(String));
+```
+
+### Testing: Async
+
+`done` can be used to mark block as async
+
+```typescript
+it('test async 4 seconds', done => {
+  setTimeout(() => {
+    expect(1).toBeDefined();
+    done();
+  }, 4000);
+});
+```
+
+Tests have a default timeout of 5 seconds. To make a test wait longer, pass in ms timeout to the block
+
+```typescript
+it('test async 6 seconds', done => {
+  setTimeout(() => {
+    expect(1).toBeDefined();
+    done();
+  }, 6000);
+}, 7000);
+```
+
+Using async / await can also be used instead of `done`
+
+```typescript
+it('test async', async () => {
+  const p = () => {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 2000);
+    });
+  };
+
+  await p();
+
+  expect(1).toBeDefined();
+});
+```
+
+### Testing: Mock service injection with stubs
+
+Don't import the real service to mock, instead create a basic class, and inject is as if
+
+```typescript
+import { TestBed } from '@angular/core/testing';
+import { AngularFireStorage } from '@angular/fire/storage';
+
+import { ImageEditorService } from './image-editor.service';
+
+class AngularFireStorageMock {
+  ref = (path: string) => {
+    return {
+      put: (blob: Blob) => {
+        return new Promise(resolve => {
+          resolve({ metadata: { name: 'test.me' } });
+        });
+      }
+    };
+  };
+}
+
+describe('ImageEditorService', () => {
+  let service: ImageEditorService;
+  const afStorage = new AngularFireStorageMock();
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [ImageEditorService, { provide: AngularFireStorage, useValue: afStorage }]
+    });
+
+    service = TestBed.inject(ImageEditorService);
+  });
+
+  describe('upload', () => {
+    it('should get id from upload', (done: DoneFn) => {
+      service.upload({} as Blob).then(id => {
+        expect(id).toBe('test');
+        done();
+      });
+    });
+  });
+});
+```
 
 ## Webpack
 

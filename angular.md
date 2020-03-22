@@ -33,6 +33,8 @@
 
 ### Architecture: Upgrading Angular
 
+To see if any Angular dependencies at the current version can be upgrade, type `ng update`.
+
 - [Upgrade Angular guide](https://update.angular.io/)
 
 ### Architecture: How to share styles between Angular Components

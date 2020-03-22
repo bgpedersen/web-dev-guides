@@ -1,9 +1,13 @@
-# Bash and Git
+# Bash, cli, NPM and Git
 
 ## Contents
 
-- [Bash and Git](#bash-and-git)
+- [Bash, cli, NPM and Git](#bash-cli-npm-and-git)
   - [Contents](#contents)
+  - [NPM](#npm)
+    - [NPM: Remove packages not listed in package.json](#npm-remove-packages-not-listed-in-packagejson)
+    - [NPM: Go to repository of package](#npm-go-to-repository-of-package)
+    - [NPM: Package versions](#npm-package-versions)
   - [Git](#git)
     - [Git: Rebase](#git-rebase)
   - [GitHub](#github)
@@ -13,6 +17,39 @@
     - [Bash scripts: Check code for debugger word](#bash-scripts-check-code-for-debugger-word)
     - [Bash scripts: Auto clean deleted branches](#bash-scripts-auto-clean-deleted-branches)
     - [Bash scripts: Rename folders and files to Kebabcase](#bash-scripts-rename-folders-and-files-to-kebabcase)
+
+## NPM
+
+### NPM: Remove packages not listed in package.json
+
+Run `npm prune` to auto remove packages not listed in package.json.
+
+### NPM: Go to repository of package
+
+Fast go to the package repo home with CLI, to check changelog or other info. Type `npm home your-package` to go to specific repo or `npm repo your-package` to go to the overall repo.
+
+### NPM: Package versions
+
+Always check the `CHANGELOG.md` of a repository before upgrading. Using `npm repo your-package` to get to it fast.
+
+Versions:
+
+- A semver / semantic versioning: Given a version number MAJOR.MINOR.PATCH, increment the:
+  - MAJOR version when you make incompatible API changes,
+  - MINOR version when you add functionality in a backwards compatible manner, and
+  - PATCH version when you make backwards compatible bug fixes.
+- `~` update all future **patch** versions, without incrementing the minor version. ~1.2.3 will use releases from 1.2.3 to <1.3.0.
+- `^` update all future **minor**/**patch** versions, without incrementing the major version. ^2.3.4 will use releases from 2.3.4 to <3.0.0.
+
+`npm outdated` to list current packages and new versions.
+
+`npm update` if you get a lot of red rows, updating your packages to the latest possible version according to your package.json, which is as well stated in the wanted column.
+
+If you are using the caret `^` in front of your versions in package.json, the major versions will not be updated (hence the yellow rows). This is good, cause there might be breaking changes updating to a new major version.
+
+`npm i the-package@latest` to update a dependency to their latest version.
+
+`npx npm-update-all` to blindly auto update all to the latest version. I don't recommend using this, since it can lead to snow ball effect of errors down the line of breaking changes.
 
 ## Git
 

@@ -16,6 +16,7 @@
     - [i18n: ngx-translate](#i18n-ngx-translate)
   - [Testing (with Karma and Jasmine)](#testing-with-karma-and-jasmine)
     - [Testing: References](#testing-references)
+    - [Testing: Versions](#testing-versions)
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
   - [Webpack](#webpack)
     - [Webpack: References](#webpack-references)
@@ -184,6 +185,10 @@ this.translateService
 - [Angular testing tips and tricks](https://itnext.io/angular-testing-tips-and-tricks-6c1e21a7cf65)
 - [Angular Testing CI](https://blog.angulartraining.com/how-to-running-angular-tests-on-continuous-integration-servers-ad492219c08c)
 - [Jasmine docs](https://jasmine.github.io/api/edge/global)
+
+### Testing: Versions
+
+Be sure to update Jasmine to the lastest version (currently 3.5) to use the 3.5 docs. `npm i @types/jasmine@latest @types/jasminewd2@latest jasmine-core@latest jasmine-spec-reporter@latest`
 
 ### Testing: Disable, focus, pending
 

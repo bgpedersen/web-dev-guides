@@ -22,11 +22,13 @@
 
 ### NPM: Remove packages not listed in package.json
 
-Run `npm prune` to auto remove packages not listed in package.json.
+`npm prune` to auto remove packages not listed in package.json.
 
 ### NPM: Go to repository of package
 
-Fast go to the package repo home with CLI, to check changelog or other info. Type `npm home your-package` to go to specific repo or `npm repo your-package` to go to the overall repo.
+`npm home your-package` to go to specific repo
+
+`npm repo your-package` to go to the overall repo.
 
 ### NPM: Package versions
 

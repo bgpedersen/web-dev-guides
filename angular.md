@@ -23,6 +23,7 @@
     - [Testing: Async](#testing-async)
     - [Testing: Mock service injection in a service](#testing-mock-service-injection-in-a-service)
     - [Testing: Expect a failed promise](#testing-expect-a-failed-promise)
+    - [Testing: Mock service in a component and avoid DOM children errors](#testing-mock-service-in-a-component-and-avoid-dom-children-errors)
   - [Webpack](#webpack)
     - [Webpack: References](#webpack-references)
     - [Webpack: Analyze your bundle with webpack analyzer](#webpack-analyze-your-bundle-with-webpack-analyzer)
@@ -334,6 +335,47 @@ Using `async` and `expectAsync` together with `toBeRejected` or `toBeRejectedWit
 ```typescript
 it('should fail on empty input', async () => {
   await expectAsync(service.upload(null)).toBeRejectedWithError();
+});
+```
+
+### Testing: Mock service in a component and avoid DOM children errors
+
+Mocking a service that doesn't require any function of the bat, can be provided with empty object. To avoid children errors in the DOM, use `schemas: [NO_ERRORS_SCHEMA]`
+
+```typescript
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatBottomSheet } from '@angular/material/bottom-sheet';
+import { MatDialog } from '@angular/material/dialog';
+
+import { ImageEditorService } from '../../services/image-editor.service';
+import { EditImageComponent } from './edit-image.component';
+
+fdescribe('EditImageComponent', () => {
+  let component: EditImageComponent;
+  let fixture: ComponentFixture<EditImageComponent>;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [EditImageComponent],
+      providers: [
+        { provide: ImageEditorService, useValue: {} },
+        { provide: MatBottomSheet, useValue: {} },
+        { provide: MatDialog, useValue: {} }
+      ],
+      schemas: [NO_ERRORS_SCHEMA]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(EditImageComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
 });
 ```
 

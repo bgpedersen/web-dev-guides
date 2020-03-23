@@ -11,6 +11,7 @@
     - [Architecture: Best practice Angular 9 file architecture that scales well](#architecture-best-practice-angular-9-file-architecture-that-scales-well)
     - [Architecture: SCSS relative import fix to avoid relative hell](#architecture-scss-relative-import-fix-to-avoid-relative-hell)
     - [Architecture: Scaffolding lazy loaded modules](#architecture-scaffolding-lazy-loaded-modules)
+    - [Architecture: Supporting Internet Explorer IE](#architecture-supporting-internet-explorer-ie)
   - [i18n](#i18n)
     - [i18n: Transloco](#i18n-transloco)
     - [i18n: ngx-translate](#i18n-ngx-translate)
@@ -20,7 +21,8 @@
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
     - [Testing: Equal to](#testing-equal-to)
     - [Testing: Async](#testing-async)
-    - [Testing: Mock service injection with stubs](#testing-mock-service-injection-with-stubs)
+    - [Testing: Mock service injection in a service](#testing-mock-service-injection-in-a-service)
+    - [Testing: Expect a failed promise](#testing-expect-a-failed-promise)
   - [Webpack](#webpack)
     - [Webpack: References](#webpack-references)
     - [Webpack: Analyze your bundle with webpack analyzer](#webpack-analyze-your-bundle-with-webpack-analyzer)
@@ -97,19 +99,19 @@ Insert stylePreprocessorOptions to your angular.json under options for your buil
 
 ```json
 "options": {
-            "outputPath": "dist/profile-image-creator",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
-            "aot": true,
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles/main.scss"],
-            "stylePreprocessorOptions": {
-              "includePaths": ["src/styles"]
-            },
-            "scripts": []
-          },
+  "outputPath": "dist/profile-image-creator",
+  "index": "src/index.html",
+  "main": "src/main.ts",
+  "polyfills": "src/polyfills.ts",
+  "tsConfig": "tsconfig.app.json",
+  "aot": true,
+  "assets": ["src/favicon.ico", "src/assets"],
+  "styles": ["src/styles/main.scss"],
+  "stylePreprocessorOptions": {
+    "includePaths": ["src/styles"]
+  },
+  "scripts": []
+},
 ```
 
 and then reference your styles/abstracts/\_variables.scss like this `@import 'abstracts/variables';`
@@ -117,6 +119,14 @@ and then reference your styles/abstracts/\_variables.scss like this `@import 'ab
 ### Architecture: Scaffolding lazy loaded modules
 
 Scaffold new lazy loaded module with `ng g m features/my-feature --routing --route my-feature --module app.module -d`. If you want to follow the pages structure or add components to this feature, delete the component html,scss,ts parts from the module, routing folder and run `ng g c features/my-feature/dashboard --module my-feature.module -d`.
+
+### Architecture: Supporting Internet Explorer IE
+
+Using Differential builds, Angular makes a build for es5 for older browsers and one for es6 for modern browsers.
+
+- [Official Angular Differential build](https://angular.io/guide/deployment#differential-builds)
+- [“Angular and Internet Explorer” by Todd Palmer](https://link.medium.com/CVNNy8Vb54)
+- [“Angular: How to support IE11” by Colum Ferry](https://link.medium.com/IB8fVsyb54)
 
 ## i18n
 
@@ -188,6 +198,7 @@ this.translateService
 - [Angular testing tips and tricks](https://itnext.io/angular-testing-tips-and-tricks-6c1e21a7cf65)
 - [Angular Testing CI](https://blog.angulartraining.com/how-to-running-angular-tests-on-continuous-integration-servers-ad492219c08c)
 - [Jasmine docs](https://jasmine.github.io/api/edge/global)
+- [Testing the Tour of Heroes — Hero Search Component](https://medium.com/@SimonTestNet/testing-the-tour-of-heroes-hero-search-component-c5b379e93fd3)
 
 ### Testing: Versions
 
@@ -273,9 +284,9 @@ it('test async', async () => {
 });
 ```
 
-### Testing: Mock service injection with stubs
+### Testing: Mock service injection in a service
 
-Don't import the real service to mock, instead create a basic class, and inject is as if
+Don't import the real service to mock, instead create a basic class, and inject in providers. Use jasmine spies to generate functions and reponses needed for the test blocks.
 
 ```typescript
 import { TestBed } from '@angular/core/testing';
@@ -283,16 +294,9 @@ import { AngularFireStorage } from '@angular/fire/storage';
 
 import { ImageEditorService } from './image-editor.service';
 
+// The real AngularFireStorage with the ref function returns an object with a put function which returns a promise. Let's create a simple mock class and create the rest with spies in the test block
 class AngularFireStorageMock {
-  ref = (path: string) => {
-    return {
-      put: (blob: Blob) => {
-        return new Promise(resolve => {
-          resolve({ metadata: { name: 'test.me' } });
-        });
-      }
-    };
-  };
+  ref = () => {};
 }
 
 describe('ImageEditorService', () => {
@@ -308,13 +312,28 @@ describe('ImageEditorService', () => {
   });
 
   describe('upload', () => {
-    it('should get id from upload', (done: DoneFn) => {
-      service.upload({} as Blob).then(id => {
-        expect(id).toBe('test');
-        done();
+    it('should get id from upload on success', async () => {
+      // Adding spy on ref function, and when called
+      spyOn(afStorage, 'ref').and.callFake(() => {
+        // returning object with a function, that returns a promise with expected data structure
+        return { put: jasmine.createSpy('put').and.resolveTo({ metadata: { name: 'id' } }) };
       });
+      // We are calling the upload function which internally uses the afStorage we just set up, so it will work without calling the real firebase service
+      const id = await service.upload({} as Blob);
+      expect(id).toBeInstanceOf(String);
+      expect(afStorage.ref).toHaveBeenCalled();
     });
   });
+});
+```
+
+### Testing: Expect a failed promise
+
+Using `async` and `expectAsync` together with `toBeRejected` or `toBeRejectedWithError`.
+
+```typescript
+it('should fail on empty input', async () => {
+  await expectAsync(service.upload(null)).toBeRejectedWithError();
 });
 ```
 

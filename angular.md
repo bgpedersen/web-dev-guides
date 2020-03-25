@@ -244,7 +244,7 @@ expect(id).toEqual(jasmine.any(String));
 
 ### Testing: Async
 
-`done` is the old school callback way and mark block as async, and is called when async is done
+`done` is the old school callback way. It marks the block as async and is finished when called
 
 ```typescript
 it('test async 4 seconds', done => {

@@ -22,9 +22,7 @@
     - [Testing: Equal to](#testing-equal-to)
     - [Testing: Async](#testing-async)
     - [Testing: Mock service injection in a service](#testing-mock-service-injection-in-a-service)
-    - [Testing: Expect a failed promise](#testing-expect-a-failed-promise)
-    - [Testing: Mock service in a component and avoid DOM children errors](#testing-mock-service-in-a-component-and-avoid-dom-children-errors)
-    - [Testing: Test component with mock service, async observable and DOM element test](#testing-test-component-with-mock-service-async-observable-and-dom-element-test)
+    - [Testing: Component test example with mock service, async observable and DOM elements](#testing-component-test-example-with-mock-service-async-observable-and-dom-elements)
   - [Webpack](#webpack)
     - [Webpack: References](#webpack-references)
     - [Webpack: Analyze your bundle with webpack analyzer](#webpack-analyze-your-bundle-with-webpack-analyzer)
@@ -246,7 +244,7 @@ expect(id).toEqual(jasmine.any(String));
 
 ### Testing: Async
 
-`done` can be used to mark block as async
+`done` is the old school callback way and mark block as async, and is called when async is done
 
 ```typescript
 it('test async 4 seconds', done => {
@@ -255,11 +253,8 @@ it('test async 4 seconds', done => {
     done();
   }, 4000);
 });
-```
 
-Tests have a default timeout of 5 seconds. To make a test wait longer, pass in ms timeout to the block
-
-```typescript
+// Tests have a default timeout of 5 seconds. To make a test wait longer, pass in ms timeout to the block
 it('test async 6 seconds', done => {
   setTimeout(() => {
     expect(1).toBeDefined();
@@ -268,22 +263,47 @@ it('test async 6 seconds', done => {
 }, 7000);
 ```
 
-Using async / await can also be used instead of `done`
+Use `async/await` for easier setup and reading
 
 ```typescript
 it('test async', async () => {
   const p = () => {
     return new Promise(resolve => {
       setTimeout(() => {
-        resolve();
+        resolve('ok');
       }, 2000);
     });
   };
 
-  await p();
+  let result = await p();
 
-  expect(1).toBeDefined();
+  expect(result).toBe('ok');
 });
+```
+
+Using `async/await` together with `expectAsync` to check a promise function directly
+
+```typescript
+it('should fail on empty input', async () => {
+  await expectAsync(somePromiseFn()).toBeTruthy();
+});
+```
+
+Use fakeAsync wrapper to run observables synchronous
+
+```typescript
+// Wrab block in fakeAsync, to run stream subscription synchronous
+it('should get data from subscription', fakeAsync(() => {
+  let dataStream = new BehaviorSubject('some data');
+  let dataReceived;
+
+  // subscribe to stream, close after first data receieved
+  dataStream.pipe(first()).subscribe(data => (dataReceived = data));
+  // Update component view
+  fixture.detectChanges();
+
+  expect(dataReceived).toBe('some data');
+}));
 ```
 
 ### Testing: Mock service injection in a service
@@ -329,58 +349,9 @@ describe('ImageEditorService', () => {
 });
 ```
 
-### Testing: Expect a failed promise
+### Testing: Component test example with mock service, async observable and DOM elements
 
-Using `async` and `expectAsync` together with `toBeRejected` or `toBeRejectedWithError`.
-
-```typescript
-it('should fail on empty input', async () => {
-  await expectAsync(service.upload(null)).toBeRejectedWithError();
-});
-```
-
-### Testing: Mock service in a component and avoid DOM children errors
-
-Mocking a service that doesn't require any function of the bat, can be provided with empty object. To avoid children errors in the DOM, use `schemas: [NO_ERRORS_SCHEMA]`
-
-```typescript
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatBottomSheet } from '@angular/material/bottom-sheet';
-import { MatDialog } from '@angular/material/dialog';
-
-import { ImageEditorService } from '../../services/image-editor.service';
-import { EditImageComponent } from './edit-image.component';
-
-fdescribe('EditImageComponent', () => {
-  let component: EditImageComponent;
-  let fixture: ComponentFixture<EditImageComponent>;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [EditImageComponent],
-      providers: [
-        { provide: ImageEditorService, useValue: {} },
-        { provide: MatBottomSheet, useValue: {} },
-        { provide: MatDialog, useValue: {} }
-      ],
-      schemas: [NO_ERRORS_SCHEMA]
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(EditImageComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
-```
-
-### Testing: Test component with mock service, async observable and DOM element test
+Comments in code explains step by step
 
 ```typescript
 import { NO_ERRORS_SCHEMA } from '@angular/core';

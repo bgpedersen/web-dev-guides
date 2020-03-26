@@ -21,7 +21,7 @@
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
     - [Testing: Equal to](#testing-equal-to)
     - [Testing: Async](#testing-async)
-    - [Testing: Mock service injection in a service](#testing-mock-service-injection-in-a-service)
+    - [Testing: service test example with 3rd party service mock with nested async method](#testing-service-test-example-with-3rd-party-service-mock-with-nested-async-method)
     - [Testing: Component test example with mock service, async observable and DOM elements](#testing-component-test-example-with-mock-service-async-observable-and-dom-elements)
   - [Webpack](#webpack)
     - [Webpack: References](#webpack-references)
@@ -306,7 +306,7 @@ it('should get data from subscription', fakeAsync(() => {
 }));
 ```
 
-### Testing: Mock service injection in a service
+### Testing: service test example with 3rd party service mock with nested async method
 
 Don't import the real service to mock, instead create a basic class, and inject in providers. Use jasmine spies to generate functions and reponses needed for the test blocks.
 
@@ -316,34 +316,44 @@ import { AngularFireStorage } from '@angular/fire/storage';
 
 import { ImageEditorService } from './image-editor.service';
 
-// The real AngularFireStorage with the ref function returns an object with a put function which returns a promise. Let's create a simple mock class and create the rest with spies in the test block
+// The real AngularFireStorage has a ref function, which returns an object with a put function which returns a promise. Let's create a simple mock class for that and put spy on that later
 class AngularFireStorageMock {
   ref = () => {};
 }
 
 describe('ImageEditorService', () => {
   let service: ImageEditorService;
-  const afStorage = new AngularFireStorageMock();
+  let afStorage: any;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [ImageEditorService, { provide: AngularFireStorage, useValue: afStorage }]
+      providers: [
+        ImageEditorService,
+        { provide: AngularFireStorage, useValue: new AngularFireStorageMock() }
+      ]
     });
 
     service = TestBed.inject(ImageEditorService);
+    afStorage = TestBed.inject(AngularFireStorage);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
   });
 
   describe('upload', () => {
     it('should get id from upload on success', async () => {
-      // Adding spy on ref function, and when called
-      spyOn(afStorage, 'ref').and.callFake(() => {
-        // returning object with a function, that returns a promise with expected data structure
-        return { put: jasmine.createSpy('put').and.resolveTo({ metadata: { name: 'id' } }) };
+      // Create the spy for the ref function, and in here we will control the response
+      const refSpy = spyOn(afStorage, 'ref').and.returnValue({
+        put: () => new Promise(resolve => resolve({ metadata: { name: 'id' } }))
       });
-      // We are calling the upload function which internally uses the afStorage we just set up, so it will work without calling the real firebase service
-      const id = await service.upload({} as Blob);
-      expect(id).toBeInstanceOf(String);
-      expect(afStorage.ref).toHaveBeenCalled();
+      // Using expectAsync to directly check the resolved response
+      await expectAsync(service.upload({} as Blob)).toBeResolvedTo('id');
+      expect(refSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should fail on empty input', async () => {
+      await expectAsync(service.upload(null)).toBeRejectedWithError();
     });
   });
 });

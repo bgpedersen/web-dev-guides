@@ -16,12 +16,13 @@
     - [i18n: Transloco](#i18n-transloco)
     - [i18n: ngx-translate](#i18n-ngx-translate)
   - [Testing (with Karma and Jasmine)](#testing-with-karma-and-jasmine)
+    - [Testing: Introduction to testing with Karma and Jasmine](#testing-introduction-to-testing-with-karma-and-jasmine)
     - [Testing: References](#testing-references)
     - [Testing: Versions](#testing-versions)
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
     - [Testing: Equal to](#testing-equal-to)
     - [Testing: Async](#testing-async)
-    - [Testing: service test example with 3rd party service mock with nested async method](#testing-service-test-example-with-3rd-party-service-mock-with-nested-async-method)
+    - [Testing: Service test example with 3rd party service mock with nested async method](#testing-service-test-example-with-3rd-party-service-mock-with-nested-async-method)
     - [Testing: Component test example with mock service, async observable and DOM elements](#testing-component-test-example-with-mock-service-async-observable-and-dom-elements)
   - [Webpack](#webpack)
     - [Webpack: References](#webpack-references)
@@ -34,12 +35,15 @@
   - [RxJS](#rxjs)
     - [RxJS: 6 ways to unsubscribe from observables in angular](#rxjs-6-ways-to-unsubscribe-from-observables-in-angular)
     - [RxJS: Template driven subscription using the async pipe](#rxjs-template-driven-subscription-using-the-async-pipe)
+  - [API requests](#api-requests)
+    - [API: References](#api-references)
 
 ## Architecture
 
 ### Architecture: Upgrading Angular
 
 To see if any Angular dependencies at the current version can be upgrade, type `ng update`.
+Upgrade Angular normally by writing `ng update @angular/cli @angular/core`.
 
 - [Upgrade Angular guide](https://update.angular.io/)
 
@@ -189,6 +193,55 @@ this.translateService
 
 ## Testing (with Karma and Jasmine)
 
+### Testing: Introduction to testing with Karma and Jasmine
+
+Unit testing is as important as developing a project nowadays and it becomes an integral part of development. It actually boosts the quality of the code and confidence of developers. Unit tests are written in the Jasmine framework and executed by karma, A test runner and these are executed in the browser.
+Sometimes, we write tests before we even start developing which is called TDD. We mostly follow BDD since we are using a jasmine framework.
+
+---
+
+Features of Unit Testing
+
+we have two kinds of testing which are end-to-end testing and unit testing. There are specific features that qualify for unit testing. Let’s go through those.
+
+- Used for behavior tests, Jasmine encourages Behavior-driven development.
+- Should run very fast
+- Should be tested in isolation without any dependencies
+- Should define clear output for the input
+- The smallest unit can be tested as a unit
+
+---
+
+When can we write Unit Tests
+
+We have seen features of unit tests, let’s see where we can use these
+
+- At the beginning and completion of initial development
+- If we add any feature to the project, we have to write unit tests for it
+- If we change any existing feature, we have to write unit tests for it
+
+---
+
+Why use Jasmine
+
+Jasmine is a behavior-driven javascript testing framework. Here are some features of Jasmine
+
+- Default integration with karma
+- Provides additional functions such as spies, fakes, and pass-throughs
+- easy integration with reporting
+
+---
+
+Why use Karma
+
+Karma is a test-runner for javascript apps. Here are some features of Karma
+
+- Angular recommends Karma and CLI create it out of the box.
+- We can automate tests in different browsers and devices
+- We can watch files without manual restart
+- Online documentation is good
+- We can easily integrate with a continuous integration server
+
 ### Testing: References
 
 - [Official Angular Testing](https://angular.io/guide/testing)
@@ -306,7 +359,7 @@ it('should get data from subscription', fakeAsync(() => {
 }));
 ```
 
-### Testing: service test example with 3rd party service mock with nested async method
+### Testing: Service test example with 3rd party service mock with nested async method
 
 Don't import the real service to mock, instead create a basic class, and inject in providers. Use jasmine spies to generate functions and reponses needed for the test blocks.
 
@@ -617,3 +670,9 @@ export class UserComponent implements OnInit {
   <loading-indicator></loading-indicator>
 </ng-template>
 ```
+
+## API requests
+
+### API: References
+
+- [The correct way to make API requests in an Angular application](https://levelup.gitconnected.com/the-correct-way-to-make-api-requests-in-an-angular-application-22a079fe8413)

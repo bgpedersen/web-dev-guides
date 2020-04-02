@@ -34,6 +34,8 @@
     - [Angular Material: Material icons](#angular-material-material-icons)
     - [Angular Material: Custom theme](#angular-material-custom-theme)
   - [RxJS](#rxjs)
+    - [RxJS: References](#rxjs-references)
+    - [RxJS: Combine observables with forkJoin dictionary](#rxjs-combine-observables-with-forkjoin-dictionary)
     - [RxJS: 6 ways to unsubscribe from observables in angular](#rxjs-6-ways-to-unsubscribe-from-observables-in-angular)
     - [RxJS: Template driven subscription using the async pipe](#rxjs-template-driven-subscription-using-the-async-pipe)
   - [API requests](#api-requests)
@@ -714,6 +716,35 @@ footer {
 ```
 
 ## RxJS
+
+### RxJS: References
+
+- [Learn RxJS](https://www.learnrxjs.io/)
+
+### RxJS: Combine observables with forkJoin dictionary
+
+- [(v6.5+) Using a dictionary of sources](https://www.learnrxjs.io/learn-rxjs/operators/combination/forkjoin)
+
+```typescript
+// RxJS v6.5+
+import { ajax } from 'rxjs/ajax';
+import { forkJoin } from 'rxjs';
+
+/*
+  when all observables complete, provide the last
+  emitted value from each as dictionary
+*/
+forkJoin(
+  // as of RxJS 6.5+ we can use a dictionary of sources
+  {
+    google: ajax.getJSON('https://api.github.com/users/google'),
+    microsoft: ajax.getJSON('https://api.github.com/users/microsoft'),
+    users: ajax.getJSON('https://api.github.com/users')
+  }
+)
+  // { google: object, microsoft: object, users: array }
+  .subscribe(console.log);
+```
 
 ### RxJS: 6 ways to unsubscribe from observables in angular
 

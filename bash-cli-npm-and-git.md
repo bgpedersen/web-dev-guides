@@ -9,6 +9,7 @@
     - [NPM: Go to repository of package](#npm-go-to-repository-of-package)
     - [NPM: Package versions](#npm-package-versions)
   - [Git](#git)
+    - [Git: References](#git-references)
     - [Git: Rebase](#git-rebase)
   - [GitHub](#github)
     - [GitHub: References](#github-references)
@@ -54,6 +55,12 @@ If you are using the caret `^` in front of your versions in package.json, the ma
 `npx npm-update-all` to blindly auto update all to the latest version. I don't recommend using this, since it can lead to snow ball effect of errors down the line of breaking changes.
 
 ## Git
+
+### Git: References
+
+- [CS Visualized: Useful Git Commands](https://dev.to/lydiahallie/cs-visualized-useful-git-commands-37p1)
+- [10 Useful Git Commands You Always Need](https://medium.com/android-bits/10-useful-git-commands-you-always-need-b0d0a50b81e6)
+- [The most useful git commands that every developer should know](https://dev.to/krantikr/the-most-useful-git-commands-that-every-developer-should-know-49hi)
 
 ### Git: Rebase
 

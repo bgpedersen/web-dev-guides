@@ -4,17 +4,17 @@
 
 - [TypeScript](#typescript)
   - [Contents](#contents)
-  - [Web Guides](#web-guides)
+  - [Web guides](#web-guides)
   - [Typings / Definition files](#typings--definition-files)
 
-## Web Guides
+## Web guides
 
 - [Typescript Deep Dive](https://basarat.gitbook.io/typescript/)
 
 ## Typings / Definition files
 
-All files ending with *.d.ts will be automatically read by typescript, so you can use them as globals in your project, and get intelisence. For example, to use @types/angular but not include the whole library in the bundle, then run 'npm i @types/angular' and declare it in a *.d.ts file `declare var angular: ng.IAngularStatic;`.
-Avoid adding your *.d.ts file(s) to tsconfig.json under `typeRoots`, `include` or `types`, since that will exclude all other *.d.ts files.
+All files ending with _.d.ts will be automatically read by typescript, so you can use them as globals in your project, and get intelisence. For example, to use @types/angular but not include the whole library in the bundle, then run 'npm i @types/angular' and declare it in a _.d.ts file `declare var angular: ng.IAngularStatic;`.
+Avoid adding your _.d.ts file(s) to tsconfig.json under `typeRoots`, `include` or `types`, since that will exclude all other _.d.ts files.
 
 src/typings/global.d.ts example:
 

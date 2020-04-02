@@ -4,7 +4,7 @@
 
 - [JavaScript](#javascript)
   - [Contents](#contents)
-  - [Web Guides](#web-guides)
+  - [Web guides](#web-guides)
   - [RegEx (Regular expression)](#regex-regular-expression)
   - [Date and Time](#date-and-time)
     - [Date and Time: References](#date-and-time-references)
@@ -13,11 +13,10 @@
     - [Async and Promises: Error handling](#async-and-promises-error-handling)
     - [Async and Promises: Retry promise function with times and delay](#async-and-promises-retry-promise-function-with-times-and-delay)
 
-## Web Guides
+## Web guides
 
 - [The definitive source of the best JavaScript libraries, frameworks, and plugins.](https://www.javascripting.com/)
 - [ECMAScript compatibility table](http://kangax.github.io/compat-table/es6/)
-- [JSONPlaceholder - Fake Online REST API for Testing and Prototyping](https://jsonplaceholder.typicode.com/)
 - [CDNjs](https://cdnjs.com/libraries)
 - [The Modern JavaScript Tutorial](https://javascript.info/)
 - [Developer Roadmaps](https://roadmap.sh/roadmaps)

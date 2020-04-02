@@ -22,4 +22,4 @@ Frameworks
 
 Tools & Editors
 
-- [Visual Studio Code](visual-studio-code.md)
+- [Tools and externals](tools-and-externals.md)

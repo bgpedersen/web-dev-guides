@@ -40,6 +40,8 @@
     - [RxJS: Template driven subscription using the async pipe](#rxjs-template-driven-subscription-using-the-async-pipe)
   - [API requests](#api-requests)
     - [API: References](#api-references)
+  - [NgRX](#ngrx)
+    - [NgRX: References](#ngrx-references)
 
 ## Architecture
 
@@ -782,3 +784,13 @@ export class UserComponent implements OnInit {
 ### API: References
 
 - [The correct way to make API requests in an Angular application](https://levelup.gitconnected.com/the-correct-way-to-make-api-requests-in-an-angular-application-22a079fe8413)
+
+## NgRX
+
+Reactive State for Angular
+
+### NgRX: References
+
+- [NgRX official](https://ngrx.io/)
+- [Adding NgRx to Your Existing Applications](https://indepth.dev/adding-ngrx-to-your-existing-applications/)
+- [NgRx creator functions 101](https://timdeschryver.dev/blog/ngrx-creator-functions-101)

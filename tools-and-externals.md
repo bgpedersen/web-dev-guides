@@ -1,23 +1,79 @@
-# Visual Studio Code
+# Tools and externals
 
 ## Contents
 
-- [Visual Studio Code](#visual-studio-code)
+- [Tools and externals](#tools-and-externals)
   - [Contents](#contents)
-  - [Web guides](#web-guides)
-  - [Extensions](#extensions)
-    - [Extensions: Extentions I use](#extensions-extentions-i-use)
-    - [Extensions: Markdown All in One](#extensions-markdown-all-in-one)
-    - [Extensions: Markdown](#extensions-markdown)
-    - [Extensions: Prettier](#extensions-prettier)
+  - [JavaScript](#javascript)
+    - [JavaScript: REST placeholders](#javascript-rest-placeholders)
+  - [Images](#images)
+    - [Images: Placeholders](#images-placeholders)
+    - [Images: Free quality images](#images-free-quality-images)
+    - [Images: Online photo editors](#images-online-photo-editors)
+  - [Web inspiration](#web-inspiration)
+    - [Web inspiration: Full website inspirations](#web-inspiration-full-website-inspirations)
+    - [Web inspiration: Colors](#web-inspiration-colors)
+  - [Code Editors](#code-editors)
+    - [Code Editors: Web Editors](#code-editors-web-editors)
+    - [Code Editors: Visual Studio Code](#code-editors-visual-studio-code)
+      - [Code Editors: Visual Studio Code: Web guides](#code-editors-visual-studio-code-web-guides)
+      - [Code Editors: Visual Studio Code: Extensions](#code-editors-visual-studio-code-extensions)
+        - [Code Editors: Visual Studio Code: Extensions: Extentions I use](#code-editors-visual-studio-code-extensions-extentions-i-use)
+        - [Code Editors: Visual Studio Code: Extensions: Markdown All in One](#code-editors-visual-studio-code-extensions-markdown-all-in-one)
+        - [Code Editors: Visual Studio Code: Extensions: Markdown](#code-editors-visual-studio-code-extensions-markdown)
+        - [Code Editors: Visual Studio Code: Extensions: Prettier](#code-editors-visual-studio-code-extensions-prettier)
 
-## Web guides
+## JavaScript
+
+### JavaScript: REST placeholders
+
+- [JSONPlaceholder - Fake Online REST API for Testing and Prototyping](https://jsonplaceholder.typicode.com/)
+
+## Images
+
+### Images: Placeholders
+
+- [Generative Placeholders](https://generative-placeholders.glitch.me/)
+
+### Images: Free quality images
+
+- [Pexels](https://www.pexels.com/)
+- [Pixabay](https://pixabay.com/)
+- [Unsplash](https://unsplash.com/)
+
+### Images: Online photo editors
+
+- [Fotor](https://www.fotor.com/)
+- [Image Compressor](Imagecompressor.com)
+
+## Web inspiration
+
+### Web inspiration: Full website inspirations
+
+- [SiteInspire](https://www.siteinspire.com/)
+- [Webdesign Inspiration](https://www.siteinspire.com/)
+- [Awwwards](https://www.awwwards.com/)
+- [Template monster](https://www.templatemonster.com/)
+
+### Web inspiration: Colors
+
+- [Flat Colors UI](http://www.flatcolorsui.com/)
+
+## Code Editors
+
+### Code Editors: Web Editors
+
+- [Code Sandbox](https://codesandbox.io/)
+
+### Code Editors: Visual Studio Code
+
+#### Code Editors: Visual Studio Code: Web guides
 
 - [Setup VS Code as GIT editor](https://stackoverflow.com/questions/30024353/how-to-use-visual-studio-code-as-default-editor-for-git)
 
-## Extensions
+#### Code Editors: Visual Studio Code: Extensions
 
-### Extensions: Extentions I use
+##### Code Editors: Visual Studio Code: Extensions: Extentions I use
 
 - angular-essentials v9.0.1
 - Angular2 v9.1.2
@@ -40,15 +96,15 @@
 - vscode-typescript-tslint-plugin v1.2.3
 - vscode-yaml v0.7.2
 
-### Extensions: Markdown All in One
+##### Code Editors: Visual Studio Code: Extensions: Markdown All in One
 
 This extension is highly recommended for markup, since it auto updates table of contents, make editing easier and have shortcuts: [vs code markdown all in one](https://github.com/yzhang-gh/vscode-markdown)
 
-### Extensions: Markdown
+##### Code Editors: Visual Studio Code: Extensions: Markdown
 
 - Markdown auto linting extention [markdownlint by davidanson](https://github.com/DavidAnson/vscode-markdownlint.git)
 
-### Extensions: Prettier
+##### Code Editors: Visual Studio Code: Extensions: Prettier
 
 Use prettier to follow a set of styling rules for auto-formatting ([article: Code style matters](https://christianlydemann.com/style-angular-apps-using-prettier-and-tslint/)). VS Code settings for prettier might sometimes not work, instead make project file in root `.prettierrc` and put options here
 

@@ -250,6 +250,7 @@ Karma is a test-runner for javascript apps. Here are some features of Karma
 ### Testing: References
 
 - [Official Angular Testing](https://angular.io/guide/testing)
+- [Official Angular test examples](https://stackblitz.com/angular/xkagvbjambb)
 - [Angular unit testing 101 (with examples)](https://dev.to/mustapha/angular-unit-testing-101-with-examples-6mc)
 - [Angular testing with examples](https://medium.com/@bencabanes/angular-component-testing-with-examples-7c52b2b7035e)
 - [Angular unit test in CI](https://www.codementor.io/@dzhuneyt/how-to-run-angular-unit-tests-in-ci-10304lgzis)

@@ -22,7 +22,7 @@
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
     - [Testing: Equal to](#testing-equal-to)
     - [Testing: Async](#testing-async)
-    - [Testing: Service test example with 3rd party service mock with nested async method](#testing-service-test-example-with-3rd-party-service-mock-with-nested-async-method)
+    - [Testing: Service test example with 3rd party service mock injection](#testing-service-test-example-with-3rd-party-service-mock-injection)
     - [Testing: Component test example with service dependency as SpyObj and full code editor intellisence](#testing-component-test-example-with-service-dependency-as-spyobj-and-full-code-editor-intellisence)
     - [Testing: Component test example with mock service, async observable and DOM elements](#testing-component-test-example-with-mock-service-async-observable-and-dom-elements)
   - [Webpack](#webpack)
@@ -190,7 +190,7 @@ TS example using the observable
 this.translateService
   .get(['global.chooseResident', 'global.cancel'])
   .pipe(take(1))
-  .subscribe(async tValues => {
+  .subscribe(async (tValues) => {
     let tChooseResident = tValues['global.chooseResident'];
     let tCancel = tValues['global.cancel'];
   });
@@ -307,7 +307,7 @@ expect(id).toEqual(jasmine.any(String));
 `done` is the old school callback way. It marks the block as async and is finished when called
 
 ```typescript
-it('test async 4 seconds', done => {
+it('test async 4 seconds', (done) => {
   setTimeout(() => {
     expect(1).toBeDefined();
     done();
@@ -315,7 +315,7 @@ it('test async 4 seconds', done => {
 });
 
 // Tests have a default timeout of 5 seconds. To make a test wait longer, pass in ms timeout to the block
-it('test async 6 seconds', done => {
+it('test async 6 seconds', (done) => {
   setTimeout(() => {
     expect(1).toBeDefined();
     done();
@@ -328,7 +328,7 @@ Use `async/await` for easier setup and reading
 ```typescript
 it('test async', async () => {
   const p = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       setTimeout(() => {
         resolve('ok');
       }, 2000);
@@ -358,7 +358,7 @@ it('should get data from subscription', fakeAsync(() => {
   let dataReceived;
 
   // subscribe to stream, close after first data receieved
-  dataStream.pipe(first()).subscribe(data => (dataReceived = data));
+  dataStream.pipe(first()).subscribe((data) => (dataReceived = data));
   // Update component view
   fixture.detectChanges();
 
@@ -366,54 +366,75 @@ it('should get data from subscription', fakeAsync(() => {
 }));
 ```
 
-### Testing: Service test example with 3rd party service mock with nested async method
-
-Don't import the real service to mock, instead create a basic class, and inject in providers. Use jasmine spies to generate functions and reponses needed for the test blocks.
+### Testing: Service test example with 3rd party service mock injection
 
 ```typescript
-import { TestBed } from '@angular/core/testing';
+import { async, TestBed } from '@angular/core/testing';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { of } from 'rxjs';
 
 import { ImageEditorService } from './image-editor.service';
 
-// The real AngularFireStorage has a ref function, which returns an object with a put function which returns a promise. Let's create a simple mock class for that and put spy on that later
+// Creating mock class
 class AngularFireStorageMock {
-  ref = () => {};
+  ref(path: string) {
+    return {
+      put: () => new Promise((res) => res({ metadata: { name: 'id' } })),
+      getDownloadURL: () => of(path),
+    };
+  }
 }
 
 describe('ImageEditorService', () => {
   let service: ImageEditorService;
-  let afStorage: any;
+  // Value to use in test if needed for spies. Using type will open up for intellisense.
+  let afStorage: Partial<AngularFireStorage>;
 
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
+      // Inject mock class
       providers: [
         ImageEditorService,
-        { provide: AngularFireStorage, useValue: new AngularFireStorageMock() }
-      ]
+        { provide: AngularFireStorage, useValue: new AngularFireStorageMock() },
+      ],
     });
 
     service = TestBed.inject(ImageEditorService);
+    // Injecting mock to the variable to be used if needed
     afStorage = TestBed.inject(AngularFireStorage);
-  });
+  }));
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
+  describe('getRandomId', () => {
+    it('should get id string', () => {
+      const id = service.getRandomId();
+      expect(id).toBeInstanceOf(String);
+    });
+  });
+
   describe('upload', () => {
     it('should get id from upload on success', async () => {
-      // Create the spy for the ref function, and in here we will control the response
-      const refSpy = spyOn(afStorage, 'ref').and.returnValue({
-        put: () => new Promise(resolve => resolve({ metadata: { name: 'id' } }))
-      });
-      // Using expectAsync to directly check the resolved response
       await expectAsync(service.upload({} as Blob)).toBeResolvedTo('id');
-      expect(refSpy).toHaveBeenCalledTimes(1);
     });
 
     it('should fail on empty input', async () => {
       await expectAsync(service.upload(null)).toBeRejectedWithError();
+    });
+  });
+
+  describe('retrieveDownloadUrls', () => {
+    it('should return array', async () => {
+      const downloadUrls = [
+        { title: '200x200', url: '/images/thumbs/url_200x200.png' },
+        { title: '400x400', url: '/images/thumbs/url_400x400.png' },
+        { title: '600x600', url: '/images/thumbs/url_600x600.png' },
+      ];
+
+      const res = await service.retrieveDownloadUrls('url');
+      expect(res).toEqual(downloadUrls);
     });
   });
 });
@@ -446,7 +467,7 @@ fdescribe('EditImageComponent', () => {
       'upload',
       'retryRetrieveDownloadUrls',
       'createImageFromImageDataUrl',
-      'canvasDraw'
+      'canvasDraw',
     ]);
 
     TestBed.configureTestingModule({
@@ -455,13 +476,13 @@ fdescribe('EditImageComponent', () => {
         {
           provide: ImageEditorService,
           // use the spy service as value
-          useValue: imageEditorServiceSpy
+          useValue: imageEditorServiceSpy,
         },
         { provide: MatBottomSheet, useValue: {} },
         { provide: MatDialog, useValue: jasmine.createSpyObj('MatDialog', ['open']) },
-        { provide: AngularFireStorage, useValue: {} }
+        { provide: AngularFireStorage, useValue: {} },
       ],
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -508,7 +529,7 @@ import { ImageEditorEditComponent } from './image-editor-edit.component';
 // Setting up service to mock
 class ImageEditorServiceMock {
   imageHandler = {
-    imageDataURL$: new BehaviorSubject(null)
+    imageDataURL$: new BehaviorSubject(null),
   };
 }
 
@@ -522,7 +543,7 @@ fdescribe('ImageEditorEditComponent', () => {
       // Mock ImageEditorService here
       providers: [{ provide: ImageEditorService, useValue: new ImageEditorServiceMock() }],
       // Using NO_ERRORS_SCHEMA to avoid having to include all custom elements
-      schemas: [NO_ERRORS_SCHEMA]
+      schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
@@ -547,7 +568,7 @@ fdescribe('ImageEditorEditComponent', () => {
     const hostEl: HTMLElement = fixture.nativeElement;
 
     // subscribe to stream, close after first data receieved
-    component.imageDataURL$.pipe(first()).subscribe(data => (cdata = data));
+    component.imageDataURL$.pipe(first()).subscribe((data) => (cdata = data));
     // Update component view
     fixture.detectChanges();
 
@@ -621,7 +642,7 @@ import { SharedHeaderComponent } from './components/shared-header/shared-header.
 @NgModule({
   declarations: [SharedHeaderComponent, SharedFooterComponent],
   imports: [CommonModule, MatIconModule],
-  exports: [SharedHeaderComponent, SharedFooterComponent, MatIconModule]
+  exports: [SharedHeaderComponent, SharedFooterComponent, MatIconModule],
 })
 export class SharedModule {}
 ```
@@ -641,7 +662,7 @@ main.scss:
 @import 'abstracts/variables';
 
 $custom-typography: mat-typography-config(
-  $font-family: 'Montserrat'
+  $font-family: 'Montserrat',
 );
 @include angular-material-typography($custom-typography);
 @include mat-core($custom-typography);
@@ -682,8 +703,8 @@ $md-custom-primary: (
     A100: #000000,
     A200: #000000,
     A400: #000000,
-    A700: #000000
-  )
+    A700: #000000,
+  ),
 );
 
 // Create the theme object (a Sass map containing all of the palettes).
@@ -742,7 +763,7 @@ forkJoin(
   {
     google: ajax.getJSON('https://api.github.com/users/google'),
     microsoft: ajax.getJSON('https://api.github.com/users/microsoft'),
-    users: ajax.getJSON('https://api.github.com/users')
+    users: ajax.getJSON('https://api.github.com/users'),
   }
 )
   // { google: object, microsoft: object, users: array }

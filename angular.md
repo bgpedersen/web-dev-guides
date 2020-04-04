@@ -744,6 +744,7 @@ footer {
 ### RxJS: References
 
 - [Learn RxJS](https://www.learnrxjs.io/)
+- [RxJS Marbles - Interactive diagrams of Rx Observables](https://rxmarbles.com/)
 
 ### RxJS: Combine observables with forkJoin dictionary
 

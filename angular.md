@@ -22,6 +22,7 @@
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
     - [Testing: Equal to](#testing-equal-to)
     - [Testing: Async](#testing-async)
+    - [Testing: RxJS Observables](#testing-rxjs-observables)
     - [Testing: Service test example with 3rd party service mock injection](#testing-service-test-example-with-3rd-party-service-mock-injection)
     - [Testing: Component test example with service dependency as SpyObj and full code editor intellisence](#testing-component-test-example-with-service-dependency-as-spyobj-and-full-code-editor-intellisence)
     - [Testing: Component test example with mock service, async observable and DOM elements](#testing-component-test-example-with-mock-service-async-observable-and-dom-elements)
@@ -367,6 +368,35 @@ it('should get data from subscription', fakeAsync(() => {
   expect(dataReceived).toBe('some data');
 }));
 ```
+
+### Testing: RxJS Observables
+
+Testing observables using `done()` and `index` with single and multiple values
+
+```typescript
+describe('observable testing', () => {
+  const values = [1, 2, 3];
+
+  const value$ = of(values);
+  const values$ = from(values);
+
+  it('should work with done syntax', (done: DoneFn) => {
+    value$.subscribe((value) => {
+      expect(value).toBe(values);
+      done();
+    });
+
+    let index = 0;
+    values$.subscribe((val) => {
+      expect(val).toEqual(values[index]);
+      index++;
+      done();
+    });
+  });
+});
+```
+
+Todo: Marble testing using TestScheduler
 
 ### Testing: Service test example with 3rd party service mock injection
 

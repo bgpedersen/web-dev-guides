@@ -35,6 +35,8 @@
     - [Angular Material: Custom theme](#angular-material-custom-theme)
   - [RxJS](#rxjs)
     - [RxJS: References](#rxjs-references)
+    - [RxJS: Operators](#rxjs-operators)
+      - [RxJS: Operators: Creation](#rxjs-operators-creation)
     - [RxJS: Combine observables with forkJoin dictionary](#rxjs-combine-observables-with-forkjoin-dictionary)
     - [RxJS: 6 ways to unsubscribe from observables in angular](#rxjs-6-ways-to-unsubscribe-from-observables-in-angular)
     - [RxJS: Template driven subscription using the async pipe](#rxjs-template-driven-subscription-using-the-async-pipe)
@@ -745,6 +747,31 @@ footer {
 
 - [Learn RxJS](https://www.learnrxjs.io/)
 - [RxJS Marbles - Interactive diagrams of Rx Observables](https://rxmarbles.com/)
+
+### RxJS: Operators
+
+#### RxJS: Operators: Creation
+
+`from`: Create observable from array, promise or iterable. Takes only one value. For arrays, iterables and strings, all contained values will be emitted as a sequence
+
+```typescript
+const values = [1, 2, 3];
+from(values); // 1 ... 2 ... 3
+```
+
+`of`: Create observable with variable amounts of values, emit values in sequence
+
+```typescript
+const values = [1, 2, 3];
+of(values, 'hi', 4, 5); // [1, 2, 3] ... 'hi' ... 4 ... 5
+```
+
+`defer`: Create observable with a function that is run on subscription, for example from a promise function
+
+```typescript
+const values = [1, 2, 3];
+defer(() => new Promise((res, rej) => res(values))); // 1, 2, 3
+```
 
 ### RxJS: Combine observables with forkJoin dictionary
 

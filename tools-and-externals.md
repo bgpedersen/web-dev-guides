@@ -107,7 +107,7 @@ This extension is highly recommended for markup, since it auto updates table of 
 
 ##### Code Editors: Visual Studio Code: Extensions: Prettier
 
-Use prettier to follow a set of styling rules for auto-formatting ([article: Code style matters](https://christianlydemann.com/style-angular-apps-using-prettier-and-tslint/)). VS Code settings for prettier might sometimes not work, instead make project file in root `.prettierrc` and put options here
+Use prettier to follow a set of good and consistent styling rules for auto-formatting ([article: Code style matters](https://christianlydemann.com/style-angular-apps-using-prettier-and-tslint/)). VS Code settings for prettier might sometimes not work, instead make project file in root `.prettierrc` and put options here
 
 ```json
 {
@@ -122,55 +122,16 @@ Install `npm install --save-dev tslint-config-prettier` and add "tslint-config-p
 ```json
 {
   "extends": ["tslint:recommended", "tslint-config-prettier"],
-  "rules": {
-    "align": false,
-    "array-type": false,
-    "arrow-parens": false,
-    "deprecation": {
-      "severity": "warning"
-    },
-    "component-class-suffix": true,
-    "contextual-lifecycle": true,
-    "directive-class-suffix": true,
-    "directive-selector": [true, "attribute", "app", "camelCase"],
-    "component-selector": [true, "element", "app", "kebab-case"],
-    "import-blacklist": [true, "rxjs/Rx"],
-    "interface-name": false,
-    "max-classes-per-file": false,
-    "max-line-length": [true, 140],
-    "member-access": false,
-    "member-ordering": [
-      true,
-      {
-        "order": ["static-field", "instance-field", "static-method", "instance-method"]
-      }
-    ],
-    "no-consecutive-blank-lines": false,
-    "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
-    "no-empty": false,
-    "no-inferrable-types": [true, "ignore-params"],
-    "no-non-null-assertion": true,
-    "no-redundant-jsdoc": true,
-    "no-switch-case-fall-through": true,
-    "no-var-requires": false,
-    "object-literal-key-quotes": [true, "as-needed"],
-    "object-literal-sort-keys": false,
-    "ordered-imports": false,
-    "quotemark": [true, "single"],
-    "trailing-comma": false,
-    "no-conflicting-lifecycle": true,
-    "no-host-metadata-property": true,
-    "no-input-rename": true,
-    "no-inputs-metadata-property": true,
-    "no-output-native": true,
-    "no-output-on-prefix": true,
-    "no-output-rename": true,
-    "no-outputs-metadata-property": true,
-    "template-banana-in-box": true,
-    "template-no-negated-async": true,
-    "use-lifecycle-interface": true,
-    "use-pipe-transform-interface": true
-  },
-  "rulesDirectory": ["codelyzer"]
+  "//": "..."
+}
+```
+
+To format whole codebase easily, install prettier `npm i prettier -D` and add the scripts to `package.json`:
+
+```json
+"scripts": {
+  "//": "...",
+  "prettier:test": "prettier \"**/*.{ts,html,md,scss,json}\" --list-different",
+  "prettier:write": "prettier \"**/*.{ts,html,md,scss,json}\" --write"
 }
 ```

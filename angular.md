@@ -20,9 +20,8 @@
     - [Testing: References](#testing-references)
     - [Testing: Versions](#testing-versions)
     - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
-    - [Testing: Equal to](#testing-equal-to)
-    - [Testing: Async](#testing-async)
-    - [Testing: RxJS Observables](#testing-rxjs-observables)
+    - [Testing: Async promises](#testing-async-promises)
+    - [Testing: Async observables](#testing-async-observables)
     - [Testing: Service test example with 3rd party service mock injection](#testing-service-test-example-with-3rd-party-service-mock-injection)
     - [Testing: Component test example with service dependency as SpyObj and full code editor intellisence](#testing-component-test-example-with-service-dependency-as-spyobj-and-full-code-editor-intellisence)
     - [Testing: Component test example with mock service, async observable and DOM elements](#testing-component-test-example-with-mock-service-async-observable-and-dom-elements)
@@ -295,17 +294,7 @@ describe('the unit', () => {
 });
 ```
 
-### Testing: Equal to
-
-Equal to a Class or Type
-
-```typescript
-let id = 'a string';
-expect(id).toBeInstanceOf(String); // jasmine 3.5
-expect(id).toEqual(jasmine.any(String));
-```
-
-### Testing: Async
+### Testing: Async promises
 
 `done` is the old school callback way. It marks the block as async and is finished when called
 
@@ -352,51 +341,120 @@ it('should fail on empty input', async () => {
 });
 ```
 
-Use fakeAsync wrapper to run observables synchronous
+### Testing: Async observables
+
+Use `fakeAsync` wrapper to run observables synchronous to test single value
 
 ```typescript
-// Wrab block in fakeAsync, to run stream subscription synchronous
-it('should get data from subscription', fakeAsync(() => {
-  let dataStream = new BehaviorSubject('some data');
-  let dataReceived;
+it('should run observable synchronous with fakeAsync', fakeAsync(() => {
+  const behaviorSubject$ = new BehaviorSubject({ a: 1 });
+  let behaviorSubjectResult;
 
-  // subscribe to stream, close after first data receieved
-  dataStream.pipe(first()).subscribe((data) => (dataReceived = data));
-  // Update component view
-  fixture.detectChanges();
+  behaviorSubject$.subscribe((data) => (behaviorSubjectResult = data));
 
-  expect(dataReceived).toBe('some data');
+  expect(behaviorSubjectResult).toEqual({ a: 1 });
 }));
 ```
 
-### Testing: RxJS Observables
-
-Testing observables using `done()` and `index` with single and multiple values
+Use `fakeAsync` wrapper to run virtual time with `tick`
 
 ```typescript
-describe('observable testing', () => {
+it('should run setTimeout synchronous with fakeAsync and tick', fakeAsync(() => {
+  let flag = false;
+
+  setTimeout(() => {
+    flag = true;
+  }, 100);
+
+  expect(flag).toBe(false);
+  tick(50);
+  expect(flag).toBe(false);
+  tick(50);
+  expect(flag).toBe(true);
+}));
+```
+
+Testing single observale value using oldschool `done`
+
+```typescript
+it('should test single observalbe with done syntax', (done: DoneFn) => {
   const values = [1, 2, 3];
-
   const value$ = of(values);
-  const values$ = from(values);
 
-  it('should work with done syntax', (done: DoneFn) => {
-    value$.subscribe((value) => {
-      expect(value).toBe(values);
-      done();
-    });
-
-    let index = 0;
-    values$.subscribe((val) => {
-      expect(val).toEqual(values[index]);
-      index++;
-      done();
-    });
+  value$.subscribe((value) => {
+    expect(value).toBe(values);
+    done();
   });
 });
 ```
 
-Todo: Marble testing using TestScheduler
+Testing multiple observable values using `done()` and `index`
+
+```typescript
+it('should test multiple values with done syntax', (done: DoneFn) => {
+  const values = [1, 2, 3];
+  const values$ = from(values);
+
+  let index = 0;
+  values$.subscribe((val) => {
+    expect(val).toEqual(values[index]);
+    index++;
+    done();
+  });
+});
+```
+
+Testing observable values over time with Marble testing and TestScheduler
+
+- [RxJS marble-testing](https://rxjs.dev/guide/testing/marble-testing)
+
+Every frame is one milisecond. Understanding this is important to write the expected value. The errors will show the counted frame, like and index in an array or a number. Following is same as 1 frame.
+
+- a dash `-`
+- a value
+- a group `()`. `(abc|) counts as single frame`
+- a closing subscription `|`
+
+The following `'ab 500ms (c|)'` means it has a total of 3 frames:
+
+- frame 1: value a
+- frame 2: value b
+- wait 500ms
+- frame 3: value c and close subscription
+
+```typescript
+const testScheduler = new TestScheduler((actual, expected) => {
+  expect(actual).toEqual(expected);
+});
+it('should run observables over time with marble-testing', () => {
+  testScheduler.run((helpers) => {
+    const { cold, expectObservable } = helpers;
+
+    const streamValues = { a: 1, b: 2, c: 3 };
+
+    // Create cold observable to be subscribed to. Could be use as as a mock
+    const streamCold$ = cold('ab 500ms (c|)', streamValues);
+    expectObservable(streamCold$).toBe('ab 500ms (c|)', streamValues);
+
+    // Using RxJS observables to be tested
+    const streamOf$ = of(1, 2, 3);
+    expectObservable(streamOf$).toBe('(abc|)', streamValues);
+
+    // Test RxJS observables over time
+    const streamFrom$ = from([1, 2, 3]);
+    expectObservable(streamFrom$).toBe('(abc|)', streamValues);
+
+    // Define the observables also works
+    const streamCreateObs$ = new Observable((sub) => {
+      sub.next(1);
+      sub.next(2);
+      sub.next(3);
+      sub.complete();
+    });
+    expectObservable(streamCreateObs$).toBe('(abc|)', streamValues);
+  });
+});
+```
 
 ### Testing: Service test example with 3rd party service mock injection
 
@@ -776,7 +834,8 @@ footer {
 ### RxJS: References
 
 - [Learn RxJS](https://www.learnrxjs.io/)
-- [RxJS Marbles - Interactive diagrams of Rx Observables](https://rxmarbles.com/)
+- [RxJS Official](https://rxjs.dev/)
+- [RxJS Interactive diagrams](https://rxmarbles.com/)
 
 ### RxJS: Operators
 

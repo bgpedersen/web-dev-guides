@@ -76,21 +76,20 @@
 
 ##### Code Editors: Visual Studio Code: Extensions: Extentions I use
 
-- angular-essentials v9.0.1
 - Angular2 v9.1.2
+- AngularMaterial v7.0.1
 - bracket-pair-colorizer-2 v0.0.29
 - code-settings-sync v3.4.3
 - debugger-for-chrome v4.12.6
 - gitignore v0.6.0
 - gitlens v10.2.1
 - json-to-ts v1.7.4
-- markdown-all-in-one v2.7.0
-- ng-template v0.900.18
+- markdown-all-in-one v2.8.0
+- ng-template v0.901.0
 - npm-intellisense v1.3.0
-- prettier-vscode v3.20.0
+- prettier-vscode v4.2.0
 - project-manager v10.11.0
-- typescript-hero v3.0.0
-- vscode-icons v10.0.0
+- vscode-icons v10.1.0
 - vscode-markdownlint v0.34.0
 - vscode-npm-script v0.3.11
 - vscode-sort-json v1.18.0

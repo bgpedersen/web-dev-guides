@@ -65,9 +65,17 @@ npm update
 
 If you are using the caret `^` in front of your versions in package.json, the major versions will not be updated (hence the yellow rows). This is good, cause there might be breaking changes updating to a new major version.
 
-`npm i the-package@latest` to update a dependency to their latest version.
+Update a dependency to their latest version.
 
-`npx npm-update-all` to blindly auto update all to the latest version. I don't recommend using this, since it can lead to snow ball effect of errors down the line of breaking changes.
+```bash
+npm i the-package@latest
+```
+
+blindly auto update all to the latest version. I don't recommend using this, since it can lead to snow ball effect of errors down the line of breaking changes.
+
+```bash
+npx npm-update-all
+```
 
 ### NPM: Trends
 

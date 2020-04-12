@@ -1,19 +1,6 @@
 # JavaScript
 
-## Contents
-
-- [JavaScript](#javascript)
-  - [Contents](#contents)
-  - [Web guides](#web-guides)
-  - [RegEx (Regular expression)](#regex-regular-expression)
-  - [Date and Time](#date-and-time)
-    - [Date and Time: References](#date-and-time-references)
-    - [Date and Time: Moment alternatives](#date-and-time-moment-alternatives)
-  - [Async and Promises](#async-and-promises)
-    - [Async and Promises: Error handling](#async-and-promises-error-handling)
-    - [Async and Promises: Retry promise function with times and delay](#async-and-promises-retry-promise-function-with-times-and-delay)
-
-## Web guides
+## Javascript references
 
 - [The definitive source of the best JavaScript libraries, frameworks, and plugins.](https://www.javascripting.com/)
 - [ECMAScript compatibility table](http://kangax.github.io/compat-table/es6/)
@@ -27,13 +14,13 @@
 - [Regex tester](https://www.regextester.com/)
 - [Regex101](https://regex101.com/)
 
-## Date and Time
+## Date and time
 
-### Date and Time: References
+### Date and time references
 
 - [RRule generator](https://www.textmagic.com/free-tools/rrule-generator)
 
-### Date and Time: Moment alternatives
+### Moment alternatives
 
 - Native js
 - Luxon
@@ -44,7 +31,7 @@ See full description and comparisons: [You Dont Need Momentjs](https://github.co
 
 ## Async and Promises
 
-### Async and Promises: Error handling
+### Error handling
 
 Simple promise, resolving with `success`
 
@@ -73,7 +60,7 @@ someAsyncFn = () => {
 init();
 ```
 
-Adding a `throw` inside the `try` in someAsyncFn, will make it go to `catch` and `reject` the promise. `throw 'some error happend` will only throw and error `string` while `throw new Error('some error happend)` will throw the full stack trace.
+Adding a `throw` inside the `try` in someAsyncFn, will make it go to `catch` and `reject` the promise. `throw 'some error happend'` will only throw and error the text string while `throw new Error('some error happend')` will throw the full stack trace.
 
 ```javascript
 init = async () => {
@@ -154,7 +141,7 @@ Using `then` will behave same way when wrapping in `try catch`
 ```javascript
 init = () => {
   try {
-    const res = p().then(res => console.log(res));
+    const res = p().then((res) => console.log(res));
   } catch (e) {
     console.log(e); // hit
   }
@@ -176,7 +163,7 @@ Without `try catch`, the error will be `uncaught` in console with msg, and never
 
 ```javascript
 init = () => {
-  const res = p().then(res => console.log(res));
+  const res = p().then((res) => console.log(res));
 };
 
 p = () => {
@@ -191,7 +178,7 @@ p = () => {
 init();
 ```
 
-### Async and Promises: Retry promise function with times and delay
+### Retry promise function
 
 ```javascript
 retry = (fn, times, delay) => {
@@ -203,7 +190,7 @@ retry = (fn, times, delay) => {
       } else {
         fn()
           .then(resolve)
-          .catch(e => {
+          .catch((e) => {
             times--;
             error = e;
             console.error(`${times} attempts left. Error: ${JSON.stringify(error)}`);

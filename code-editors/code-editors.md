@@ -1,18 +1,5 @@
 # Code Editors
 
-## Contents
-
-- [Code Editors](#code-editors)
-  - [Contents](#contents)
-  - [Web Editors](#web-editors)
-  - [Visual Studio Code](#visual-studio-code)
-    - [Visual Studio Code: Web guides](#visual-studio-code-web-guides)
-    - [Visual Studio Code: Extensions](#visual-studio-code-extensions)
-      - [Visual Studio Code: Extensions: Extentions I use](#visual-studio-code-extensions-extentions-i-use)
-      - [Visual Studio Code: Extensions: Markdown All in One](#visual-studio-code-extensions-markdown-all-in-one)
-      - [Visual Studio Code: Extensions: Markdown](#visual-studio-code-extensions-markdown)
-      - [Visual Studio Code: Extensions: Prettier](#visual-studio-code-extensions-prettier)
-
 ## Web Editors
 
 - [Code Sandbox](https://codesandbox.io/)
@@ -20,13 +7,13 @@
 
 ## Visual Studio Code
 
-### Visual Studio Code: Web guides
+### Setup as GIT editor
 
 - [Setup VS Code as GIT editor](https://stackoverflow.com/questions/30024353/how-to-use-visual-studio-code-as-default-editor-for-git)
 
-### Visual Studio Code: Extensions
+### Extensions
 
-#### Visual Studio Code: Extensions: Extentions I use
+#### Extentions I use (12/4/20)
 
 - Angular2 v9.1.2
 - AngularMaterial v7.0.1
@@ -48,15 +35,15 @@
 - vscode-typescript-tslint-plugin v1.2.3
 - vscode-yaml v0.7.2
 
-#### Visual Studio Code: Extensions: Markdown All in One
+#### Markdown All in One
 
 This extension is highly recommended for markup, since it auto updates table of contents, make editing easier and have shortcuts: [vs code markdown all in one](https://github.com/yzhang-gh/vscode-markdown)
 
-#### Visual Studio Code: Extensions: Markdown
+#### Markdown
 
 - Markdown auto linting extention [markdownlint by davidanson](https://github.com/DavidAnson/vscode-markdownlint.git)
 
-#### Visual Studio Code: Extensions: Prettier
+#### Prettier
 
 Use prettier to follow a set of good and consistent styling rules for auto-formatting ([article: Code style matters](https://christianlydemann.com/style-angular-apps-using-prettier-and-tslint/)). VS Code settings for prettier might sometimes not work, instead make project file in root `.prettierrc` and put options here
 
@@ -68,7 +55,11 @@ Use prettier to follow a set of good and consistent styling rules for auto-forma
 ```
 
 If your using TSLint and Prettier, then use [tslint-config-prettier](https://github.com/prettier/tslint-config-prettier) to make TSLint only do TS errors/warnings and Prettier only do the formatting corrections. This way TSLint don't conflict with prettier formatting.
-Install `npm install --save-dev tslint-config-prettier` and add "tslint-config-prettier" to extends in tslint.json:
+Install and add `tslint-config-prettier` to extends in tslint.json:
+
+```bash
+npm install --save-dev tslint-config-prettier
+```
 
 ```json
 {
@@ -77,7 +68,11 @@ Install `npm install --save-dev tslint-config-prettier` and add "tslint-config-p
 }
 ```
 
-To format whole codebase easily, install prettier `npm i prettier -D` and add the scripts to `package.json`:
+To format whole codebase easily, install prettier to dev-dependencies and add the scripts to `package.json`
+
+```bash
+npm i prettier -D
+```
 
 ```json
 "scripts": {

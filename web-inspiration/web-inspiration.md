@@ -1,12 +1,5 @@
 # Web inspiration
 
-## Contents
-
-- [Web inspiration](#web-inspiration)
-  - [Contents](#contents)
-  - [Full website inspirations](#full-website-inspirations)
-  - [Colors](#colors)
-
 ## Full website inspirations
 
 - [SiteInspire](https://www.siteinspire.com/)

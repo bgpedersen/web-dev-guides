@@ -1,69 +1,25 @@
 # Angular
 
-## Contents
-
-- [Angular](#angular)
-  - [Contents](#contents)
-  - [Architecture](#architecture)
-    - [Architecture: Upgrading Angular](#architecture-upgrading-angular)
-    - [Architecture: How to share styles between Angular Components](#architecture-how-to-share-styles-between-angular-components)
-    - [Architecture: Refactoring angular apps to reactive architecture](#architecture-refactoring-angular-apps-to-reactive-architecture)
-    - [Architecture: Best practice Angular 9 file architecture that scales well](#architecture-best-practice-angular-9-file-architecture-that-scales-well)
-    - [Architecture: SCSS relative import fix to avoid relative hell](#architecture-scss-relative-import-fix-to-avoid-relative-hell)
-    - [Architecture: Scaffolding lazy loaded modules](#architecture-scaffolding-lazy-loaded-modules)
-    - [Architecture: Supporting Internet Explorer IE](#architecture-supporting-internet-explorer-ie)
-  - [i18n](#i18n)
-    - [i18n: Transloco](#i18n-transloco)
-    - [i18n: ngx-translate](#i18n-ngx-translate)
-  - [Testing (with Karma and Jasmine)](#testing-with-karma-and-jasmine)
-    - [Testing: Introduction to testing with Karma and Jasmine](#testing-introduction-to-testing-with-karma-and-jasmine)
-    - [Testing: References](#testing-references)
-    - [Testing: Versions](#testing-versions)
-    - [Testing: Disable, focus, pending](#testing-disable-focus-pending)
-    - [Testing: Async promises](#testing-async-promises)
-    - [Testing: Async observables](#testing-async-observables)
-    - [Testing: Service test example with 3rd party service mock injection](#testing-service-test-example-with-3rd-party-service-mock-injection)
-    - [Testing: Component test example with service dependency as SpyObj and full code editor intellisence](#testing-component-test-example-with-service-dependency-as-spyobj-and-full-code-editor-intellisence)
-    - [Testing: Component test example with mock service, async observable and DOM elements](#testing-component-test-example-with-mock-service-async-observable-and-dom-elements)
-  - [Webpack](#webpack)
-    - [Webpack: References](#webpack-references)
-    - [Webpack: Analyze your bundle with webpack analyzer](#webpack-analyze-your-bundle-with-webpack-analyzer)
-      - [Webpack: Reading the bundle output](#webpack-reading-the-bundle-output)
-  - [Angular Material](#angular-material)
-    - [Angular Material: References](#angular-material-references)
-    - [Angular Material: Material icons](#angular-material-material-icons)
-    - [Angular Material: Custom theme](#angular-material-custom-theme)
-  - [RxJS](#rxjs)
-    - [RxJS: References](#rxjs-references)
-    - [RxJS: Operators](#rxjs-operators)
-      - [RxJS: Operators: Creation](#rxjs-operators-creation)
-    - [RxJS: Combine observables with forkJoin dictionary](#rxjs-combine-observables-with-forkjoin-dictionary)
-    - [RxJS: 6 ways to unsubscribe from observables in angular](#rxjs-6-ways-to-unsubscribe-from-observables-in-angular)
-    - [RxJS: Template driven subscription using the async pipe](#rxjs-template-driven-subscription-using-the-async-pipe)
-  - [API requests](#api-requests)
-    - [API: References](#api-references)
-  - [NgRX](#ngrx)
-    - [NgRX: References](#ngrx-references)
-
 ## Architecture
 
-### Architecture: Upgrading Angular
+### Upgrading Angular
 
 To see if any Angular dependencies at the current version can be upgrade, type `ng update`.
 Upgrade Angular normally by writing `ng update @angular/cli @angular/core`.
 
 - [Upgrade Angular guide](https://update.angular.io/)
 
-### Architecture: How to share styles between Angular Components
+### Share styles
 
 - [How to share styles between Angular Components](https://dev.to/michaeljota/how-to-share-styles-between-angular-components-nhm)
 
-### Architecture: Refactoring angular apps to reactive architecture
+### Reactive architecture
 
 - [Refactoring angular apps to reactive architecture](https://christianlydemann.com/refactoring-angular-apps-to-reactive-architecture/)
 
-### Architecture: Best practice Angular 9 file architecture that scales well
+### File structure
 
+```text
 - app
   - core
     - guards
@@ -101,8 +57,9 @@ Upgrade Angular normally by writing `ng update @angular/cli @angular/core`.
   - i18n
   - icon
   - images
+```
 
-### Architecture: SCSS relative import fix to avoid relative hell
+### SCSS relative import
 
 Just be aware, that the intellisense autocomplete doesn't work with this solution.
 
@@ -127,11 +84,11 @@ Insert stylePreprocessorOptions to your angular.json under options for your buil
 
 and then reference your styles/abstracts/\_variables.scss like this `@import 'abstracts/variables';`
 
-### Architecture: Scaffolding lazy loaded modules
+### Scaffolding
 
 Scaffold new lazy loaded module with `ng g m features/my-feature --routing --route my-feature --module app.module -d`. If you want to follow the pages structure or add components to this feature, delete the component html,scss,ts parts from the module, routing folder and run `ng g c features/my-feature/dashboard --module my-feature.module -d`.
 
-### Architecture: Supporting Internet Explorer IE
+### Supporting IE
 
 Using Differential builds, Angular makes a build for es5 for older browsers and one for es6 for modern browsers.
 
@@ -143,12 +100,12 @@ Using Differential builds, Angular makes a build for es5 for older browsers and 
 
 **Translation of files and easy shared access, I have good experience using the web solution** [webtranslateit](https://webtranslateit.com/en)
 
-### i18n: Transloco
+### Transloco
 
 - [transloco](https://netbasal.gitbook.io/transloco/)
 - [comparison-to-other-libraries](https://netbasal.gitbook.io/transloco/comparison-to-other-libraries)
 
-### i18n: ngx-translate
+### ngx-translate
 
 **ngx-translate is not actively maintained anymore, so alternative is transloco or angular i18n. Key differences are that Transloco runs at runtime while Angular i18n compiles a project per language - [ngx-translate issue thread](https://github.com/ngx-translate/core/issues/783)**
 
@@ -198,9 +155,9 @@ this.translateService
   });
 ```
 
-## Testing (with Karma and Jasmine)
+## Testing
 
-### Testing: Introduction to testing with Karma and Jasmine
+### Introduction
 
 Unit testing is as important as developing a project nowadays and it becomes an integral part of development. It actually boosts the quality of the code and confidence of developers. Unit tests are written in the Jasmine framework and executed by karma, A test runner and these are executed in the browser.
 Sometimes, we write tests before we even start developing which is called TDD. We mostly follow BDD since we are using a jasmine framework.
@@ -249,7 +206,7 @@ Karma is a test-runner for javascript apps. Here are some features of Karma
 - Online documentation is good
 - We can easily integrate with a continuous integration server
 
-### Testing: References
+### Testing references
 
 - [Official Angular Testing](https://angular.io/guide/testing)
 - [Official Angular test examples](https://stackblitz.com/angular/xkagvbjambb)
@@ -262,11 +219,11 @@ Karma is a test-runner for javascript apps. Here are some features of Karma
 - [Testing the Tour of Heroes — Hero Search Component](https://medium.com/@SimonTestNet/testing-the-tour-of-heroes-hero-search-component-c5b379e93fd3)
 - [Unit Testing in Angular: Stubs vs Spies vs Mocks](https://www.amadousall.com/unit-testing-angular-stubs-vs-spies-vs-mocks/)
 
-### Testing: Versions
+### Versions
 
 Be sure to update Jasmine to the lastest version (currently 3.5) to use the 3.5 docs. `npm i @types/jasmine@latest @types/jasminewd2@latest jasmine-core@latest jasmine-spec-reporter@latest`
 
-### Testing: Disable, focus, pending
+### Disable, focus, pending
 
 Focus: Run only these. Add `f` in front of either `describe` or `it`
 
@@ -294,7 +251,7 @@ describe('the unit', () => {
 });
 ```
 
-### Testing: Async promises
+### Promises
 
 `done` is the old school callback way. It marks the block as async and is finished when called
 
@@ -341,7 +298,7 @@ it('should fail on empty input', async () => {
 });
 ```
 
-### Testing: Async observables
+### Observables
 
 Use `fakeAsync` wrapper to run observables synchronous to test single value
 
@@ -456,7 +413,7 @@ it('should run observables over time with marble-testing', () => {
 });
 ```
 
-### Testing: Service test example with 3rd party service mock injection
+### Service example
 
 ```typescript
 import { async, TestBed } from '@angular/core/testing';
@@ -530,7 +487,7 @@ describe('ImageEditorService', () => {
 });
 ```
 
-### Testing: Component test example with service dependency as SpyObj and full code editor intellisence
+### Component example #1
 
 Here is a full component test example, of how the structure should be when using a service as a SpyObj in depencency injection, having full code editor intelissense for methods and spy methods:
 
@@ -603,7 +560,7 @@ fdescribe('EditImageComponent', () => {
 });
 ```
 
-### Testing: Component test example with mock service, async observable and DOM elements
+### Component example #2
 
 Comments in code explains step by step
 
@@ -676,12 +633,12 @@ fdescribe('ImageEditorEditComponent', () => {
 
 ## Webpack
 
-### Webpack: References
+### Webpack references
 
 - [Webpack bundle analyzer](https://www.npmjs.com/package/webpack-bundle-analyzer)
 - [Personalize your angular build with webpack](https://dzone.com/articles/personalize-your-angular-build-with-webpack)
 
-### Webpack: Analyze your bundle with webpack analyzer
+### Analyze bundle
 
 - Install analyzer `npm install webpack-bundle-analyzer --save-dev`
 - modify your package.json scripts section with `"analyze": "ng build --prod --stats-json && webpack-bundle-analyzer dist/profile-image-creator/stats-es2015.json"`
@@ -689,7 +646,7 @@ fdescribe('ImageEditorEditComponent', () => {
 
 Replace `/profile-image-creator/` with your project name.
 
-#### Webpack: Reading the bundle output
+#### Reading output
 
 - stat
 
@@ -706,7 +663,7 @@ This is the size of running the parsed bundles/modules through gzip compression.
 
 ## Angular Material
 
-### Angular Material: References
+### Material references
 
 - [Angular Material Icons](https://material.angular.io/components/icon/overview)
 - <https://ajonp.com/courses/angularmaterial/angular-material-theming/>
@@ -715,7 +672,7 @@ This is the size of running the parsed bundles/modules through gzip compression.
 - <https://medium.com/@tomastrajan/the-complete-guide-to-angular-material-themes-4d165a9d24d1>
 - <https://medium.com/@aleixsuau/how-to-use-angular-material-2-sass-variables-in-your-components-76ce0203f126>
 
-### Angular Material: Material icons
+### Icons
 
 To use Material icons, import (and export) `MatIconModule`
 
@@ -739,7 +696,7 @@ export class SharedModule {}
 
 Insert in HTML `<mat-icon>cloud_download</mat-icon>` with the name picked from [Material Icons](https://material.io/resources/icons)
 
-### Angular Material: Custom theme
+### Custom theme
 
 Choose from existing material's palettes [material color selector](https://material.io/resources/color/) or use [material color tool](https://material.io/inline-tools/color/) or easier using auto script page generator [mcg.mbitson palette generator](http://mcg.mbitson.com/)
 
@@ -831,15 +788,15 @@ footer {
 
 ## RxJS
 
-### RxJS: References
+### RxJS references
 
 - [Learn RxJS](https://www.learnrxjs.io/)
 - [RxJS Official](https://rxjs.dev/)
 - [RxJS Interactive diagrams](https://rxmarbles.com/)
 
-### RxJS: Operators
+### Operators
 
-#### RxJS: Operators: Creation
+#### Creation
 
 `from`: Create observable from array, promise or iterable. Takes only one value. For arrays, iterables and strings, all contained values will be emitted as a sequence
 
@@ -862,7 +819,7 @@ const values = [1, 2, 3];
 defer(() => new Promise((res, rej) => res(values))); // 1, 2, 3
 ```
 
-### RxJS: Combine observables with forkJoin dictionary
+### Combine observables
 
 - [(v6.5+) Using a dictionary of sources](https://www.learnrxjs.io/learn-rxjs/operators/combination/forkjoin)
 
@@ -887,11 +844,11 @@ forkJoin(
   .subscribe(console.log);
 ```
 
-### RxJS: 6 ways to unsubscribe from observables in angular
+### Unsubscribing
 
 - [6 ways to unsubscribe from observables in angular](https://blog.bitsrc.io/6-ways-to-unsubscribe-from-observables-in-angular-ab912819a78f)
 
-### RxJS: Template driven subscription using the async pipe
+### Template driven
 
 Template driving and thus removing the subscribe handling.
 
@@ -920,7 +877,7 @@ export class UserComponent implements OnInit {
 
 ## API requests
 
-### API: References
+### API references
 
 - [The correct way to make API requests in an Angular application](https://levelup.gitconnected.com/the-correct-way-to-make-api-requests-in-an-angular-application-22a079fe8413)
 
@@ -928,7 +885,7 @@ export class UserComponent implements OnInit {
 
 Reactive State for Angular
 
-### NgRX: References
+### NgRX references
 
 - [NgRX official](https://ngrx.io/)
 - [Adding NgRx to Your Existing Applications](https://indepth.dev/adding-ngrx-to-your-existing-applications/)

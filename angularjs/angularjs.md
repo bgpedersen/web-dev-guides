@@ -1,54 +1,35 @@
 # AngularJS
 
-## Contents
-
-- [AngularJS](#angularjs)
-  - [Contents](#contents)
-  - [UI Router](#ui-router)
-    - [UI Router: Migrate guide UI Router from 0.x to 1.x](#ui-router-migrate-guide-ui-router-from-0x-to-1x)
-    - [UI Router: Example](#ui-router-example)
-  - [i18n](#i18n)
-    - [i18n: Web interface for comparing and translating 2 json files](#i18n-web-interface-for-comparing-and-translating-2-json-files)
-    - [i18n: Angular-Translate](#i18n-angular-translate)
-      - [i18n: Angular-Translate HTML examples](#i18n-angular-translate-html-examples)
-      - [i18n: Angular-Translate JS examples](#i18n-angular-translate-js-examples)
-    - [i18n: Webpack Angular Translate](#i18n-webpack-angular-translate)
-  - [Testing](#testing)
-    - [Testing: Example of AngularJS test file](#testing-example-of-angularjs-test-file)
-  - [Migration from AngularJS to Angular](#migration-from-angularjs-to-angular)
-    - [Migration from AngularJS to Angular: References](#migration-from-angularjs-to-angular-references)
-    - [Migration from AngularJS to Angular: Migration Paths](#migration-from-angularjs-to-angular-migration-paths)
-
 ## UI Router
 
 - [UI Router Wiki](https://github.com/angular-ui/ui-router/wiki)
 
-### UI Router: Migrate guide UI Router from 0.x to 1.x
+### Migrate to UI Router
 
 - [Migrate guide UI Router from 0.x to 1.x](https://ui-router.github.io/guide/ng1/migrate-to-1_0#state-change-events)
 
-### UI Router: Example
+### Example using transition
 
 ```javascript
 // $transitions is injected into controller
 // empty object as state, means any state
-$transitions.onBefore({}, function(transition) {
-    let from = transition.from().name;
-    let to = transition.to().name;
-})
+$transitions.onBefore({}, function (transition) {
+  let from = transition.from().name;
+  let to = transition.to().name;
+});
 ```
 
 ## i18n
 
-### i18n: Web interface for comparing and translating 2 json files
+### Web interface translation
 
 - [Web interface for comparing and translating 2 json files](http://mrhieu.github.io/ngTranslateEditor/#/)
 
-### i18n: Angular-Translate
+### Angular-Translate
 
 - [Angular Translate](https://angular-translate.github.io/docs/#/guide)
 
-#### i18n: Angular-Translate HTML examples
+#### HTML translate examples
 
 ```html
 <!-- Best solution for simple translations, with no watch overhead -->
@@ -60,41 +41,39 @@ $transitions.onBefore({}, function(transition) {
 <ANY translate="{{languageToBeInterpolated}}"></ANY>
 
 <!-- As attribute -->
-<ANY placeholder="{{'TRANSLATION_ID' | translate }}">
-</ANY>
+<ANY placeholder="{{'TRANSLATION_ID' | translate }}"> </ANY>
 
 <!-- As directive attribute -->
-<ANY uib-tooltip-html="'{{
+<ANY
+  uib-tooltip-html="'{{
   'notifications.notification_profile_info'
   | translate
-}}'">
+}}'"
+>
 </ANY>
 
 <!-- As directive attribute with value -->
-<ANY uib-tooltip-html="'{{
+<ANY
+  uib-tooltip-html="'{{
   'planner.amount_overdue_tasks'
   | translate:{amount:entity.overDueTasks.length}
-}}'">
+}}'"
+>
 </ANY>
 
 <!-- Using variables -->
-<ANY translate="TRANSLATION_ID"
-     translate-values='{ username: "PascalPrect"}'>
-</ANY>
+<ANY translate="TRANSLATION_ID" translate-values='{ username: "PascalPrect"}'> </ANY>
 
-<ANY translate="TRANSLATION_ID"
-     translate-value-username='{ someScopeObject.username }'>
-</ANY>
+<ANY translate="TRANSLATION_ID" translate-value-username="{ someScopeObject.username }"> </ANY>
 
 <!-- IMPORTANT the value name can't be camelCase. So translate-value-titleName would not work. -->
-<ANY translate="TRANSLATION_ID"
-     translate-value-title="{{ someScopeObject.title | translate }}">
+<ANY translate="TRANSLATION_ID" translate-value-title="{{ someScopeObject.title | translate }}">
 </ANY>
 ```
 
-#### i18n: Angular-Translate JS examples
+#### JS translate examples
 
-It is possible to send (also dynamic) translate keys to the html, and then translate them though the html. This way is preferred to avoid using the async js service '$translate'.
+It is possible to send (also dynamic) translate keys to the html, and then translate them though the html. This way is preferred to avoid using the async js service '\$translate'.
 
 ```javascript
 //With the service
@@ -120,16 +99,13 @@ Example of using variable translation key from within translation file. This sho
 Using an array of translations and the service
 
 ```javascript
-let translations = await $translate(['TRANSLATION_ID1',
-  'TRANSLATION_ID2',
-  'TRANSLATION_ID3'
-])
+let translations = await $translate(['TRANSLATION_ID1', 'TRANSLATION_ID2', 'TRANSLATION_ID3']);
 let tTitle = translations['TRANSLATION_ID1'];
 let tCancel = translations['TRANSLATION_ID2'];
 let tOk = translations['TRANSLATION_ID3'];
 ```
 
-### i18n: Webpack Angular Translate
+### Webpack Angular Translate
 
 - [Webpack Angular Translate](https://github.com/MichaReiser/webpack-angular-translate)
 
@@ -138,7 +114,7 @@ Automatic retrieve and build translation file using Webpack Angular Translate
 It's seems like a good idea, but there are way too many hurdles and quirks.
 
 - The plugin doesn't work with generics/variables, so in order to get around this, you need to trick webpack into copy/write/ignore etc. the translation file to not go into loops, caching, deleting the translation file, but even then it
-doesn't work as expected.
+  doesn't work as expected.
 - Dynamic ID keys in HTML files needs to be registered in the JS file. This creates quite a lot of clunky translations that may exists in many js files.
 - Translation files are written as indline dotted lines, unordered. This needs a parser if a human needs to work with it.
 - Default translations needs to only be declared once, or always the same everywhere.
@@ -169,11 +145,11 @@ Tip: To test variables inside promises that you dont know when is finished, crea
 
 ```javascript
 export function flushPromises() {
-  return new Promise(resolve => setImmediate(resolve));
+  return new Promise((resolve) => setImmediate(resolve));
 }
 ```
 
-..and call it  before the expects that tests for variables inside a promise:
+..and call it before the expects that tests for variables inside a promise:
 `await flushPromises();`
 This will run on next NodeJS tick, when all promises are done.
 
@@ -188,7 +164,7 @@ This will run on next NodeJS tick, when all promises are done.
 - Jest runs its own runner (black box), where it mocks several Node commands etc. So you will not have access to all normal node functionality like import, export and others.
 - Jest runs several process in parallel, meaning if there are cross dependencies between the processes, it is very hard to debug.
 
-### Testing: Example of AngularJS test file
+### JS test example
 
 ```typescript
 import 'mocha';
@@ -205,7 +181,7 @@ interface AnyScope {
 let expect = require('unexpected').clone();
 expect.use(require('unexpected-sinon'));
 
-describe('Bookable item controller', function() {
+describe('Bookable item controller', function () {
   let institutionId;
   let bookableItemService;
   let $scope: AnyScope;
@@ -222,31 +198,29 @@ describe('Bookable item controller', function() {
   let $exceptionHandler;
   let notificationItemService;
 
-  beforeEach(async function() {
+  beforeEach(async function () {
     institutionId = 1;
     bookableItemService = {
-      getBookableTypeItem: Sinon.stub()
+      getBookableTypeItem: Sinon.stub(),
     };
 
     $scope = {
       user: {
-        isSuperuser: false
+        isSuperuser: false,
       },
       $parent: { institution: { id: 1 } },
       setFocus: Sinon.stub(),
-      $on: Sinon.stub()
+      $on: Sinon.stub(),
     };
     $rootScope = {
       $on: Sinon.stub(),
-      $broadcast: Sinon.stub()
+      $broadcast: Sinon.stub(),
     };
 
     Flash = {};
     $q = {};
     authentication = {
-      getCookie: Sinon.stub()
-        .withArgs('institution')
-        .returns(institutionId)
+      getCookie: Sinon.stub().withArgs('institution').returns(institutionId),
     };
 
     uploadService = {};
@@ -259,21 +233,21 @@ describe('Bookable item controller', function() {
       fetchAllItems: Sinon.stub().resolves([{ id: 1 }]),
       getExternalDepartments: Sinon.stub().resolves([{ id: 1 }]),
       getBookableCountFutureBookings: Sinon.stub().resolves({ count: 5 }),
-      deleteItem: Sinon.stub().resolves({})
+      deleteItem: Sinon.stub().resolves({}),
     };
     itemService = {};
     $state = {
-      go: Sinon.stub()
+      go: Sinon.stub(),
     };
     $exceptionHandler = {};
     notificationItemService = {
       getReminders: Sinon.stub(),
-      getRemindersEnd: Sinon.stub()
+      getRemindersEnd: Sinon.stub(),
     };
   });
 
-  describe('Controller checks', function() {
-    it('Should not call state.go when has institution id', async function() {
+  describe('Controller checks', function () {
+    it('Should not call state.go when has institution id', async function () {
       bookableItemController(
         $scope,
         $rootScope,
@@ -294,7 +268,7 @@ describe('Bookable item controller', function() {
       expect($state.go, 'was not called');
       expect($scope.departments, 'to satisfy', [{ id: 1 }]);
     });
-    it('Should go to main.booking.bookable when no institution id', async function() {
+    it('Should go to main.booking.bookable when no institution id', async function () {
       $scope.$parent.institution = {};
       bookableItemController(
         $scope,
@@ -317,8 +291,8 @@ describe('Bookable item controller', function() {
     });
   });
 
-  describe('Controller actions', function() {
-    beforeEach(async function() {
+  describe('Controller actions', function () {
+    beforeEach(async function () {
       bookableItemController(
         $scope,
         $rootScope,
@@ -337,40 +311,38 @@ describe('Bookable item controller', function() {
       );
       await flushPromises();
     });
-    describe('Deleting a Bookable', function() {
-      it('Should delete a Bookable when confirmed', async function() {
+    describe('Deleting a Bookable', function () {
+      it('Should delete a Bookable when confirmed', async function () {
         $scope.user.isSuperuser = true;
         $scope.editItem = {
           id: 1,
           title: 'test',
-          user: $scope.user.isSuperuser
+          user: $scope.user.isSuperuser,
         };
         $scope.delete();
         await flushPromises();
         expect(LB.getBookableCountFutureBookings, 'to have a call satisfying', {
-          args: [1]
+          args: [1],
         });
         expect($confirm, 'to have a call satisfying', {
           args: [
-            expect
-              .it('to be an object')
-              .and('to satisfy', { item: { inUseByCount: 5 } }),
-            expect.it('to be an object')
-          ]
+            expect.it('to be an object').and('to satisfy', { item: { inUseByCount: 5 } }),
+            expect.it('to be an object'),
+          ],
         });
         expect(LB.deleteItem, 'to have a call satisfying', {
-          args: ['Bookables', { id: 1, institutionId: 1, status: 0 }]
+          args: ['Bookables', { id: 1, institutionId: 1, status: 0 }],
         });
         expect($rootScope.$broadcast, 'to have a call satisfying', {
-          args: ['item:deleted']
+          args: ['item:deleted'],
         });
       });
-      it('Should not delete a Bookable when pressing cancel', async function() {
+      it('Should not delete a Bookable when pressing cancel', async function () {
         $scope.user.isSuperuser = true;
         $scope.editItem = {
           id: 1,
           title: 'test',
-          user: $scope.user.isSuperuser
+          user: $scope.user.isSuperuser,
         };
         $confirm.onCall(0).rejects();
         $scope.delete();
@@ -380,12 +352,11 @@ describe('Bookable item controller', function() {
     });
   });
 });
-
 ```
 
-## Migration from AngularJS to Angular
+## Migration AngularJS->Angular
 
-### Migration from AngularJS to Angular: References
+### Migration references
 
 YouTube
 
@@ -395,7 +366,7 @@ YouTube
 Guides
 
 - Official upgrade guide <https://angular.io/guide/upgrade>
-- Official ngUpgrade Wiki og Community  <https://github.com/angular/ngMigration-Forum/wiki/ngUpgrade>
+- Official ngUpgrade Wiki og Community <https://github.com/angular/ngMigration-Forum/wiki/ngUpgrade>
 - Mindre migration guide 2019 (<https://gofore.com/de/migration-from-angularjs-part3/)>
 - AngularJS Style Guide <https://github.com/toddmotto/angularjs-styleguide>
 
@@ -412,7 +383,7 @@ Eksempler
 - <https://github.com/mattwilson1024/angular-hybrid> (2017)
 - <https://github.com/angular-upgrade-examples/todo-app/> (2017, via commits)
 
-### Migration from AngularJS to Angular: Migration Paths
+### Migration paths
 
 Migration path: Incremental Migration
 
@@ -420,9 +391,9 @@ Incremental Migration: Hybrid app, begge frameworks på samme tid. ngUpgrade mod
 
 Fase 0: Forberedelse
 
-- AngularJS 1.5 components. Fra AngularJS 1.5 kan man bruge ‘component directives’ som gør det nemmere at migrerer, hvis man omskriver sine gamle controllers til dette. Kan også bruges som upgraded, så de kan bruges i  Angular context uden migration hvis man vil.
+- AngularJS 1.5 components. Fra AngularJS 1.5 kan man bruge ‘component directives’ som gør det nemmere at migrerer, hvis man omskriver sine gamle controllers til dette. Kan også bruges som upgraded, så de kan bruges i Angular context uden migration hvis man vil.
 - Brug Webpack og lav alle components/controllers med imports
-- Fjern $scope og $rootScope (omskriv $rootScope til services).
+- Fjern $scope og $rootScope (omskriv \$rootScope til services).
 - Brug ES6 og TS classes
 - Brug TypeScript i migreringen til nye filer (ikke til gamle filer)
 - Brug Angular CLI, flytte gamle build tools ind i det det nye Angular CLI som bruger integreret Webpack som kan bruge Angular Builders.

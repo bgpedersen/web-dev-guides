@@ -1,16 +1,9 @@
 # Images
 
-## Contents
-
-- [Images](#images)
-  - [Contents](#contents)
-  - [Placeholders](#placeholders)
-  - [Free quality images](#free-quality-images)
-  - [Online photo editors](#online-photo-editors)
-
 ## Placeholders
 
 - [Generative Placeholders](https://generative-placeholders.glitch.me/)
+- [Icongram - get icons on the fly](https://icongr.am/)
 
 ## Free quality images
 

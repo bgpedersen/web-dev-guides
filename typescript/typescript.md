@@ -1,13 +1,6 @@
 # TypeScript
 
-## Contents
-
-- [TypeScript](#typescript)
-  - [Contents](#contents)
-  - [Web guides](#web-guides)
-  - [Typings / Definition files](#typings--definition-files)
-
-## Web guides
+## Typescript references
 
 - [Typescript Deep Dive](https://basarat.gitbook.io/typescript/)
 

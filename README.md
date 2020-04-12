@@ -1,28 +1,5 @@
-# Web Development Guide
+# Web Dev Guides
 
-A collection of useful links and guides for developing web projects.
+A collection web development guides for languages, frameworks and other tools.
 
-_Created by Bjarne Gerhardt-Pedersen_ (
-[LinkedIn](https://www.linkedin.com/in/bgpedersen/))
-
----
-
-Languages
-
-- [JavaScript](javascript.md)
-- [Typescript](typescript.md)
-- [CSS and SCSS](css-and-scss.md)
-- [HTML](html.md)
-- [Bash, NPM and Git](bash-npm-and-git.md)
-
-Frameworks
-
-- [Angular](angular.md)
-- [AngularJS](angularjs.md)
-
-Tools & Editors
-
-- [HTTP and API](http-and-api.md)
-- [Images](images.md)
-- [Web inspiration](web-inspiration.md)
-- [Code Editors](code-editors.md)
+> _Created by Bjarne Gerhardt-Pedersen_

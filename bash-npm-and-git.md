@@ -57,6 +57,8 @@ List current packages and new versions. If `Current` and `Wanted` is different, 
 npm outdated
 ```
 
+![npm update](images/npm-update.png)
+
 Update all packages accordingly to the package.json and `^` and `~`
 
 ```bash

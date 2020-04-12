@@ -13,7 +13,7 @@ Languages
 - [Typescript](typescript.md)
 - [CSS and SCSS](css-and-scss.md)
 - [HTML](html.md)
-- [Bash, cli, NPM and Git](bash-cli-npm-and-git.md)
+- [Bash, NPM and Git](bash-cli-npm-and-git.md)
 
 Frameworks
 
@@ -22,4 +22,7 @@ Frameworks
 
 Tools & Editors
 
-- [Tools and externals](tools-and-externals.md)
+- [HTTP and API](http-and-api.md)
+- [Images](images.md)
+- [Web inspiration](web-inspiration.md)
+- [Code Editors](code-editors.md)

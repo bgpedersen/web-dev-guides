@@ -59,6 +59,10 @@ blindly auto update all to the latest version. I don't recommend using this, sin
 npx npm-update-all
 ```
 
+### CHANGELOG.MD generator
+
+- [Standard Version](https://github.com/conventional-changelog/standard-version)
+
 ### NPM trends
 
 See [NPM Trends](https://www.npmtrends.com) for npm trends.

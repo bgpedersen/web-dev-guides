@@ -890,3 +890,6 @@ Reactive State for Angular
 - [NgRX official](https://ngrx.io/)
 - [Adding NgRx to Your Existing Applications](https://indepth.dev/adding-ngrx-to-your-existing-applications/)
 - [NgRx creator functions 101](https://timdeschryver.dev/blog/ngrx-creator-functions-101)
+- [Angular University, NgRx](https://blog.angular-university.io/angular-ngrx-store-and-effects-crash-course/)
+- [NgRx example app](https://github.com/ngrx/platform/tree/master/projects/example-app)
+- [NgRx Chuck Norris example app](https://github.com/wesleygrimes/angular-ngrx-chuck-norris)

@@ -54,20 +54,27 @@ ng update @angular/cli @angular/core
       - auth
       - http
       - storage
+    - store [index.ts]
+      - user [index.ts barrel file, user.reducer.ts, user.actions.ts ..]
+      - post [index.ts barrel file, post.reducer.ts, post.actions.ts ..]
   - features
-    - my-feature
-      - components [pure presentation components, get data from page attributes or service]
-      - pages [routed components, get data from services, send to components via attributes or service]
-      - services [if only used in this feature]
-      - models [if only used in this feature]
-      - my-feature-routing.module.ts
-      - my-feature.module.ts (lazy loaded with loadChildren import into app-routing.module.ts)
+    - dashboard
+      - components [pure presentation components, dumb components = don't manage state, emits events/actions]
+      - pages [routed smart components, can manages state, manage components, get/send data via services/store]
+      - dashboard-routing.module.ts
+      - dashboard.module.ts
+    - guest-book
+      - components
+      - pages
+      - guest-book-routing.module.ts
+      - guest-book.module.ts
   - shared
     - components [shared-footer, shared-header...] (prefix shared name, to define area when used)
     - directives
     - pipes
     - validators
-    - shared.modules.ts [import and export CommonModule, FormsModule, MatModules etc., import shared module in feature modules]
+    - modules [material.module.ts]
+    - shared.modules.ts [import and export CommonModule, FormsModule, MaterialModule etc., import shared module in feature modules]
   - app-routing.module.ts
   - app.component.html (should only contain `<router-outlet></router-outlet>`)
   - app.module.ts
@@ -83,6 +90,8 @@ ng update @angular/cli @angular/core
   - icon
   - images
 ```
+
+More inspiration on file structure [here](https://www.stratmanmedia.com/2020/02/angular-9-new-project-file-structure/)
 
 ### SCSS relative import
 
@@ -922,3 +931,57 @@ Reactive State for Angular
 - [NgRx official example app](https://github.com/ngrx/platform/tree/master/projects/example-app)
 - [NgRx Chuck Norris joke generator](https://github.com/wesleygrimes/angular-ngrx-chuck-norris)
 - [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)
+
+### Adding NgRx with NgRx Schematics
+
+Make sure cli is updated, check with `ng --version`
+
+```bash
+npm install -g @angular/cli@latest
+```
+
+Install NgRx dependencies
+
+```bash
+npm install @ngrx/{store,effects,entity,store-devtools}
+```
+
+Add [schematics](https://ngrx.io/guide/schematics)
+
+```bash
+ng add @ngrx/schematics
+```
+
+If you didn't already add ngrx schematics as default whne adding it
+
+```bash
+ng config cli.defaultCollection @ngrx/schematics
+```
+
+Set schematics to use SCSS for components in angular.json
+
+```bash
+"schematics": {
+  "@ngrx/schematics:component": {
+    "style": "scss"
+  }
+},
+```
+
+Add root [store](https://ngrx.io/guide/schematics/store) and devtools
+
+```bash
+ng g store State --root --module app.module.ts --statePath core/store
+```
+
+Add feature store to existing feature module. Rename `reducer` folder to `store`
+
+```bash
+ng g store features/admin/Admin -m admin.module
+```
+
+Add reducer called `user` to feature store
+
+```bash
+ng generate reducer features/admin/store/user/User --reducers ../index.ts
+```

@@ -13,8 +13,9 @@
 
 ### Extensions
 
-#### Extentions I use (12/4/20)
+#### Extentions I use (20/4/20)
 
+- Angular-BeastCode v8.1.2
 - Angular2 v9.1.2
 - AngularMaterial v7.0.1
 - bracket-pair-colorizer-2 v0.0.29
@@ -22,10 +23,9 @@
 - debugger-for-chrome v4.12.6
 - gitignore v0.6.0
 - gitlens v10.2.1
-- json-to-ts v1.7.4
-- licenser v1.4.0
+- json-to-ts v1.7.5
 - markdown-all-in-one v2.8.0
-- ng-template v0.901.0
+- ng-template v0.901.2
 - NgRxSnippets v0.4.0
 - npm-intellisense v1.3.0
 - prettier-vscode v4.4.0

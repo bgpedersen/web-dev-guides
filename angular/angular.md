@@ -2,12 +2,37 @@
 
 ## Architecture
 
-### Upgrading Angular
+### Upgrade/update Angular
 
-To see if any Angular dependencies at the current version can be upgrade, type `ng update`.
-Upgrade Angular normally by writing `ng update @angular/cli @angular/core`.
+#### Update global CLI
+
+To see current version type
+
+```bash
+ng --version
+```
+
+To install newest version
+
+```bash
+npm install -g @angular/cli@latest
+```
+
+#### Upgrade local angular project
 
 - [Upgrade Angular guide](https://update.angular.io/)
+
+To see if any Angular dependencies at the current version can be upgrade
+
+```bash
+ng update
+```
+
+Upgrade Angular normally
+
+```bash
+ng update @angular/cli @angular/core
+```
 
 ### Share styles
 
@@ -881,15 +906,19 @@ export class UserComponent implements OnInit {
 
 - [The correct way to make API requests in an Angular application](https://levelup.gitconnected.com/the-correct-way-to-make-api-requests-in-an-angular-application-22a079fe8413)
 
-## NgRX
+## NgRx
 
 Reactive State for Angular
 
-### NgRX references
+### NgRx references
 
-- [NgRX official](https://ngrx.io/)
+- [NgRx official](https://ngrx.io/)
 - [Adding NgRx to Your Existing Applications](https://indepth.dev/adding-ngrx-to-your-existing-applications/)
 - [NgRx creator functions 101](https://timdeschryver.dev/blog/ngrx-creator-functions-101)
 - [Angular University, NgRx](https://blog.angular-university.io/angular-ngrx-store-and-effects-crash-course/)
-- [NgRx example app](https://github.com/ngrx/platform/tree/master/projects/example-app)
-- [NgRx Chuck Norris example app](https://github.com/wesleygrimes/angular-ngrx-chuck-norris)
+
+### NgRx examples
+
+- [NgRx official example app](https://github.com/ngrx/platform/tree/master/projects/example-app)
+- [NgRx Chuck Norris joke generator](https://github.com/wesleygrimes/angular-ngrx-chuck-norris)
+- [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)

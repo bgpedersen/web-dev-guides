@@ -93,6 +93,32 @@ ng update @angular/cli @angular/core
 
 More inspiration on file structure [here](https://www.stratmanmedia.com/2020/02/angular-9-new-project-file-structure/)
 
+### .editorconfig
+
+In Angular 9, .editorconfig is automatic added in root to control project formatting, otherwise create it
+
+`.editorconfig`
+
+```text
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.ts]
+quote_type = single
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
+```
+
 ### SCSS relative import
 
 Just be aware, that the intellisense autocomplete doesn't work with this solution.
@@ -119,6 +145,8 @@ Insert stylePreprocessorOptions to your angular.json under options for your buil
 and then reference your styles/abstracts/\_variables.scss like this `@import 'abstracts/variables';`
 
 ### Scaffolding
+
+- [Angular CLI generator commands](https://angular.io/cli/generate)
 
 Scaffold new lazy loaded module with `ng g m features/my-feature --routing --route my-feature --module app.module -d`. If you want to follow the pages structure or add components to this feature, delete the component html,scss,ts parts from the module, routing folder and run `ng g c features/my-feature/dashboard --module my-feature.module -d`.
 
@@ -706,6 +734,14 @@ This is the size of running the parsed bundles/modules through gzip compression.
 - <https://medium.com/@tomastrajan/the-complete-guide-to-angular-material-themes-4d165a9d24d1>
 - <https://medium.com/@aleixsuau/how-to-use-angular-material-2-sass-variables-in-your-components-76ce0203f126>
 
+### Installing Material
+
+Install Angular Material
+
+```bash
+ng add @angular/material
+```
+
 ### Icons
 
 To use Material icons, import (and export) `MatIconModule`
@@ -931,6 +967,7 @@ Reactive State for Angular
 - [NgRx official example app](https://github.com/ngrx/platform/tree/master/projects/example-app)
 - [NgRx Chuck Norris joke generator](https://github.com/wesleygrimes/angular-ngrx-chuck-norris)
 - [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)
+- [tomastrajan/angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter)
 
 ### Adding NgRx with NgRx Schematics
 

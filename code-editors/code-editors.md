@@ -13,31 +13,34 @@
 
 ### Extensions
 
-#### Extentions I use (20/4/20)
+#### Extentions I use (21/4/20)
 
-- Angular-BeastCode v8.1.2
-- Angular2 v9.1.2
-- AngularMaterial v7.0.1
-- bracket-pair-colorizer-2 v0.0.29
-- code-settings-sync v3.4.3
-- debugger-for-chrome v4.12.6
-- gitignore v0.6.0
-- gitlens v10.2.1
-- json-to-ts v1.7.5
-- markdown-all-in-one v2.8.0
-- ng-template v0.901.2
-- NgRxSnippets v0.4.0
-- npm-intellisense v1.3.0
-- prettier-vscode v4.4.0
-- project-manager v10.11.0
-- vscode-icons v10.1.1
-- vscode-markdownlint v0.34.0
-- vscode-node-readme v3.0.2
-- vscode-npm-script v0.3.11
-- vscode-readme-pattern v1.2.0
-- vscode-sort-json v1.18.0
-- vscode-typescript-tslint-plugin v1.2.3
-- vscode-yaml v0.7.2
+```text
+  Angular-BeastCode v8.1.2
+  Angular2 v9.1.2
+  AngularMaterial v7.0.1
+  bracket-pair-colorizer-2 v0.0.29
+  code-settings-sync v3.4.3
+  code-spell-checker v1.8.0
+  debugger-for-chrome v4.12.6
+  gitignore v0.6.0
+  gitlens v10.2.1
+  json-to-ts v1.7.5
+  markdown-all-in-one v2.8.0
+  ng-template v0.901.2
+  NgRxSnippets v0.4.0
+  npm-intellisense v1.3.0
+  prettier-vscode v4.4.0
+  project-manager v10.11.0
+  vscode-icons v10.1.1
+  vscode-markdownlint v0.34.0
+  vscode-node-readme v3.0.2
+  vscode-npm-script v0.3.11
+  vscode-readme-pattern v1.2.0
+  vscode-sort-json v1.18.0
+  vscode-typescript-tslint-plugin v1.2.3
+  vscode-yaml v0.7.2
+```
 
 #### Markdown All in One
 
@@ -85,3 +88,27 @@ npm i prettier -D
   "prettier:write": "prettier \"**/*.{ts,html,md,scss,json}\" --write"
 }
 ```
+
+#### Debugger for Chrome
+
+Install `debugger-for-chrome` extension. Press F5 to start. If no launch.json file is found, it will give you an option to create it. The easiest way is to auto create a `launch` config, and just change the port. Place a breakpoint and press F5 to start the debugger.
+
+```json
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}
+```
+
+If you want to make `attach` to Chrome, you need to add `--remote-debugging-port=9222` to a Chrome shortcut. This might make your chrome login not being able to sync because testing is not allowed, so better to make a copy of your chrome shortcut, and add it here with no profile login.

@@ -50,14 +50,14 @@ ng update @angular/cli @angular/core
     - guards
     - interceptors
     - models
-    - services [self-provide in root, hence no need for a CoreModule]
+    - services (self-provide in root, hence no need for a CoreModule)
       - auth
       - http
       - storage
   - features
     - dashboard
-      - components [pure presentation components, dumb components = don't manage state, emits events/actions]
-      - pages [routed smart components, can manages state, manage components, get/send data via services/store]
+      - components (pure presentation components, dumb components = don't manage state, emits events/actions)
+      - pages (routed smart components, can manages state, manage components, get/send data via services/store)
       - dashboard-routing.module.ts
       - dashboard.module.ts
     - guest-book
@@ -65,19 +65,25 @@ ng update @angular/cli @angular/core
       - pages
       - guest-book-routing.module.ts
       - guest-book.module.ts
+    - login
+      - components
+      - pages
+      - login-routing.module.ts
+      - login.module.ts
   - shared
-    - components [shared-footer, shared-header...] (prefix shared name, to define area when used)
+    - components [shared-footer, shared-header ..] (prefix shared name, to define area when used)
     - directives
     - pipes
     - validators
     - modules [material.module.ts]
-    - shared.modules.ts [import and export CommonModule, FormsModule, MaterialModule ... import shared module in feature modules]
+    - shared.modules.ts (import and export CommonModule, FormsModule, MaterialModule ... import shared module in feature modules)
   - app-routing.module.ts
   - app.component.html (should only contain `<router-outlet></router-outlet>`)
   - app.module.ts
 - styles
-  - abstracts (\_mixins.scss, \_variables.scss, \_functions.scss ..)
-  - base (\_reset.scss, \_fonts.scss ..)
+  - abstracts [_mixins.scss, _variables.scss, _functions.scss ..]
+  - base [_reset.scss, _fonts.scss ..]
+  - overwrites [_material-overwrites.scss ..]
   - main.scss (only import the partials in this file, nothing else)
   - theme.scss (material custom theme file, imported via angular.json)
 - assets
@@ -741,11 +747,12 @@ ng add @angular/material
 ### Material module
 
 - We move taking care of importing Material component modules into an isolated module: MaterialModule.
-- We keep our app modules clean, less cluttered.
-- We use future-proof syntax to import Material component modules. This will still work when MaterialModule is removed.
-- Import and export material.module into shared.module
+- We keep our app modules clean
+- Import and export material.module into shared.module to be imported into feature modules
 
-`app/shared/material/material.module.ts`
+<!-- tabs:start -->
+
+#### **app/shared/material/material.module.ts**
 
 ```typescript
 import { NgModule } from '@angular/core';
@@ -817,7 +824,23 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 export class MaterialModule {}
 ```
 
-### Icons
+#### **app/shared/shared.module.ts**
+
+```typescript
+import { NgModule } from '@angular/core';
+import { MaterialModule } from './material/material.module';
+
+@NgModule({
+  declarations: [],
+  imports: [MaterialModule],
+  exports: [MaterialModule],
+})
+export class SharedModule {}
+```
+
+<!-- tabs:end -->
+
+### Material Icons
 
 Choose icons from [Material Icons](https://material.io/resources/icons) and use in HTML
 
@@ -831,13 +854,15 @@ Choose from existing material's palettes [material color selector](https://mater
 
 To avoid accidently importing `mat-core()` more than once while keeping main.scss clean, create a theme.scss file in `src/styles/theme.scss` and add in `angular.json`.
 
-`angular.json`
+<!-- tabs:start -->
+
+#### **angular.json**
 
 ```json
-            "styles": ["src/styles/main.scss", "src/styles/theme.scss"],
+"styles": ["src/styles/main.scss", "src/styles/theme.scss"],
 ```
 
-`src/styles/theme.scss`:
+#### **src/styles/theme.scss**
 
 ```scss
 @import '~@angular/material/theming';
@@ -887,6 +912,8 @@ $theme-red-warn: mat-palette($mat-grey);
 }
 ```
 
+<!-- tabs:end -->
+
 Using font and icons, add to index.html
 
 ```html
@@ -904,6 +931,14 @@ Add typography and background class to body, and control the theme your using
   <app-root></app-root>
 </body>
 ```
+
+### Material style overwrites
+
+- [Styling material components](https://material.angular.io/guide/customizing-component-styles)
+
+Overwrites for normal material components should be in a file, ex.: `app/styles/overwrites/_material-overwrites.scss` and imported to your `style.scss`.
+
+?> For overlay components, use their option class `panelClass` to inject to overwrite class.
 
 ### Material login example
 

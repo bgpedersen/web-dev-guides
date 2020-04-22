@@ -738,7 +738,7 @@ Install Angular Material
 ng add @angular/material
 ```
 
-### Material module import/export all
+### Material module
 
 - We move taking care of importing Material component modules into an isolated module: MaterialModule.
 - We keep our app modules clean, less cluttered.
@@ -827,7 +827,7 @@ Choose icons from [Material Icons](https://material.io/resources/icons) and use 
 
 ### Material Custom Theme
 
-Choose from existing material's palettes [material color selector](https://material.io/resources/color/) or use [material color tool](https://material.io/inline-tools/color/) or easier using auto script page generator [mcg.mbitson palette generator](http://mcg.mbitson.com/)
+Choose from existing material's palettes [material color selector](https://material.io/resources/color/), [material color tool](https://material.io/inline-tools/color/) or build your own palette [mcg.mbitson palette generator](http://mcg.mbitson.com/)
 
 To avoid accidently importing `mat-core()` more than once while keeping main.scss clean, create a theme.scss file in `src/styles/theme.scss` and add in `angular.json`.
 
@@ -848,35 +848,158 @@ $custom-typography: mat-typography-config(
 
 @include mat-core($custom-typography);
 
-// material custom theme, arguments in mat-palette are (palette, default, lighter, darker)
-$my-custom-primary: mat-palette($mat-blue, 700);
-$my-custom-accent: mat-palette($mat-pink, 100, 500, A100);
-$my-custom-warn: mat-palette($mat-red);
+/* ======== angular material custom theme, arguments: (palette/default/light/dark) ======== */
+// Base theme
+$theme-base-primary: mat-palette($mat-blue, 700);
+$theme-base-accent: mat-palette($mat-pink, 100, 500, A100);
+$theme-base-warn: mat-palette($mat-red);
 
-// Light theme
-$my-custom-theme: mat-light-theme($my-custom-primary, $my-custom-accent, $my-custom-warn);
+// Red theme
+$theme-red-primary: mat-palette($mat-red);
+$theme-red-accent: mat-palette($mat-green, 400);
+$theme-red-warn: mat-palette($mat-grey);
 
-// Dark theme
-$my-custom-theme: mat-dark-theme($my-custom-primary, $my-custom-accent, $my-custom-warn);
+.theme-base-light {
+  // Light theme
+  $theme: mat-light-theme($theme-base-primary, $theme-base-accent, $theme-base-warn);
 
-// Main theme defination
-@include angular-material-theme($my-custom-theme);
+  @include angular-material-theme($theme);
+}
 
-// Alternate Angular Material Theme - add this class dynamically to body to change theme
-.my-alternate-theme {
-  $my-alternate-primary: mat-palette($mat-red);
-  $my-alternate-accent: mat-palette($mat-green, 400);
-  $my-alternate-warn: mat-palette($mat-grey);
+.theme-base-dark {
+  // Dark theme
+  $theme: mat-dark-theme($theme-base-primary, $theme-base-accent, $theme-base-warn);
 
-  $my-alternate-theme: mat-light-theme(
-    $my-alternate-primary,
-    $my-alternate-accent,
-    $my-alternate-warn
-  );
+  @include angular-material-theme($theme);
+}
 
-  @include angular-material-theme($my-alternate-theme);
+// Alternate theme
+.theme-red-light {
+  $theme: mat-light-theme($theme-red-primary, $theme-red-accent, $theme-red-warn);
+
+  @include angular-material-theme($theme);
+}
+
+.theme-red-dark {
+  $theme: mat-light-theme($theme-red-primary, $theme-red-accent, $theme-red-warn);
+
+  @include angular-material-theme($theme);
 }
 ```
+
+Using font and icons, add to index.html
+
+```html
+<link
+  href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap"
+  rel="stylesheet"
+/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+```
+
+Add typography and background class to body, and control the theme your using
+
+```html
+<body class="mat-typography mat-app-background theme-base-dark">
+  <app-root></app-root>
+</body>
+```
+
+### Material login example
+
+<!-- tabs:start -->
+
+#### **login.component.html**
+
+```html
+<form [formGroup]="loginForm" novalidate (ngSubmit)="submitLogin.emit(this.loginForm.value)">
+  <mat-card>
+    <mat-card-title>
+      <mat-card-title>Login</mat-card-title>
+      <img
+        mat-card-image
+        src="https://generative-placeholders.glitch.me/image?width=300&height=100"
+      />
+    </mat-card-title>
+
+    <mat-card-content>
+      <mat-form-field appearance="standard" class="full-width">
+        <input matInput placeholder="email" formControlName="email" type="search" />
+        <span matPrefix><mat-icon>email</mat-icon></span>
+        <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+          Email is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+          Email must be <strong>valid</strong>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard" hintLabel="Max 10 characters" class="full-width">
+        <input
+          matInput
+          placeholder="password"
+          formControlName="password"
+          [type]="hide ? 'password' : 'text'"
+          maxlength="10"
+        />
+        <span matPrefix><mat-icon>lock</mat-icon></span>
+        <button mat-icon-button matSuffix (click)="hide = !hide">
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+        <mat-hint align="end">{{ loginForm.controls['password'].value?.length || 0 }}/10</mat-hint>
+        <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+          Password name is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </mat-card-content>
+    <mat-card-actions align="right">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
+        Login
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</form>
+```
+
+#### **login.component.ts**
+
+```typescript
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss'],
+})
+export class LoginComponent {
+  @Output() submitLogin = new EventEmitter();
+  hide = true;
+
+  loginForm: FormGroup = this.fb.group({
+    email: [null, [Validators.required, Validators.email]],
+    password: [null, Validators.required],
+  });
+
+  constructor(private fb: FormBuilder) {}
+}
+```
+
+#### **login.component.scss**
+
+```scss
+form {
+  min-width: 200px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+```
+
+<!-- tabs:end -->
 
 ## RxJS
 

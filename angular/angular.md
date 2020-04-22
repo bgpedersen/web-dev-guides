@@ -907,6 +907,9 @@ Add typography and background class to body, and control the theme your using
 
 ### Material login example
 
+Angular Material comprises a range of components which implement common interaction patterns according to the Material Design specification.
+Angular Material components can be found [here](https://material.angular.io/components/categories)
+
 <!-- tabs:start -->
 
 #### **login.component.html**

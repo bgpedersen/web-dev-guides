@@ -54,9 +54,6 @@ ng update @angular/cli @angular/core
       - auth
       - http
       - storage
-    - store [index.ts]
-      - user [index.ts barrel file, user.reducer.ts, user.actions.ts ..]
-      - post [index.ts barrel file, post.reducer.ts, post.actions.ts ..]
   - features
     - dashboard
       - components [pure presentation components, dumb components = don't manage state, emits events/actions]
@@ -74,16 +71,15 @@ ng update @angular/cli @angular/core
     - pipes
     - validators
     - modules [material.module.ts]
-    - shared.modules.ts [import and export CommonModule, FormsModule, MaterialModule etc., import shared module in feature modules]
+    - shared.modules.ts [import and export CommonModule, FormsModule, MaterialModule ... import shared module in feature modules]
   - app-routing.module.ts
   - app.component.html (should only contain `<router-outlet></router-outlet>`)
   - app.module.ts
 - styles
   - abstracts (\_mixins.scss, \_variables.scss, \_functions.scss ..)
   - base (\_reset.scss, \_fonts.scss ..)
-  - themes (theme.scss, imports angular material theme, files from my-theme folder, and sets up custom material theme)
-    - my-theme (\_palette.scss, \_my-theme.scss, \_typography.scss)
   - main.scss (only import the partials in this file, nothing else)
+  - theme.scss (material custom theme file, imported via angular.json)
 - assets
   - fonts
   - i18n
@@ -742,117 +738,143 @@ Install Angular Material
 ng add @angular/material
 ```
 
-### Icons
+### Material module import/export all
 
-To use Material icons, import (and export) `MatIconModule`
+- We move taking care of importing Material component modules into an isolated module: MaterialModule.
+- We keep our app modules clean, less cluttered.
+- We use future-proof syntax to import Material component modules. This will still work when MaterialModule is removed.
+- Import and export material.module into shared.module
 
-shared.module.ts
+`app/shared/material/material.module.ts`
 
 ```typescript
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
-
-import { SharedFooterComponent } from './components/shared-footer/shared-footer.component';
-import { SharedHeaderComponent } from './components/shared-header/shared-header.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
+import { MatTableModule } from '@angular/material/table';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
-  declarations: [SharedHeaderComponent, SharedFooterComponent],
-  imports: [CommonModule, MatIconModule],
-  exports: [SharedHeaderComponent, SharedFooterComponent, MatIconModule],
+  exports: [
+    MatPseudoCheckboxModule,
+    MatButtonModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    MatDatepickerModule,
+    MatFormFieldModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatSliderModule,
+    MatSlideToggleModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatToolbarModule,
+    MatListModule,
+    MatGridListModule,
+    MatCardModule,
+    MatStepperModule,
+    MatTabsModule,
+    MatExpansionModule,
+    MatButtonToggleModule,
+    MatChipsModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatProgressBarModule,
+    MatDialogModule,
+    MatTooltipModule,
+    MatSnackBarModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+  ],
 })
-export class SharedModule {}
+export class MaterialModule {}
 ```
 
-Insert in HTML `<mat-icon>cloud_download</mat-icon>` with the name picked from [Material Icons](https://material.io/resources/icons)
+### Icons
 
-### Custom theme
+Choose icons from [Material Icons](https://material.io/resources/icons) and use in HTML
+
+```html
+<mat-icon>cloud_download</mat-icon>
+```
+
+### Material Custom Theme
 
 Choose from existing material's palettes [material color selector](https://material.io/resources/color/) or use [material color tool](https://material.io/inline-tools/color/) or easier using auto script page generator [mcg.mbitson palette generator](http://mcg.mbitson.com/)
 
-When you have your palette, insert the load only once needed logic to main.scss, and the variables seperated, so they can be imported elsewhere (remove the custom typography part out, if you want):
+To avoid accidently importing `mat-core()` more than once while keeping main.scss clean, create a theme.scss file in `src/styles/theme.scss` and add in `angular.json`.
 
-main.scss:
+`angular.json`
+
+```json
+            "styles": ["src/styles/main.scss", "src/styles/theme.scss"],
+```
+
+`src/styles/theme.scss`:
 
 ```scss
 @import '~@angular/material/theming';
-@import 'abstracts/variables';
 
 $custom-typography: mat-typography-config(
   $font-family: 'Montserrat',
 );
-@include angular-material-typography($custom-typography);
+
 @include mat-core($custom-typography);
-@include angular-material-theme($theme);
-```
 
-\_variables.scss:
+// material custom theme, arguments in mat-palette are (palette, default, lighter, darker)
+$my-custom-primary: mat-palette($mat-blue, 700);
+$my-custom-accent: mat-palette($mat-pink, 100, 500, A100);
+$my-custom-warn: mat-palette($mat-red);
 
-```scss
-@import '~@angular/material/theming';
+// Light theme
+$my-custom-theme: mat-light-theme($my-custom-primary, $my-custom-accent, $my-custom-warn);
 
-$md-custom-primary: (
-  50: #e0f2f1,
-  100: #b3e0db,
-  200: #80cbc4,
-  300: #4db6ac,
-  400: #26a69a,
-  500: #009688,
-  600: #008e80,
-  700: #008375,
-  800: #00796b,
-  900: #006858,
-  A100: #97ffec,
-  A200: #64ffe3,
-  A400: #31ffda,
-  A700: #18ffd5,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #ffffff,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000,
-  ),
-);
+// Dark theme
+$my-custom-theme: mat-dark-theme($my-custom-primary, $my-custom-accent, $my-custom-warn);
 
-// Create the theme object (a Sass map containing all of the palettes).
-$theme: mat-light-theme(
-  mat-palette($md-custom-primary),
-  mat-palette($mat-cyan, 800),
-  mat-palette($mat-red)
-);
-$theme: mat-dark-theme(
-  mat-palette($md-custom-primary),
-  mat-palette($mat-cyan, 800),
-  mat-palette($mat-red)
-);
+// Main theme defination
+@include angular-material-theme($my-custom-theme);
 
-// Variables to access in all project
-$primary: map-get($theme, primary);
-$accent: map-get($theme, accent);
-$warn: map-get($theme, warn);
-$background: map-get($theme, background);
-$foreground: map-get($theme, foreground);
+// Alternate Angular Material Theme - add this class dynamically to body to change theme
+.my-alternate-theme {
+  $my-alternate-primary: mat-palette($mat-red);
+  $my-alternate-accent: mat-palette($mat-green, 400);
+  $my-alternate-warn: mat-palette($mat-grey);
 
-$color-white: #fff;
-$color-black: #000;
-```
+  $my-alternate-theme: mat-light-theme(
+    $my-alternate-primary,
+    $my-alternate-accent,
+    $my-alternate-warn
+  );
 
-Using the palette and your own variables like so
-
-```scss
-footer {
-  background-color: mat-color($primary, 500);
-  color: $color-white;
+  @include angular-material-theme($my-alternate-theme);
 }
 ```
 

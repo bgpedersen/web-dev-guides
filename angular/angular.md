@@ -56,8 +56,8 @@ ng update @angular/cli @angular/core
       - storage
   - features
     - dashboard
-      - components (pure presentation components, dumb components = don't manage state, emits events/actions)
-      - pages (routed smart components, can manages state, manage components, get/send data via services/store)
+      - components [posts.component.html ..](pure presentation components, dumb components = don't manage state, emits events/actions)
+      - pages [dashboard-page.component.html, dashboard-page.component.ts ..](routed smart components, can manages state, manage components, get/send data via services/store)
       - dashboard-routing.module.ts
       - dashboard.module.ts
     - guest-book
@@ -76,7 +76,7 @@ ng update @angular/cli @angular/core
     - pipes
     - validators
     - modules [material.module.ts]
-    - shared.modules.ts (import and export CommonModule, FormsModule, MaterialModule ... import shared module in feature modules)
+    - shared.modules.ts (import and export ReactiveFormsModule, MaterialModule ... import shared module in feature modules)
   - app-routing.module.ts
   - app.component.html (should only contain `<router-outlet></router-outlet>`)
   - app.module.ts
@@ -159,6 +159,135 @@ Using Differential builds, Angular makes a build for es5 for older browsers and 
 - [Official Angular Differential build](https://angular.io/guide/deployment#differential-builds)
 - [“Angular and Internet Explorer” by Todd Palmer](https://link.medium.com/CVNNy8Vb54)
 - [“Angular: How to support IE11” by Colum Ferry](https://link.medium.com/IB8fVsyb54)
+
+## Forms
+
+- [Angular Reactive Forms](https://angular.io/guide/reactive-forms)
+
+?> **Use FormBuilder service** Creating form control instances manually can become repetitive when dealing with multiple forms. The FormBuilder service provides convenient methods for generating controls.
+
+- Use validators to validate. Validators can be user created.
+- Use nested group for more complex forms
+- Use controls reference, for type safety in html and to avoid calling .get control function on each cycle
+- Use DTO (Data Transfer Object) to create domain ready model created from form
+
+<!-- tabs:start -->
+
+#### **register.component.ts**
+
+```typescript
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { User } from 'src/app/core/models/user.model';
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss'],
+})
+export class RegisterComponent implements OnInit {
+  @Output() formSubmit = new EventEmitter<User>();
+  hide = true;
+
+  registerForm: FormGroup = this.fb.group({
+    email: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(4)]],
+    info: this.fb.group({
+      firstname: [''],
+      lastname: [''],
+    }),
+  });
+
+  controls = {
+    email: this.registerForm.get('email'),
+    password: this.registerForm.get('password'),
+    firstname: this.registerForm.get('info.firstname'),
+    lastname: this.registerForm.get('info.lastname'),
+  };
+
+  constructor(private fb: FormBuilder) {}
+
+  onSubmit() {
+    const user = new User({
+      ...this.registerForm.value,
+      firstname: this.controls.firstname.value,
+      lastname: this.controls.lastname.value,
+    });
+    this.formSubmit.emit(user);
+  }
+
+  ngOnInit(): void {}
+}
+```
+
+#### **register.component.html**
+
+```html
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm" novalidate>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Register</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>Email*</mat-label>
+        <input matInput placeholder="email" formControlName="email" type="email" />
+        <mat-error *ngIf="controls.email.hasError('required')"
+          >Email is <strong>required</strong></mat-error
+        >
+        <mat-error *ngIf="controls.email.hasError('email')"
+          >Email must be <strong>valid</strong></mat-error
+        >
+        <mat-icon matPrefix>mail</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>Password*</mat-label>
+        <input
+          matInput
+          placeholder="password"
+          formControlName="password"
+          [type]="hide ? 'password' : 'text'"
+        />
+        <mat-icon matPrefix>lock</mat-icon>
+        <mat-hint>Must be at least 4 chars</mat-hint>
+        <mat-error *ngIf="controls.password.hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="controls.password.hasError('minlength')"
+          >Password must be at least <strong>4 chars</strong></mat-error
+        >
+        <button mat-icon-button matSuffix (click)="hide = !hide">
+          <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+      </mat-form-field>
+      <div formGroupName="info" class="info">
+        <mat-card-subtitle>Optional</mat-card-subtitle>
+        <mat-form-field appearance="standard">
+          <mat-label>Firstname</mat-label>
+          <input matInput formControlName="firstname" placeholder="firstname" />
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Lastname</mat-label>
+          <input matInput formControlName="lastname" placeholder="lastname" />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions align="right">
+      <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">
+        Register
+      </button>
+    </mat-card-actions>
+
+    <mat-card-footer>
+      * required
+    </mat-card-footer>
+  </mat-card>
+</form>
+```
+
+<!-- tabs:end -->
 
 ## i18n
 
@@ -1151,6 +1280,12 @@ Reactive State for Angular
 - [NgRx Chuck Norris joke generator](https://github.com/wesleygrimes/angular-ngrx-chuck-norris)
 - [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)
 - [tomastrajan/angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter)
+
+### Updating NgRx
+
+```bash
+ng update @ngrx/store
+```
 
 ### Adding NgRx with NgRx Schematics
 

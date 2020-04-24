@@ -23,10 +23,19 @@ Online testers
 **Surround with forward slash** `/` to make regex. Search is `case-sensitive` and only returns `first result`.
 
 ```text
-/bar/             matches a string that contains bar
-/^bar/            matches a string that starts with bar
-/bar$/            matches a string that ends with bar
-/^foo bar$/       matches exactly the string foo bar
+//               matches first string
+/we/             matches 'we' in 'where are we'
+```
+
+```text
+^                 starts with
+/^we/             matches nothing in 'where are we'
+/^where/          matches 'where' in 'where are we'
+
+$                 ends with
+/we$/             matches 'we' in 'where are we'
+
+/^where are we$/  matches 'where are we' in 'where are we' - starts and ends width, exact match
 ```
 
 **Special chars needs to be escaped**, meaning adding a backward slash `\` in front of them: `[ \ ^ $ . | ? * + ( )`

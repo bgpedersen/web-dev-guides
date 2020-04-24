@@ -10,6 +10,7 @@
 ## Colors
 
 - [Flat Colors UI](http://www.flatcolorsui.com/)
+- [Color Pallettes (ColorsInspo)](http://www.colorsinspo.com)
 
 ## Cookies
 

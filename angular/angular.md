@@ -983,6 +983,8 @@ Choose from existing material's palettes [material color selector](https://mater
 
 To avoid accidently importing `mat-core()` more than once while keeping main.scss clean, create a theme.scss file in `src/styles/theme.scss` and add in `angular.json`.
 
+?> This example will show how to use custom theme with light/dark runtime switch. In essence we are just switching a class on the body element
+
 <!-- tabs:start -->
 
 #### **angular.json**
@@ -1004,62 +1006,125 @@ $custom-typography: mat-typography-config(
 
 /* ======== angular material custom theme, arguments: (palette/default/light/dark) ======== */
 // Base theme
-$theme-base-primary: mat-palette($mat-blue, 700);
-$theme-base-accent: mat-palette($mat-pink, 100, 500, A100);
-$theme-base-warn: mat-palette($mat-red);
+$theme-primary: mat-palette($mat-blue, 700);
+$theme-accent: mat-palette($mat-indigo, 700);
+$theme-warn: mat-palette($mat-red);
 
-// Red theme
-$theme-red-primary: mat-palette($mat-red);
-$theme-red-accent: mat-palette($mat-green, 400);
-$theme-red-warn: mat-palette($mat-grey);
-
-.theme-base-light {
+.theme-light {
   // Light theme
-  $theme: mat-light-theme($theme-base-primary, $theme-base-accent, $theme-base-warn);
+  $theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 
   @include angular-material-theme($theme);
 }
 
-.theme-base-dark {
+.theme-dark {
   // Dark theme
-  $theme: mat-dark-theme($theme-base-primary, $theme-base-accent, $theme-base-warn);
+  $theme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
   @include angular-material-theme($theme);
 }
+```
 
-// Alternate theme
-.theme-red-light {
-  $theme: mat-light-theme($theme-red-primary, $theme-red-accent, $theme-red-warn);
+#### **index.html**
 
-  @include angular-material-theme($theme);
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>AngularNgrxMaterialExample</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap"
+      rel="stylesheet"
+    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  </head>
+  <body class="mat-typography mat-app-background">
+    <app-root></app-root>
+  </body>
+</html>
+```
+
+#### **src/app/shared/components/shared-header.component.html**
+
+```html
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <h1>Angular NgRx Material Example</h1>
+    <mat-slide-toggle color="primary" (change)="toggleTheme()"
+      >{{ currentTheme$ | async }}</mat-slide-toggle
+    >
+  </mat-toolbar-row>
+</mat-toolbar>
+```
+
+#### **src/app/shared/components/shared-header.component.ts**
+
+```typescript
+import { Component, OnInit } from '@angular/core';
+import { ThemeService } from 'src/app/core/services/theme.service';
+
+@Component({
+  selector: 'app-shared-header',
+  templateUrl: './shared-header.component.html',
+  styleUrls: ['./shared-header.component.scss'],
+})
+export class SharedHeaderComponent implements OnInit {
+  constructor(private themeService: ThemeService) {}
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
+  }
+
+  get currentTheme$() {
+    return this.themeService.currentTheme$;
+  }
+
+  ngOnInit(): void {}
 }
+```
 
-.theme-red-dark {
-  $theme: mat-light-theme($theme-red-primary, $theme-red-accent, $theme-red-warn);
+#### **src/app/core/services/theme.service.ts**
 
-  @include angular-material-theme($theme);
+```typescript
+import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+
+type Theme = 'theme-light' | 'theme-dark';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ThemeService {
+  private themes: Theme[] = ['theme-light', 'theme-dark'];
+  private theme = new BehaviorSubject<Theme>('theme-dark');
+
+  constructor() {
+    this.theme.subscribe((theme) => {
+      const body = document.querySelector('body');
+      body.classList.remove(...this.themes);
+      body.classList.add(theme);
+    });
+  }
+
+  toggleTheme() {
+    if (this.theme.value === 'theme-dark') {
+      this.theme.next('theme-light');
+    } else {
+      this.theme.next('theme-dark');
+    }
+  }
+
+  get currentTheme$() {
+    return this.theme;
+  }
 }
 ```
 
 <!-- tabs:end -->
-
-Using font and icons, add to index.html
-
-```html
-<link
-  href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap"
-  rel="stylesheet"
-/>
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-```
-
-Add typography and background class to body, and control the theme your using
-
-```html
-<body class="mat-typography mat-app-background theme-base-dark">
-  <app-root></app-root>
-</body>
-```
 
 ### Material style overwrites
 

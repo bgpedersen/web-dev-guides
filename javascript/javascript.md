@@ -10,9 +10,82 @@
 
 ## RegEx (Regular expression)
 
+Articles
+
 - [Intro to regex for web developers](https://dev.to/chrisachard/intro-to-regex-for-web-developers-2fj4?ref=devawesome.io)
+- [Regex intro](https://levelup.gitconnected.com/read-this-if-you-dont-know-enough-about-regex-73141bb0e1a7)
+
+Online testers
+
 - [Regex tester](https://www.regextester.com/)
 - [Regex101](https://regex101.com/)
+
+**Surround with forward slash** `/` to make regex. Search is `case-sensitive` and only returns `first result`.
+
+```text
+/bar/             matches a string that contains bar
+/^bar/            matches a string that starts with bar
+/bar$/            matches a string that ends with bar
+/^foo bar$/       matches exactly the string foo bar
+```
+
+**Special chars needs to be escaped**, meaning adding a backward slash `\` in front of them: `[ \ ^ $ . | ? * + ( )`
+
+```text
+/\?/              matches for ?
+/bar\^/           matches for bar^
+```
+
+**Flags** are added after last slash `/`. It is possible to combine flags.
+
+```text
+g               global, don't return after first match
+/e/g            matches 'eeee' in 'where are we'
+
+i               case insensitive matching
+/e/i            matches 'E' in 'WhEre are wE'
+/e/gi           matches 'EeE' in 'WhEre are wE' with combine flag for global.
+
+m               multi-line, ^ and $ match start and end of line
+/are/m          matches 'are' in 'where
+                                  are
+                                  you'
+```
+
+**Character classes** match a certain set, example only `digits`.
+
+```text
+\w               wordly character - letter of latin alphabet, digit or underscore
+
+\d               digit
+/\d/g            matches '9031234567' in '+(903)123-4567'
+
+\s               whitespace - spaces, tabs, newlines
+
+Inverse
+\W               non wordly character
+\D               non digit
+\S               non whitespace
+```
+
+**Quantifiers** specifies how often a preceding regular expression should match.
+
+```text
+?                match zero or one
+/ba?/g           matches 'bababb' in 'baaa ba a b aa ab'
+
+*                match zero or more
+/ba*/g           matches 'baaababb' in 'baaa ba a b aa ab'
+
++                matches one or more
+/ba+/g           matches 'baaaba' in 'baaa ba a b aa ab'
+
+{}               match a number of consecutive characters
+a{2}             matches exactly 2 consecutive `a` characters
+a{2,4}           matches between 2 and 4 consecutive `a` characters
+a{2,}            matches at least 2 consecutive `a` characters.
+/ba{2}/g         matches 'baa' in 'baaa ba a b aa ab'
+```
 
 ## Date and time
 

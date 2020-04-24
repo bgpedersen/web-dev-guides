@@ -162,7 +162,9 @@ Using Differential builds, Angular makes a build for es5 for older browsers and 
 
 ## Forms
 
-- [Angular Reactive Forms](https://angular.io/guide/reactive-forms)
+### Reactive forms
+
+- [Reactive Forms](https://angular.io/guide/reactive-forms)
 
 ?> **Use FormBuilder service** Creating form control instances manually can become repetitive when dealing with multiple forms. The FormBuilder service provides convenient methods for generating controls.
 
@@ -285,6 +287,24 @@ export class RegisterComponent implements OnInit {
     </mat-card-footer>
   </mat-card>
 </form>
+```
+
+#### **user.model.ts**
+
+```typescript
+export class User {
+  email: string;
+  password: string;
+  firstname?: string;
+  lastname?: string;
+
+  constructor(parameters: User) {
+    this.email = parameters.email;
+    this.password = parameters.password;
+    this.firstname = parameters.firstname;
+    this.lastname = parameters.lastname;
+  }
+}
 ```
 
 <!-- tabs:end -->
@@ -856,14 +876,12 @@ This is the size of running the parsed bundles/modules through gzip compression.
 
 ## Angular Material
 
+Angular Material comprises a range of components which implement common interaction patterns according to the Material Design specification. Angular Material components can be found [here]()
+
 ### Material references
 
+- [Angular Material official](https://material.angular.io/)
 - [Angular Material Icons](https://material.angular.io/components/icon/overview)
-- <https://ajonp.com/courses/angularmaterial/angular-material-theming/>
-- <https://blog.thoughtram.io/angular/2017/05/23/custom-themes-with-angular-material.html>
-- <https://material.angular.io/guide/theming-your-components>
-- <https://medium.com/@tomastrajan/the-complete-guide-to-angular-material-themes-4d165a9d24d1>
-- <https://medium.com/@aleixsuau/how-to-use-angular-material-2-sass-variables-in-your-components-76ce0203f126>
 
 ### Installing Material
 
@@ -1134,90 +1152,81 @@ Overwrites for normal material components should be in a file, ex.: `app/styles/
 
 ?> For overlay components, use their option class `panelClass` to inject to overwrite class.
 
-### Material login example
-
-Angular Material comprises a range of components which implement common interaction patterns according to the Material Design specification.
-Angular Material components can be found [here](https://material.angular.io/components/categories)
+### Material html example
 
 <!-- tabs:start -->
 
-#### **login.component.html**
+#### **register.component.html**
 
 ```html
-<form [formGroup]="loginForm" novalidate (ngSubmit)="submitLogin.emit(this.loginForm.value)">
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm" novalidate>
   <mat-card>
-    <mat-card-title>
-      <mat-card-title>Login</mat-card-title>
-      <img
-        mat-card-image
-        src="https://generative-placeholders.glitch.me/image?width=300&height=100"
-      />
-    </mat-card-title>
-
+    <mat-card-header>
+      <mat-card-title>Register</mat-card-title>
+    </mat-card-header>
     <mat-card-content>
-      <mat-form-field appearance="standard" class="full-width">
-        <input matInput placeholder="email" formControlName="email" type="search" />
-        <span matPrefix><mat-icon>email</mat-icon></span>
-        <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
-          Email is <strong>required</strong>
-        </mat-error>
-        <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
-          Email must be <strong>valid</strong>
-        </mat-error>
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>Email*</mat-label>
+        <input matInput placeholder="email" formControlName="email" type="email" />
+        <mat-error *ngIf="controls.email.hasError('required')"
+          >Email is <strong>required</strong></mat-error
+        >
+        <mat-error *ngIf="controls.email.hasError('email')"
+          >Email must be <strong>valid</strong></mat-error
+        >
+        <mat-icon matPrefix>mail</mat-icon>
       </mat-form-field>
 
-      <mat-form-field appearance="standard" hintLabel="Max 10 characters" class="full-width">
+      <mat-form-field class="full-width" appearance="standard">
+        <mat-label>Password*</mat-label>
         <input
           matInput
           placeholder="password"
           formControlName="password"
           [type]="hide ? 'password' : 'text'"
-          maxlength="10"
         />
-        <span matPrefix><mat-icon>lock</mat-icon></span>
+        <mat-icon matPrefix>lock</mat-icon>
+        <mat-hint>Must be at least 4 chars</mat-hint>
+        <mat-error *ngIf="controls.password.hasError('required')">
+          Password is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="controls.password.hasError('minlength')"
+          >Password must be at least <strong>4 chars</strong></mat-error
+        >
         <button mat-icon-button matSuffix (click)="hide = !hide">
           <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
         </button>
-        <mat-hint align="end">{{ loginForm.controls['password'].value?.length || 0 }}/10</mat-hint>
-        <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
-          Password name is <strong>required</strong>
-        </mat-error>
       </mat-form-field>
+      <div formGroupName="info" class="info">
+        <mat-card-subtitle>Optional</mat-card-subtitle>
+        <mat-form-field appearance="standard">
+          <mat-label>Firstname</mat-label>
+          <input matInput formControlName="firstname" placeholder="firstname" />
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <mat-label>Lastname</mat-label>
+          <input matInput formControlName="lastname" placeholder="lastname" />
+        </mat-form-field>
+      </div>
     </mat-card-content>
+
     <mat-card-actions align="right">
-      <button mat-raised-button color="primary" type="submit" [disabled]="!loginForm.valid">
-        Login
+      <button mat-raised-button type="button" color="warning" [routerLink]="['/']">
+        Cancel
+      </button>
+      <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">
+        Register
       </button>
     </mat-card-actions>
+
+    <mat-card-footer>
+      * required
+    </mat-card-footer>
   </mat-card>
 </form>
 ```
 
-#### **login.component.ts**
-
-```typescript
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-@Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
-})
-export class LoginComponent {
-  @Output() submitLogin = new EventEmitter();
-  hide = true;
-
-  loginForm: FormGroup = this.fb.group({
-    email: [null, [Validators.required, Validators.email]],
-    password: [null, Validators.required],
-  });
-
-  constructor(private fb: FormBuilder) {}
-}
-```
-
-#### **login.component.scss**
+#### **register.component.scss**
 
 ```scss
 form {
@@ -1228,6 +1237,21 @@ form {
 
 .full-width {
   width: 100%;
+}
+
+mat-card-footer {
+  padding: 10px;
+}
+
+.info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  column-gap: 10px;
+  mat-card-subtitle {
+    margin-top: 15px;
+    grid-column: span 2;
+  }
 }
 ```
 

@@ -626,7 +626,7 @@ it('should run observables over time with marble-testing', () => {
 });
 ```
 
-### Service example
+### Service AngularFireStorage example
 
 ```typescript
 import { async, TestBed } from '@angular/core/testing';
@@ -702,7 +702,7 @@ describe('ImageEditorService', () => {
 
 ### Component example #1
 
-Here is a full component test example, of how the structure should be when using a service as a SpyObj in depencency injection, having full code editor intelissense for methods and spy methods:
+?> Use the generic version of jasmine.createSpyObj. This ensures type-safety of your spies, allowing the compiler to verify that the methods being mocked actually exist
 
 ```typescript
 import { NO_ERRORS_SCHEMA } from '@angular/core';
@@ -714,10 +714,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ImageEditorService } from '../../services/image-editor.service';
 import { EditImageComponent } from './edit-image.component';
 
-fdescribe('EditImageComponent', () => {
+describe('EditImageComponent', () => {
   let component: EditImageComponent;
   let fixture: ComponentFixture<EditImageComponent>;
-  // define service, so it can be referenced from test blocks for intellisence and to create spyObj on in beforeEach
+  // define service, so it can be referenced from test blocks for intellisense and to create spyObj on in beforeEach
   let imageEditorServiceSpy: jasmine.SpyObj<ImageEditorService>;
 
   beforeEach(async(() => {
@@ -779,29 +779,22 @@ Comments in code explains step by step
 
 ```typescript
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { async, ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { BehaviorSubject } from 'rxjs';
-import { first } from 'rxjs/operators';
-
 import { ImageEditorService } from '../../services/image-editor.service';
 import { ImageEditorEditComponent } from './image-editor-edit.component';
 
-// Setting up service to mock
-class ImageEditorServiceMock {
-  imageHandler = {
-    imageDataURL$: new BehaviorSubject(null),
-  };
-}
-
-fdescribe('ImageEditorEditComponent', () => {
+describe('ImageEditorEditComponent', () => {
   let component: ImageEditorEditComponent;
   let fixture: ComponentFixture<ImageEditorEditComponent>;
+  let imageEditorServiceMock: jasmine.SpyObj<ImageEditorService>;
 
   beforeEach(async(() => {
+    imageEditorServiceMock = jasmine.createSpyObj<ImageEditorService>(['imageHandler']);
+
     TestBed.configureTestingModule({
       declarations: [ImageEditorEditComponent],
-      // Mock ImageEditorService here
-      providers: [{ provide: ImageEditorService, useValue: new ImageEditorServiceMock() }],
+      providers: [{ provide: ImageEditorService, useValue: imageEditorServiceMock }],
       // Using NO_ERRORS_SCHEMA to avoid having to include all custom elements
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -810,37 +803,28 @@ fdescribe('ImageEditorEditComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(ImageEditorEditComponent);
     component = fixture.componentInstance;
-    // Moved detectChanges to blocks for more control
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  // Wrab block in fakeAsync, to run stream subscription synchronous
-  it('should display app-file-input on imageDataURL not exists', fakeAsync(() => {
-    // TestBed.inject will inject the instantialized service from TestBed.configureTestingModule, meaning our mock service
-    const imageEditorServiceMock = TestBed.inject(ImageEditorService);
-    // init imageDataURL$ with null
-    imageEditorServiceMock.imageHandler.imageDataURL$ = new BehaviorSubject(null);
+  it('should display app-file-input on imageDataURL not exists', () => {
     // define component data property
     let cdata;
     const hostEl: HTMLElement = fixture.nativeElement;
+    const service = TestBed.inject(ImageEditorService);
+    service.imageHandler.imageDataURL$ = new BehaviorSubject(null);
 
-    // subscribe to stream, close after first data receieved
-    component.imageDataURL$.pipe(first()).subscribe((data) => (cdata = data));
+    component.imageDataURL$.subscribe((data) => (cdata = data));
     // Update component view
     fixture.detectChanges();
-
-    // Grab the elements by tag
-    const appEditImg = hostEl.querySelector('app-edit-image'); // I don't exist
     const appFileInput = hostEl.querySelector('app-file-input');
 
     // Check that ngIf renders correct elements, and component data should be null
     expect(appFileInput).toBeTruthy();
-    expect(appEditImg).toBeNull();
     expect(cdata).toBeNull();
-  }));
+  });
 });
 ```
 

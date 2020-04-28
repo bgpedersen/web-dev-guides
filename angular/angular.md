@@ -867,7 +867,7 @@ Angular Material comprises a range of components which implement common interact
 - [Angular Material official](https://material.angular.io/)
 - [Angular Material Icons](https://material.angular.io/components/icon/overview)
 
-### Installing Material
+### Material install
 
 Install Angular Material
 
@@ -1354,13 +1354,13 @@ Reactive State for Angular
 - [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)
 - [tomastrajan/angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter)
 
-### Updating NgRx
+### NgRx update
 
 ```bash
 ng update @ngrx/store
 ```
 
-### Adding NgRx with NgRx Schematics
+### NgRx install
 
 Make sure cli is updated, check with `ng --version`
 
@@ -1374,13 +1374,13 @@ Install NgRx dependencies
 npm install @ngrx/{store,effects,entity,store-devtools}
 ```
 
-Add [schematics](https://ngrx.io/guide/schematics)
+Add [schematics](https://ngrx.io/guide/schematics) and select NgRx schematics as the default when promted
 
 ```bash
 ng add @ngrx/schematics
 ```
 
-If you didn't already add ngrx schematics as default whne adding it
+You can add NgRx schematics as default later on like this:
 
 ```bash
 ng config cli.defaultCollection @ngrx/schematics
@@ -1396,20 +1396,154 @@ Set schematics to use SCSS for components in angular.json
 },
 ```
 
-Add root [store](https://ngrx.io/guide/schematics/store) and devtools
+### Initial setup
+
+Generate root [store](https://ngrx.io/guide/schematics/store) and devtools
 
 ```bash
-ng g store State --root --module app.module.ts --statePath core/store
+ng g store State --root --module app.module.ts
 ```
 
-Add feature store to existing feature module. Rename `reducer` folder to `store`
+Generate root effects
 
 ```bash
-ng g store features/admin/Admin -m admin.module
+ng g effect App --root --module app.module.ts
 ```
 
-Add reducer called `user` to feature store
+### Scaffolding with schematics
+
+Feature Store: Creating a feature store with loginFeatureKey = 'login' and add as forFeature to login.module.ts:
 
 ```bash
-ng generate reducer features/admin/store/user/User --reducers ../index.ts
+$ ng g store features/login/Login -m login.module.ts
+
+CREATE src/app/features/login/reducers/index.ts (400 bytes)
+UPDATE src/app/features/login/login.module.ts (962 bytes)
 ```
+
+Action: Creating an action:
+
+```bash
+$ ng g a features/login/register-page --group
+
+? Should we generate success and failure actions? Yes
+? Do you want to use the create function? Yes
+CREATE src/app/features/login/actions/register-page.actions.spec.ts (212 bytes)
+CREATE src/app/features/login/actions/register-page.actions.ts (356 bytes)
+```
+
+Reducer: Creating reducer and adding it to the feature store
+
+```bash
+$ ng g r features/login/user --reducers reducers/index.ts --group
+
+? Should we add success and failure actions to the reducer? Yes
+? Do you want to use the create function? Yes
+CREATE src/app/features/login/reducers/user.reducer.spec.ts (326 bytes)
+CREATE src/app/features/login/reducers/user.reducer.ts (229 bytes)
+UPDATE src/app/features/login/reducers/index.ts (469 bytes)
+```
+
+Effect: Creating feature effect and adding it to feature module
+
+```bash
+$ ng g effect features/login/user -m features/login/login.module.ts --group
+
+? Should we wire up success and failure actions? Yes
+? Do you want to use the create function? Yes
+CREATE src/app/features/login/effects/user.effects.spec.ts (582 bytes)
+CREATE src/app/features/login/effects/user.effects.ts (193 bytes)
+UPDATE src/app/features/login/login.module.ts (1150 bytes)
+```
+
+### forRoot and forFeature
+
+State in the application can be split into `forRoot` and `forFeature` to organize and separate the state. The `forFeature` is loaded into it's own feature module, and is perfect for separating state where it belongs to. If the `forFeature` state needs to be available to the root state at application start (loaded eagerly), then the module it belongs to, should be loaded eagerly and added directly to `app.module`. The route should equally points to the route of the feature module: `{ path: 'login', redirectTo: '/login' }`.
+
+Whether your feature states are loaded eagerly or lazily depends on the needs of your application. You use feature states to build up your state object over time and through different feature areas.
+
+Login module forFeature example where user is needed i whole application, but logic exists in the Login feature:
+
+<!-- tabs:start -->
+
+#### **app.module.ts**
+
+```typescript
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { LoginModule } from './features/login/login.module';
+
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    ,
+    // forRoot storeModule here
+    LoginModule, // eagerly loaded forFeature store
+  ],
+  providers: [],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+#### **app-routing.module.ts**
+
+```typescript
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+  { path: 'login', redirectTo: '/login' }, // route to LoginModule
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
+export class AppRoutingModule {}
+```
+
+#### **login.module.ts**
+
+```typescript
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { LoginComponent } from './components/login/login.component';
+import { LoginRoutingModule } from './login-routing.module';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+
+@NgModule({
+  declarations: [LoginPageComponent, LoginComponent],
+  imports: [
+    CommonModule,
+    LoginRoutingModule,
+    // forFeature store here
+  ],
+})
+export class LoginModule {}
+```
+
+#### **login-routing.module.ts**
+
+```typescript
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { LoginPageComponent } from './pages/login-page/login-page.component';
+
+const routes: Routes = [{ path: 'login', component: LoginPageComponent }]; // LoginModule routing, matches the app-routing.module.ts routing
+
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule],
+})
+export class LoginRoutingModule {}
+```
+
+<!-- tabs:end -->

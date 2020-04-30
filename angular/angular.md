@@ -1299,13 +1299,49 @@ forkJoin(
   .subscribe(console.log);
 ```
 
-### Unsubscribing
+### Unsubscribe subscriptions
 
-- [6 ways to unsubscribe from observables in angular](https://blog.bitsrc.io/6-ways-to-unsubscribe-from-observables-in-angular-ab912819a78f)
+I recommend using the RxJS native technique "Array/Add" by adding subscriptions, that can all be unsubscribed at once. Then you are not depending on any library, and it's still easy to read and setup.
 
-### Template driven
+```typescript
+export class MyComponent implements OnDestroy {
+  protected subs = new Subscription();
+  ...
+  this.subs.add(this.userService.getUser().subscribe(...));
+  this.subs.add(fromEvent(...).subscribe(...));
+  ...
+  this.foo$ = someObservable.subscribe();
+  this.subscriptions.add(this.foo$)
+  ...
 
-Template driving and thus removing the subscribe handling.
+  public ngOnDestroy() {
+    this.subs.unsubscribe(); // yep, this must be done manually
+  }
+}
+```
+
+.. or if you feel like to use 3rd party library, then use [SubSink](https://github.com/wardbell/subsink) which can do the same as the RxJS native method, but also do it as a getter-way, instead of just a function-way.
+
+```typescript
+export class MyComponent implements OnDestroy {
+  protected subs = new SubSink();
+  // adding the subscriptions to the sink - "setter" way
+  this.subs.sink = this.userService.getUser().subscribe(...);
+  this.subs.sink = fromEvent(...).subscribe(...);
+  // adding the subscriptions to the sink - "collection" way
+  this.subs.add(
+    this.userService.getUser().subscribe(...),
+    fromEvent(...).subscribe(...)
+  );
+  public ngOnDestroy() {
+    this.subs.unsubscribe(); // yep, this must be done manually
+  }
+}
+```
+
+#### Template driven unsubscribe
+
+Template driven subscription will automatically unsubscribe
 
 ```typescript
 export class UserComponent implements OnInit {

@@ -69,15 +69,13 @@ Fix by using `max-width: 100%;` and `overflow: hidden;` on your child elements. 
 }
 ```
 
-## Tips and tricks
+## Spacing in CSS
 
-### Spacing in CSS
-
-#### Spacing in CSS: References
+### Spacing in CSS: References
 
 - [Spacing in CSS](https://ishadeed.com/article/spacing-in-css/)
 
-#### Margin collapse
+### Margin collapse
 
 Stick to `margin-bottom` on elements. Because if top element has `margin-bottom` and element below has `margin-top`, the largest `margin` will win and the other one be ignored. If last element should not have margin:
 
@@ -89,7 +87,7 @@ Stick to `margin-bottom` on elements. Because if top element has `margin-bottom`
 
 If child element exists inside parrent that has `margin-bottom`, then to push down child element, use `padding-top` on the parent, to avoid ignoring child `margin-top` because of margin collapse.
 
-#### Negative Margin
+### Negative Margin
 
 If parent has margin, and child element needs to stick to edges of parent, use `negative margins`.
 
@@ -117,7 +115,7 @@ To make a card, with padded text but border to the edge, use a combination of `p
 }
 ```
 
-#### Padding not working
+### Padding not working
 
 Padding only works on `display: inline-block`. Elements like `<span>`, `<a>` that has `display: inline` has no effect. So change the `display` property to have effect:
 
@@ -129,7 +127,7 @@ Padding only works on `display: inline-block`. Elements like `<span>`, `<a>` tha
 }
 ```
 
-#### CSS Grid gap
+### CSS Grid gap
 
 Add CSS Grid gap using `grid-gap`.
 
@@ -153,6 +151,8 @@ Add CSS Grid gap using `grid-gap`.
 ```
 
 !> CSS Flexbox currently only supports `gap` in Firefox.
+
+## Tips and tricks
 
 ### Control scroll in elements
 

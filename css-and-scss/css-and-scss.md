@@ -105,7 +105,7 @@ If parent has margin, and child element needs to stick to edges of parent, use `
 
 To make a card, with padded text but border to the edge, use a combination of `padding` and `negative margin`.
 
-![card]("./../../_media/use-case-card-5.jpg)
+![card](../_media/use-case-card-5.jpg)
 
 ```css
 .card__meta {

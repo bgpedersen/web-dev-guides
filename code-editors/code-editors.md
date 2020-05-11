@@ -2,14 +2,14 @@
 
 ## Web Editors
 
-- [Code Sandbox](https://codesandbox.io/)
-- [StackBlitz](https://stackblitz.com/)
+-   [Code Sandbox](https://codesandbox.io/)
+-   [StackBlitz](https://stackblitz.com/)
 
 ## Visual Studio Code
 
 ### Setup as GIT editor
 
-- [Setup VS Code as GIT editor](https://stackoverflow.com/questions/30024353/how-to-use-visual-studio-code-as-default-editor-for-git)
+-   [Setup VS Code as GIT editor](https://stackoverflow.com/questions/30024353/how-to-use-visual-studio-code-as-default-editor-for-git)
 
 ### Extensions
 
@@ -48,16 +48,23 @@ This extension is highly recommended for markup, since it auto updates table of 
 
 #### Markdown
 
-- Markdown auto linting extention [markdownlint by davidanson](https://github.com/DavidAnson/vscode-markdownlint.git)
+-   Markdown auto linting extention [markdownlint by davidanson](https://github.com/DavidAnson/vscode-markdownlint.git)
 
 #### Prettier
 
-Use prettier to follow a set of good and consistent styling rules for auto-formatting ([article: Code style matters](https://christianlydemann.com/style-angular-apps-using-prettier-and-tslint/)). VS Code settings for prettier might sometimes not work, instead make project file in root `.prettierrc` and put options here
+Use [prettier](https://prettier.io/docs/en/install.html) to follow a set of good and consistent styling rules for auto-formatting ([article: Code style matters](https://christianlydemann.com/style-angular-apps-using-prettier-and-tslint/)).
+
+Install
+
+```bash
+npm install --save-dev --save-exact prettier
+```
+
+`.prettierrc` make this project file in root and put options here
 
 ```json
 {
-  "printWidth": 120,
-  "singleQuote": true
+    "singleQuote": true
 }
 ```
 
@@ -68,18 +75,16 @@ Install and add `tslint-config-prettier` to extends in tslint.json:
 npm install --save-dev tslint-config-prettier
 ```
 
+`tslint.json`
+
 ```json
 {
-  "extends": ["tslint:recommended", "tslint-config-prettier"],
-  "//": "..."
+    "extends": ["tslint:recommended", "tslint-config-prettier"],
+    "//": "..."
 }
 ```
 
 To format whole codebase easily, install prettier to dev-dependencies and add the scripts to `package.json`
-
-```bash
-npm i prettier -D
-```
 
 ```json
 "scripts": {
@@ -95,19 +100,19 @@ Install `debugger-for-chrome` extension. Press F5 to start. If no launch.json fi
 
 ```json
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "chrome",
-      "request": "launch",
-      "name": "Launch Chrome against localhost",
-      "url": "http://localhost:4200",
-      "webRoot": "${workspaceFolder}"
-    }
-  ]
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:4200",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
 }
 ```
 

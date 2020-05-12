@@ -30,15 +30,22 @@ and use for example Husky to run pre-commit in package.json
 
 Auto clean deleted branches. Bash script for using together with Git to clean already merged branches.
 
-Use CLI/terminal and go into user dir using
-`cd`
-go into bin
-`cd bin`
+Use CLI/terminal and go into user dir using. If you open bash it should start in user directory automatically.
+
+create/go into bin
+
+```bash
+mkdir bin
+cd bin
+```
+
 create file
 `touch clean_branches`
+
 open file
 `cat > clean_branches`
-insert
+
+insert following and save pressing `ctrl + D`
 
 ```bash
 #!/bin/bash
@@ -54,8 +61,8 @@ else
 fi
 ```
 
-save pressing `ctrl + D`
+Now you can write `clean_branches` from your git terminal :)
 
 ## Rename all to Kebabcase
 
-- [Rename folders and files to Kebabcase](https://github.com/kcjmowright/rename-2-kebabcase)
+-   [Rename folders and files to Kebabcase](https://github.com/kcjmowright/rename-2-kebabcase)

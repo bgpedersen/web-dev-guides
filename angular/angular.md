@@ -233,7 +233,12 @@ export class RegisterComponent implements OnInit {
     <mat-card-content>
       <mat-form-field class="full-width" appearance="standard">
         <mat-label>Email*</mat-label>
-        <input matInput placeholder="email" formControlName="email" type="email" />
+        <input
+          matInput
+          placeholder="email"
+          formControlName="email"
+          type="email"
+        />
         <mat-error *ngIf="controls.email.hasError('required')"
           >Email is <strong>required</strong></mat-error
         >
@@ -277,7 +282,12 @@ export class RegisterComponent implements OnInit {
     </mat-card-content>
 
     <mat-card-actions align="right">
-      <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">
+      <button
+        mat-raised-button
+        [disabled]="!registerForm.valid"
+        type="submit"
+        color="primary"
+      >
         Register
       </button>
     </mat-card-actions>
@@ -368,9 +378,15 @@ this.translateService
   });
 ```
 
-## Testing
+## Testing (Jest)
 
-### Introduction
+### References
+
+- [Integrate jest into Angular](https://medium.com/angular-in-depth/integrate-jest-into-an-angular-application-and-library-163b01d977ce)
+
+## Testing (karma and Jasmine)
+
+### Introduction (Karma/Jasmine)
 
 Unit testing is as important as developing a project nowadays and it becomes an integral part of development. It actually boosts the quality of the code and confidence of developers. Unit tests are written in the Jasmine framework and executed by karma, A test runner and these are executed in the browser.
 Sometimes, we write tests before we even start developing which is called TDD. We mostly follow BDD since we are using a jasmine framework.
@@ -722,13 +738,16 @@ describe('EditImageComponent', () => {
 
   beforeEach(async(() => {
     // create spy obj and cast the type to get auto complete on the fn names inside the array
-    imageEditorServiceSpy = jasmine.createSpyObj<ImageEditorService>('ImageEditorService', [
-      'canvasToBlob',
-      'upload',
-      'retryRetrieveDownloadUrls',
-      'createImageFromImageDataUrl',
-      'canvasDraw',
-    ]);
+    imageEditorServiceSpy = jasmine.createSpyObj<ImageEditorService>(
+      'ImageEditorService',
+      [
+        'canvasToBlob',
+        'upload',
+        'retryRetrieveDownloadUrls',
+        'createImageFromImageDataUrl',
+        'canvasDraw',
+      ]
+    );
 
     TestBed.configureTestingModule({
       declarations: [EditImageComponent],
@@ -739,7 +758,10 @@ describe('EditImageComponent', () => {
           useValue: imageEditorServiceSpy,
         },
         { provide: MatBottomSheet, useValue: {} },
-        { provide: MatDialog, useValue: jasmine.createSpyObj('MatDialog', ['open']) },
+        {
+          provide: MatDialog,
+          useValue: jasmine.createSpyObj('MatDialog', ['open']),
+        },
         { provide: AngularFireStorage, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -790,11 +812,15 @@ describe('ImageEditorEditComponent', () => {
   let imageEditorServiceMock: jasmine.SpyObj<ImageEditorService>;
 
   beforeEach(async(() => {
-    imageEditorServiceMock = jasmine.createSpyObj<ImageEditorService>(['imageHandler']);
+    imageEditorServiceMock = jasmine.createSpyObj<ImageEditorService>([
+      'imageHandler',
+    ]);
 
     TestBed.configureTestingModule({
       declarations: [ImageEditorEditComponent],
-      providers: [{ provide: ImageEditorService, useValue: imageEditorServiceMock }],
+      providers: [
+        { provide: ImageEditorService, useValue: imageEditorServiceMock },
+      ],
       // Using NO_ERRORS_SCHEMA to avoid having to include all custom elements
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -1042,7 +1068,10 @@ $theme-warn: mat-palette($mat-red);
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap"
       rel="stylesheet"
     />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
   </head>
   <body class="mat-typography mat-app-background">
     <app-root></app-root>
@@ -1151,7 +1180,12 @@ Overwrites for normal material components should be in a file, ex.: `app/styles/
     <mat-card-content>
       <mat-form-field class="full-width" appearance="standard">
         <mat-label>Email*</mat-label>
-        <input matInput placeholder="email" formControlName="email" type="email" />
+        <input
+          matInput
+          placeholder="email"
+          formControlName="email"
+          type="email"
+        />
         <mat-error *ngIf="controls.email.hasError('required')"
           >Email is <strong>required</strong></mat-error
         >
@@ -1195,10 +1229,20 @@ Overwrites for normal material components should be in a file, ex.: `app/styles/
     </mat-card-content>
 
     <mat-card-actions align="right">
-      <button mat-raised-button type="button" color="warning" [routerLink]="['/']">
+      <button
+        mat-raised-button
+        type="button"
+        color="warning"
+        [routerLink]="['/']"
+      >
         Cancel
       </button>
-      <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">
+      <button
+        mat-raised-button
+        [disabled]="!registerForm.valid"
+        type="submit"
+        color="primary"
+      >
         Register
       </button>
     </mat-card-actions>

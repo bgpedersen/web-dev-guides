@@ -380,9 +380,39 @@ this.translateService
 
 ## Testing (Jest)
 
-### References
+### Jest introduction
 
+- [Official docs](https://jestjs.io/docs/en/api)
+
+What is Jest ?
+
+- Jest is a testing platform, widely adapted by many large companies and swiftly adopted by the React community.
+- Sits on top of Jasmine, so the API is nearly identical.
+- Has all of it’s API documented, along with guides, examples and helpful community on forums like Reactiflux and Stack Overflow.
+- Focuses on Developer Experience (speed and ease of use is the first priority.)
+- Provides meaningful error messages.
+- Runs on Continuous Integration servers without extra tooling (abstracting the DOM with jsdom library.)
+- Provides code coverage out of the box.
+- Integrates with Babel and TypeScript seamlessly.
+- Provides a smart, immersive watch mode.
+
+Why Jest?
+
+- run your Angular tests without a browser
+- run test suite several times faster
+- rerun instantly only tests related to latest code changes
+
+### Setup Jest
+
+Follow any of these guide
+
+- [Testing Angular faster jest](https://www.xfive.co/blog/testing-angular-faster-jest/)
 - [Integrate jest into Angular](https://medium.com/angular-in-depth/integrate-jest-into-an-angular-application-and-library-163b01d977ce)
+- [How do i configure jest to test my angular 8 project](https://itnext.io/how-i-do-configure-jest-to-test-my-angular-8-project-2bd84a21d725)
+
+.. to implement [Jest-preset-angular](https://github.com/thymikee/jest-preset-angular)
+
+See example application [here](https://github.com/thymikee/jest-preset-angular/tree/master/example).
 
 ## Testing (karma and Jasmine)
 

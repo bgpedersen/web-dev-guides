@@ -1657,3 +1657,14 @@ export class LoginRoutingModule {}
 ```
 
 <!-- tabs:end -->
+
+### RxJS operators commonly used in NgRX
+
+- `ofType` = Comes from `Effects`. Used to listens for one or more `Actions`. Only one of the `Actions` needs to be called.
+- `withLatestFrom` = Used on an `Observable` to take the lastest value from the `Observable` and combine current stream value into an array. If used after `ofType` the result will be `[action, state]`
+- `map` = If used in a stream, it will create a new value in the stream
+- `filter` = Can be used as an `if true` check, to continue
+- `switchMap` = Effects subscribes on `actions$`, so `switchMap` changes the subscription to a new inner subscription, for example a HTTP call. `switchMap` will also cancel any inner HTTP calls not done.
+- `mergeMap` = Same as `switchMap` but will not cancel any currently HTTP innner calls.
+- `concatMap` = Used to strictly keep the order of the values in the array, for example using an array of actions, then the actions are sure to be run in that order, making sure the state is correct for the following actions.
+- `combineLatest` = Can be used to make sure a collection og observables are completed. Used example in a resolver, where an action success or fail, needs to be called, and maybe also some data, and then use the data when all is done.

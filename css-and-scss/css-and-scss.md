@@ -38,9 +38,114 @@ body {
 
 - [Writing media-queries with sass mixins](https://itnext.io/writing-media-queries-with-sass-mixins-3ea591ea3ea4)
 
-## CSS GRID
+## CSS GRID / Flexbox
 
 - [Grid Malven - CSS Grid visual web guide](http://grid.malven.co/)
+
+### Moderne layout methods
+
+#### auto vs 1fr
+
+- Auto is same as min-content, meaning only take up size of content
+- 1fr takes up all remaining space
+
+#### auto-fit vs auto-fill
+
+- auto-fit will not expand further than its min-width in minmax
+- auto-fill will always expand to edges, as long as min-width in minmax is not too low
+
+#### centering
+
+```scss
+.parent {
+  display: grid;
+  place-items: center;
+}
+```
+
+#### minmax
+
+```scss
+.parent {
+  display: grid;
+  grid-template-columns: minmax(150px, 25%) 1fr;
+}
+```
+
+#### grid-template one line
+
+```scss
+.parent {
+  display: grid;
+  grid-template: auto 1fr auto / auto 1fr auto;
+
+  .header {
+    grid-column: 1/4;
+  }
+
+  .left-side {
+    grid-column: 1/2;
+  }
+
+  .content {
+    grid-column: 2/3;
+  }
+
+  ...
+}
+```
+
+#### repeat
+
+```scss
+.parent {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+
+  .header {
+    grid-column: 1 / 13;
+  }
+}
+```
+
+#### RAM (Repeat, Auto, Minmax)
+
+```scss
+.parent {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.parent {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+}
+```
+
+#### Line up cards with aligned content and img
+
+```scss
+.parent {
+  height: auto;
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+
+  .img {
+    width: 100%;
+    height: 100px;
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    justify-content: space-between; // makes first and last element always aligned correctly
+  }
+}
+```
 
 ### Preventing a grid blowout
 

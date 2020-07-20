@@ -18,9 +18,9 @@ To install newest version
 npm install -g @angular/cli@latest
 ```
 
-#### Upgrade local angular project
+#### Update angular project
 
-- [Upgrade Angular guide](https://update.angular.io/)
+- [Update Angular guide](https://update.angular.io/)
 
 To see if any Angular dependencies at the current version can be upgrade
 
@@ -32,6 +32,26 @@ Upgrade Angular normally
 
 ```bash
 ng update @angular/cli @angular/core
+```
+
+If there are any dependency errors, then run update for that library, ex. ngrx:
+
+```bash
+ ng update @ngrx/store
+ ng update @angular/cli @angular/core
+```
+
+#### JavaScript Memory Heap problem
+
+Updating a large angular application might give JS memory heap problems. This example uses an update from 9 to 10.
+Roll back just the Angular core and cli versions, migrate only with increased node memory and then update the packages.
+
+Run each step, one at a time:
+
+```bash
+npm i @angular/cli@9 @angular/core@9
+node --max_old_space_size=30000 ./node_modules/@angular/cli/bin/ng update @angular/cli --from 9 --migrate-only
+ng update @angular/core @angular/cli
 ```
 
 ### Share styles

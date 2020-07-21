@@ -10,6 +10,12 @@
 
 - [Beginner's Guide to Interactive Rebasing](https://dev.to/blakedeboer/beginners-guide-to-interactive-rebasing-1ob)
 
+## Remove all files and folder in project not staged etc
+
+```bash
+git clean -xfd
+```
+
 ## GitHub
 
 ### GitHub references

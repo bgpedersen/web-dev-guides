@@ -180,6 +180,39 @@ Using Differential builds, Angular makes a build for es5 for older browsers and 
 - [“Angular and Internet Explorer” by Todd Palmer](https://link.medium.com/CVNNy8Vb54)
 - [“Angular: How to support IE11” by Colum Ferry](https://link.medium.com/IB8fVsyb54)
 
+## Images
+
+### Lazy load images
+
+- [Lazy Load Images in Angular with Two Lines of Code](https://netbasal.com/lazy-load-images-in-angular-with-two-lines-of-code-beb13cd5a1c4)
+
+Using attribute `loading` that can be set to `auto`, `eager` and `layz` will make images load decidered way.
+
+#### Manual lazy load
+
+```html
+<img src="src.png" alt="Angular" loading="lazy" />
+```
+
+#### Automatic lazy load
+
+We check if the browser supports this feature. If that’s the case, we add the loading attribute; Otherwise, we leave the default behavior.
+
+```typescript
+import { Directive, ElementRef } from '@angular/core';
+
+@Directive({ selector: 'img' })
+export class LazyImgDirective {
+  constructor({ nativeElement }: ElementRef<HTMLImageElement>) {
+    const supports = 'loading' in HTMLImageElement.prototype;
+
+    if (supports) {
+      nativeElement.setAttribute('loading', 'lazy');
+    }
+  }
+}
+```
+
 ## Forms
 
 ### Reactive forms
@@ -312,9 +345,7 @@ export class RegisterComponent implements OnInit {
       </button>
     </mat-card-actions>
 
-    <mat-card-footer>
-      * required
-    </mat-card-footer>
+    <mat-card-footer> * required </mat-card-footer>
   </mat-card>
 </form>
 ```
@@ -370,14 +401,10 @@ HTML examples
 
 ```html
 <!-- As content key -->
-<ANY translate>
-  login.email
-</ANY>
+<ANY translate> login.email </ANY>
 
 <!-- As content key with params -->
-<ANY translate [translateParams]="{email: 'world'}">
-  login.email
-</ANY>
+<ANY translate [translateParams]="{email: 'world'}"> login.email </ANY>
 
 <!-- If translation contains html markup -->
 <ANY [innerHTML]="'login.email' | translate"> </ANY>
@@ -1297,9 +1324,7 @@ Overwrites for normal material components should be in a file, ex.: `app/styles/
       </button>
     </mat-card-actions>
 
-    <mat-card-footer>
-      * required
-    </mat-card-footer>
+    <mat-card-footer> * required </mat-card-footer>
   </mat-card>
 </form>
 ```
@@ -1453,9 +1478,7 @@ export class UserComponent implements OnInit {
 
 ```html
 <ul *ngIf="users$ | async as users; else indicator">
-  <li *ngFor="let user of users">
-    {{ user.name }}
-  </li>
+  <li *ngFor="let user of users">{{ user.name }}</li>
 </ul>
 <ng-template #indicator>
   <loading-indicator></loading-indicator>

@@ -16,6 +16,12 @@
 git clean -xfd
 ```
 
+## Create empty commit used to restart CI pipeline
+
+```bash
+git commit -m "Empty commit." --allow-empty
+```
+
 ## GitHub
 
 ### GitHub references

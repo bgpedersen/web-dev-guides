@@ -2,44 +2,55 @@
 
 ## Web Editors
 
--   [Code Sandbox](https://codesandbox.io/)
--   [StackBlitz](https://stackblitz.com/)
+- [Code Sandbox](https://codesandbox.io/)
+- [StackBlitz](https://stackblitz.com/)
 
 ## Visual Studio Code
 
 ### Setup as GIT editor
 
--   [Setup VS Code as GIT editor](https://stackoverflow.com/questions/30024353/how-to-use-visual-studio-code-as-default-editor-for-git)
+- [Setup VS Code as GIT editor](https://stackoverflow.com/questions/30024353/how-to-use-visual-studio-code-as-default-editor-for-git)
 
 ### Extensions
 
 #### Extentions I use (21/4/20)
 
 ```text
-  Angular-BeastCode v8.1.2
+  Angular-BeastCode v10.0.3
+  angular-schematics v4.3.0
   Angular2 v9.1.2
-  AngularMaterial v7.0.1
-  bracket-pair-colorizer-2 v0.0.29
+  AngularMaterial v10.0.0
+  bracket-pair-colorizer-2 v0.2.0
   code-settings-sync v3.4.3
-  code-spell-checker v1.8.0
-  debugger-for-chrome v4.12.6
+  code-spell-checker v1.9.2
+  color-highlight v2.3.0
+  dainty-dark-plus-vscode v1.0.1
+  dainty-vscode v1.1.22
+  debugger-for-chrome v4.12.11
+  dotenv v1.0.1
   gitignore v0.6.0
-  gitlens v10.2.1
-  json-to-ts v1.7.5
-  markdown-all-in-one v2.8.0
-  ng-template v0.901.2
-  NgRxSnippets v0.4.0
-  npm-intellisense v1.3.0
-  prettier-vscode v4.4.0
-  project-manager v10.11.0
-  vscode-icons v10.1.1
-  vscode-markdownlint v0.34.0
+  gitlens v10.2.2
+  indented-block-highlighting v1.0.7
+  jest-snippets v1.8.0
+  markdown-all-in-one v3.3.0
+  ng-template v0.1001.0
+  NgRxSnippets v9.1.0
+  npm-intellisense v1.3.1
+  prettier-vscode v5.7.1
+  project-manager v11.3.0
+  quicktype v12.0.46
+  remote-wsl v0.44.5
+  vscode-docker v1.6.0
+  vscode-icons v11.0.0
+  vscode-jest-runner v0.4.24
+  vscode-markdownlint v0.37.0
   vscode-node-readme v3.0.2
-  vscode-npm-script v0.3.11
-  vscode-readme-pattern v1.2.0
-  vscode-sort-json v1.18.0
+  vscode-npm-script v0.3.13
+  vscode-readme-pattern v1.3.0
+  vscode-sort-json v1.18.1
+  vscode-todo-highlight v1.0.4
   vscode-typescript-tslint-plugin v1.2.3
-  vscode-yaml v0.7.2
+  vscode-yaml v0.11.1
 ```
 
 #### Markdown All in One
@@ -48,7 +59,7 @@ This extension is highly recommended for markup, since it auto updates table of 
 
 #### Markdown
 
--   Markdown auto linting extention [markdownlint by davidanson](https://github.com/DavidAnson/vscode-markdownlint.git)
+- Markdown auto linting extention [markdownlint by davidanson](https://github.com/DavidAnson/vscode-markdownlint.git)
 
 #### Prettier
 
@@ -64,7 +75,7 @@ npm install --save-dev --save-exact prettier
 
 ```json
 {
-    "singleQuote": true
+  "singleQuote": true
 }
 ```
 
@@ -79,8 +90,8 @@ npm install --save-dev tslint-config-prettier
 
 ```json
 {
-    "extends": ["tslint:recommended", "tslint-config-prettier"],
-    "//": "..."
+  "extends": ["tslint:recommended", "tslint-config-prettier"],
+  "//": "..."
 }
 ```
 
@@ -100,19 +111,19 @@ Install `debugger-for-chrome` extension. Press F5 to start. If no launch.json fi
 
 ```json
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "chrome",
-            "request": "launch",
-            "name": "Launch Chrome against localhost",
-            "url": "http://localhost:4200",
-            "webRoot": "${workspaceFolder}"
-        }
-    ]
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome against localhost",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
 }
 ```
 

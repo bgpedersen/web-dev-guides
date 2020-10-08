@@ -15,6 +15,7 @@
 
 - **Tools & Editors**
 
+  - [Chrome Browser](chrome-browser/chrome-browser.md)
   - [Git](git/git.md)
   - [NPM](npm/npm.md)
   - [Images](images/images.md)

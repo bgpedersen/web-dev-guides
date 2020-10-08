@@ -13,7 +13,7 @@
 
 ### Extensions
 
-#### Extentions I use (21/4/20)
+#### Extentions I use (10/2020)
 
 ```text
   Angular-BeastCode v10.0.3

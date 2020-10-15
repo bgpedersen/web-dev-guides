@@ -180,6 +180,28 @@ Using Differential builds, Angular makes a build for es5 for older browsers and 
 - [“Angular and Internet Explorer” by Todd Palmer](https://link.medium.com/CVNNy8Vb54)
 - [“Angular: How to support IE11” by Colum Ferry](https://link.medium.com/IB8fVsyb54)
 
+### Typescript strict mode
+
+To enable typescript strict mode, simply set `"strict": true` in `tsconfig.base.json` - but in existing projects, this will give an overload of errors, thats why you can enable one set of rules at a time:
+
+```json
+{
+  // ...,
+  "compilerOptions": {
+    // a set of cool rules
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    // a shortcut enabling 6 rules above
+    "strict": true
+    // ...
+  }
+}
+```
+
 ## Images
 
 ### Lazy load images

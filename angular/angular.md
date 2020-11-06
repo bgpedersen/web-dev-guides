@@ -1735,3 +1735,33 @@ export class LoginRoutingModule {}
 - `mergeMap` = Same as `switchMap` but will not cancel any currently HTTP innner calls.
 - `concatMap` = Used to strictly keep the order of the values in the array, for example using an array of actions, then the actions are sure to be run in that order, making sure the state is correct for the following actions.
 - `combineLatest` = Can be used to make sure a collection og observables are completed. Used example in a resolver, where an action success or fail, needs to be called, and maybe also some data, and then use the data when all is done.
+
+### NgRx Testing
+
+Testing in NgRx is very easy because the only place in NgRx there is state changes, is in the reducer, and since the reducer are pure functions, the returned result will always be the same.
+
+#### company.reducer.spec.ts
+
+```typescript
+import * as companyActions from './../actions/company.actions';
+import { companyReducer } from './company.reducer';
+
+describe('companyReducer', () => {
+  describe('deleteCompanyActions', ()=> {
+    it('should delete a company', ()=> {
+      const currentState = [
+        { id: 1, name: 'SSW', email: 'email', phone: 123},
+        { id: 2, name: 'Microsoft', email: 'email', phone: 123},
+      ]
+
+      const expetedResult = [{ id: 2, name: 'Microsoft', email: 'email', phone: 123}];
+
+      const action = new companyActions.DeleteCompanySuccessAction(1);
+      const result = companyReducer(currentState, action)M
+
+      expect(result).toEqual(expectedResult);
+    })
+  })
+
+})
+```

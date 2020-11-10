@@ -1,6 +1,20 @@
 # NPM
 
-## Cleanup packages
+## Global packages
+
+To see a list of globally installed packages use
+
+```bash
+npm list -g --depth 0
+```
+
+To remove a global package use
+
+```bash
+npm uninstall -g moment
+```
+
+## Remove not listed packages
 
 Remove packages not listed in package.json
 

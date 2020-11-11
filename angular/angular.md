@@ -41,6 +41,13 @@ If there are any dependency errors, then run update for that library, ex. ngrx:
  ng update @angular/cli @angular/core
 ```
 
+#### Angular build/serve freezes/fails/stuc without logical errors
+
+- uninstall `node-sass` lib from package.json if installed. () This lib is huge, slow and can create a performance hit in JS processes)
+- install `sass` (it should be optional, since Angular uses this by default from `@angular-devkit/build-angular` since v7, but then it displays to the developer which tools is used for scss files compilation)
+- install `fibers` to handle and avoid performance hit when build/serve
+- run `npm ci` to make sure everything is clean installed
+
 #### JavaScript Memory Heap problem
 
 Updating a large angular application might give JS memory heap problems. This example uses an update from 9 to 10.

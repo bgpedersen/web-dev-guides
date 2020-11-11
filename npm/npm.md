@@ -1,5 +1,13 @@
 # NPM
 
+## Node_module Clean Install
+
+To remove node modules and install again, run npm (ci = clean install)
+
+```bash
+npm ci
+```
+
 ## Global packages
 
 To see a list of globally installed packages use

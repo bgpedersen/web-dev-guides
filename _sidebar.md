@@ -5,7 +5,7 @@
   - [CSS and SCSS](css-and-scss/css-and-scss.md)
   - [HTML](html/html.md)
   - [Bash](bash/bash.md)
-  - [JSON](json/json.md)
+  - [JSON & APIs](json/json.md)
   - [Markdown](markdown/markdown.md)
 
 - **Frameworks**

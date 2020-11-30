@@ -209,6 +209,27 @@ To enable typescript strict mode, simply set `"strict": true` in `tsconfig.base.
 }
 ```
 
+### Shortcut / hotkey listener
+
+Shortcut listener is very easy to create, using angular pseudo events. Create it for example in a directory, and add that directory to you host element.
+
+- Link: [Angular Pseudo Events](https://medium.com/claritydesignsystem/angular-pseudo-events-d4e7f89247ee)
+
+```typescript
+import { Directive, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appKeyboardShortcuts]',
+})
+export class KeyboardShortcutsDirective {
+  @HostListener('document:keydown.ctrl.f', ['$event'])
+  activated(event: KeyboardEvent) {
+    event.preventDefault();
+    console.log('hit');
+  }
+}
+```
+
 ## Images
 
 ### Lazy load images

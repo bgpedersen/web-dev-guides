@@ -1,5 +1,7 @@
 # Angular
 
+- [Angular Roadmap](https://angular.io/guide/roadmap)
+
 ## Architecture
 
 ### Upgrade/update Angular

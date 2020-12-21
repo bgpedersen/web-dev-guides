@@ -106,7 +106,7 @@ a{2,}            matches at least 2 consecutive `a` characters.
 
 - Native js
 - Luxon
-- date-fns (seems to offer best size, funtionality and locales, but its functional and not OOP)
+- [date-fns](https://date-fns.org/) (seems to offer best size, funtionality and locales, but its functional and not OOP)
 - dayjs
 
 See full description and comparisons: [You Dont Need Momentjs](https://github.com/you-dont-need/You-Dont-Need-Momentjs)
@@ -275,7 +275,9 @@ retry = (fn, times, delay) => {
           .catch((e) => {
             times--;
             error = e;
-            console.error(`${times} attempts left. Error: ${JSON.stringify(error)}`);
+            console.error(
+              `${times} attempts left. Error: ${JSON.stringify(error)}`
+            );
             setTimeout(() => {
               attempt();
             }, delay);

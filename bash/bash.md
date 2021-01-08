@@ -65,4 +65,12 @@ Now you can write `clean_branches` from your git terminal :)
 
 ## Rename all to Kebabcase
 
--   [Rename folders and files to Kebabcase](https://github.com/kcjmowright/rename-2-kebabcase)
+- [Rename folders and files to Kebabcase](https://github.com/kcjmowright/rename-2-kebabcase)
+
+## Search command history previously used
+
+This works in both Bash and Powershell terminals
+
+- [Read more](https://serverfault.com/questions/891265/how-to-search-powershell-command-history-from-previous-sessions)
+
+When in terminal pressing `ctrl` + `r` and start typing to search backwards in history interactively. This matches text from anywhere in the command line. Press `ctrl`+ `r` again to find next match. You can use `ctrl`+ `s` to go back.

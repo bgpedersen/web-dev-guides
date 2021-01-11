@@ -1795,3 +1795,9 @@ describe('companyReducer', () => {
 
 })
 ```
+
+## Server Side Rendering (SSR)
+
+To avoid flickering on page load for SSR applications, it is important to cache get requests, so they are not made on both the server and then again on the client, rerendering the page that was already rendered on the server. Read more here:
+
+- [Angular Server Side Rendering State Transfer For HTTP Requests](https://hackernoon.com/angular-server-side-rendering-state-transfer-for-http-requests-wu263t3h)

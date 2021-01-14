@@ -1,8 +1,27 @@
 # NPM
 
-## Node_module Clean Install
+## Setting variables in npm scripts for different environments (mac, windows etc.)
 
-To remove node modules and install again, run npm (ci = clean install)
+- cross-env [link](https://www.npmjs.com/package/cross-env)
+
+cross-env makes it so you can have a single command without worrying about setting or using the environment variable properly for the platform. Just set it like you would if it's running on a POSIX system, and cross-env will take care of setting it properly.
+
+It's not just for less code, it's also to protect against weird errors, such as since set variable will create a space in the end on mac, therefor make wrong url if using the manual seperate way.
+
+Real world example:
+
+```json
+    # old seperate
+    "build:windows": "set DEPLOY_URL=%npm_config_deploy_url% && ng build --configuration=production --no-progress --deploy-url %npm_config_deploy_url% && ng build elements --configuration=production --no-progress",
+    "build:mac": "DEPLOY_URL=$npm_config_deploy_url ng build --configuration=production --no-progress --deploy-url $npm_config_deploy_url && ng build elements --configuration=production --no-progress",
+
+    # new combined
+    "build": "cross-env DEPLOY_URL=%npm_config_deploy_url% ng build --configuration=production --no-progress --deploy-url %npm_config_deploy_url% && ng build elements --configuration=production --no-progress",
+```
+
+## Node_module Clean Install (normally used by devops pipeline, but can be used locally)
+
+Remove node modules, install again, not updating package.lock: run npm (ci = clean install)
 
 ```bash
 npm ci
@@ -38,7 +57,7 @@ Open repository home on github
 npm repo your-package
 ```
 
-## Updating
+## Versions and Updating
 
 Always check the `CHANGELOG.md` of a repository before upgrading. Using `npm repo your-package` to get to it fast.
 

@@ -1561,6 +1561,69 @@ Reactive State for Angular
 - [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)
 - [tomastrajan/angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter)
 
+#### Example 1: Chained observables using previous values
+
+```typescript
+applyContactRulesForTagSuggestions$ = createEffect(() =>
+  this._actions$.pipe(
+    ofType<ChangeCardContact>(CardActionTypes.CHANGE_CARD_CONTACT),
+    withLatestFrom(this._vipSupportStore),
+    filter(
+      ([action, state]) =>
+        !!action.payload.contactGuid.value && state.fileCard.lines?.length === 1
+    ),
+    switchMap(([action, state]) =>
+      this._cardApi
+        .getContactRules(
+          state.fileCard.organizationId,
+          action.payload.contactGuid.value
+        )
+        .pipe(
+          switchMap((contactRules) =>
+            this._crowderApi
+              .getTagSuggestions(
+                state.fileCard.organizationId,
+                contactRules.lines[0].crowderTag.value as string,
+                action.payload.selectedContact.regionKey
+              )
+              .pipe(
+                switchMap((tagSuggestions) => {
+                  if (contactRules.lines?.[0]?.crowderTag?.ruleId) {
+                    return [
+                      new GetCardContactRulesSuccess(),
+                      new AddCrowderTagToLine({
+                        index: 0,
+                        tag: {
+                          tagName: contactRules.lines[0].crowderTag
+                            .value as string,
+                          tagLabel: `#${contactRules.lines[0].crowderTag.value}`,
+                          suggestions: tagSuggestions[0].suggestions,
+                        },
+                        crowderTag: `#${contactRules.lines[0].crowderTag.value}`,
+                      }),
+                      new UpdateLineAccount({
+                        index: 0,
+                        accountId: contactRules.lines[0].accountId
+                          .value as number,
+                      }),
+                      new UpdateLineVatCode({
+                        index: 0,
+                        vatCode: contactRules.lines[0].vatCode.value as string,
+                      }),
+                    ];
+                  } else {
+                    return [new GetCardContactRulesSuccess()];
+                  }
+                })
+              )
+          ),
+          catchError(() => of(new GetCardContactRulesFailed()))
+        )
+    )
+  )
+);
+```
+
 ### NgRx update
 
 ```bash

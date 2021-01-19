@@ -21,13 +21,24 @@ Real world example:
 
 ## Node_module Clean Install (normally used by devops pipeline, but can be used locally)
 
-Remove node modules, install again, not updating package.lock: run npm (ci = clean install)
+It is different from npm install in the following ways —
+
+- It installs the exact version of the package that is mentioned in the package-lock.json file.
+  Removes the existing node_modules and runs a fresh installation.
+- It won’t write to package.json or lock file.
+- It doesn’t install individual packages similar to npm install.
 
 ```bash
 npm ci
 ```
 
-## Global packages
+## Installed packages
+
+List all the installed packages
+
+```bash
+npm list --depth=1
+```
 
 To see a list of globally installed packages use
 
@@ -74,6 +85,10 @@ List current packages and new versions. If `Current` and `Wanted` is different, 
 
 ```bash
 npm outdated
+
+#or to get more info
+
+npm outdated --long
 ```
 
 ![npm update](../_media/npm-update.png)
@@ -105,3 +120,75 @@ npx npm-update-all
 ## NPM trends
 
 See [NPM Trends](https://www.npmtrends.com) for npm trends.
+
+## Other useful npm commands
+
+### Quickly generate package.json
+
+```bash
+npm init -y
+```
+
+### Install multiple packages having the same prefix
+
+```bash
+npm i eslint-{plugin-import,plugin-react,loader} express
+```
+
+### NPM custom scripts
+
+`npm run` command shows all the scripts that we have defined in our package.json
+
+- We can run multiple scripts using `&&`. Both the scripts run in series i.e one after the other.
+- We can also run multiple scripts in parallel using `&`.
+
+### Lists all the npm environment variables present in our package
+
+We can also access the env variables in our code by process.env.npm_package_name and similarly other variables.
+
+```bash
+  npm run env
+```
+
+We can pass our own variables as npm environment variables with the npm*package_config* prefix by defining them in package.json file under config object. Let’s define the variable myvariable in our package.json file.
+
+```json
+"config": {
+    "myvariable": "Hello World"
+},
+```
+
+Find it with `npm run env | grep npm_package_config_` and see `npm_package_config_myvariable=Hello World`
+
+Use the variable in a script: `echo-myvariable echo $npm_package_config_myvariable`
+
+### Check our environment
+
+We can use npm doctor command to run multiple checks on our environment like, whether our npm CLI has sufficient permissions to install the javascript packages and it is able to connect to the npm registry. It also checks for node and npm versions, validates cache for any corrupt packages.
+
+```bash
+npm doctor
+```
+
+### Install a package from other sources
+
+```bash
+# Install a component from Bit (set Bit as a scoped registry)
+npm config set @bit:registry https://node.bit.dev
+npm i @bit/username.collection.component
+
+# Install from tarball stored locally
+npm i ./local-tarball-package.tgz
+
+# Install tarball package from internet
+npm i https://abc/xyz/package.tar.gz
+
+# Install from github repo
+npm i githubuser/reponame
+
+# Install from bitbucket repo
+npm i bitbucket:bitbucketuser/reponame
+
+# Install from gist
+npm i gist:gistID
+```

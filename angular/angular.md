@@ -1820,6 +1820,8 @@ export class LoginRoutingModule {}
 
 ### RxJS operators commonly used in NgRX
 
+- Article explaining mergemap, switchmap, concatmap and exhaustmap: <https://medium.com/javascript-in-plain-english/what-is-the-difference-between-mergemap-switchmap-concatmap-and-exhaustmap-173bde3de7e9>
+
 - `ofType` = Comes from `Effects`. Used to listens for one or more `Actions`. Only one of the `Actions` needs to be called.
 - `withLatestFrom` = Used on an `Observable` to take the lastest value from the `Observable` and combine current stream value into an array. If used after `ofType` the result will be `[action, state]`
 - `map` = If used in a stream, it will create a new value in the stream

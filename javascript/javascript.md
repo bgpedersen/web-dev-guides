@@ -294,3 +294,42 @@ use like so:
 ```javascript
 await retry(someAsyncFunction, 5, 2000);
 ```
+
+## Retry function
+
+This retry function is created in Cypress, but the general theory is the same across languages.
+
+```javascript
+Cypress.Commands.add('getCardRetry', (orgId, fileguid) => {
+  let retries = -1;
+
+  function makeRequest() {
+    retries++;
+    return cy
+      .request(
+        `/api/workflows/admin/cards?assigneeType=VipSupporter&state=Open&organizationIds=${orgId}`
+      )
+      .then(({ body }) => {
+        let card = body.find((card) => card.fileGuid === fileguid);
+
+        try {
+          expect(card, 'card should exist in cards by fileguid from testdata')
+            .to.be.ok;
+          expect(card.ocrData, 'card should have OCR data').to.be.ok;
+        } catch (err) {
+          if (retries > 10)
+            throw new Error(
+              `getCardRetry: retried too many times (${--retries}). Card or OCR data doesn't exists`
+            );
+          cy.wait(2000);
+
+          return makeRequest();
+        }
+
+        return card;
+      });
+  }
+
+  return makeRequest();
+});
+```

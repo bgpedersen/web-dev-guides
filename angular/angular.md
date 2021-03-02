@@ -1866,3 +1866,41 @@ describe('companyReducer', () => {
 To avoid flickering on page load for SSR applications, it is important to cache get requests, so they are not made on both the server and then again on the client, rerendering the page that was already rendered on the server. Read more here:
 
 - [Angular Server Side Rendering State Transfer For HTTP Requests](https://hackernoon.com/angular-server-side-rendering-state-transfer-for-http-requests-wu263t3h)
+
+## Build configuration - deploy url
+
+For building angular app, you can set --deploy-url to specify an absolute or relative url for assets.
+It can be set directly or as a node variable:
+
+```json
+ "build": "cross-env ng build --configuration=production --deploy-url %npm_config_deploy_url%"
+```
+
+Assets that should be used are set in `angular.json` - default path is set to assets. But a custom path could be `/content`
+
+```json
+ "assets": [
+  {
+    "glob": "**/*",
+    "input": "src/content",
+    "output": "/content"
+  },
+```
+
+To use the images from this assets path together with the `deploy-url` use as such:
+
+**HTML (has to use angular.json path to assets)**
+
+```html
+<img alt="flag" src="content/img/purchase-voucher/dk-flag.svg" />
+```
+
+**SCSS (has to use relativ path)**
+
+```scss
+.img {
+  background-image: url('../../../content/img/purchase-voucher/dk-flag.svg');
+  height: 100px;
+  width: 100px;
+}
+```

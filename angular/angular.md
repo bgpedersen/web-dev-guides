@@ -1869,11 +1869,12 @@ To avoid flickering on page load for SSR applications, it is important to cache 
 
 ## Build configuration - deploy url
 
-For building angular app, you can set --deploy-url to specify an absolute or relative url for assets.
-It can be set directly or as a node variable:
+For building angular app that points to assets on a different path than the web URL, you can set --deploy-url and a node var etc. DEPLOY_URL to specify an absolute or relative url for assets.
+
+Set it in the npm script:
 
 ```json
- "build": "cross-env ng build --configuration=production --deploy-url %npm_config_deploy_url%"
+    "build": "cross-env DEPLOY_URL=%npm_config_deploy_url% ng build --deploy-url %npm_config_deploy_url%",
 ```
 
 Assets that should be used are set in `angular.json` - default path is set to assets. But a custom path could be `/content`
@@ -1889,13 +1890,38 @@ Assets that should be used are set in `angular.json` - default path is set to as
 
 To use the images from this assets path together with the `deploy-url` use as such:
 
-**HTML (has to use angular.json path to assets)**
+**HTML**
+HTML is used by angular compiler when building, so it needs to be set via ts or a pipe, using the node variable
 
-```html
-<img alt="flag" src="content/img/purchase-voucher/dk-flag.svg" />
+```ts
+declare var DEPLOY_URL: string;
+
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'srcPipe',
+})
+export class SrcPipe implements PipeTransform {
+  transform(srcUrl: string): string {
+    return `${DEPLOY_URL ? DEPLOY_URL : '/'}${srcUrl}`;
+  }
+}
 ```
 
-**SCSS (has to use relativ path)**
+and then used in HTML
+
+```html
+<img
+  [src]="
+    'content/img/show_icon_eye.png'
+        | srcPipe
+    "
+/>
+```
+
+**SCSS**
+
+SCSS files are compiled by webpack by fileloader, so the path will be compiled correctly, when referencing by relative url.
 
 ```scss
 .img {

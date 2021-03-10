@@ -74,3 +74,11 @@ This works in both Bash and Powershell terminals
 - [Read more](https://serverfault.com/questions/891265/how-to-search-powershell-command-history-from-previous-sessions)
 
 When in terminal pressing `ctrl` + `r` and start typing to search backwards in history interactively. This matches text from anywhere in the command line. Press `ctrl`+ `r` again to find next match. You can use `ctrl`+ `s` to go back.
+
+## Make a localhost certificate
+
+To make a valid localhost certificate to use SSL on `https://localhost` go to your projects root dir and type following:
+
+```bash
+mkcert localhost
+```

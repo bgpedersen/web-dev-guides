@@ -9,3 +9,9 @@
 3. In that tab, select and check the box for Emulate Media: print.
 
 ![Emulate print](https://i.stack.imgur.com/mV2ra.png)
+
+## How to gain access to HTTP domains without force redirecting to HTTPS
+
+1. Go to chrome://net-internals/#hsts
+2. Enter your url, example `3rdrevolution.com` under Delete domain security policies and press the Delete button.
+3. Now go to chrome://settings/clearBrowserData, tick the box Cached images and files and press click the button Clear data.

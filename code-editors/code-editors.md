@@ -128,3 +128,86 @@ Install `debugger-for-chrome` extension. Press F5 to start. If no launch.json fi
 ```
 
 If you want to make `attach` to Chrome, you need to add `--remote-debugging-port=9222` to a Chrome shortcut. This might make your chrome login not being able to sync because testing is not allowed, so better to make a copy of your chrome shortcut, and add it here with no profile login.
+
+### Make popup with recommended extentions for workspace installation
+
+You can make a popup suggestion to install recommended vs code extentions for the workspace by creating a `.vscode` folder with a `extentions.json` file. In this file, just at a recommendations array with the names of the plugin.
+
+![recommended extentions](../_media/recommended_extentions.png)
+
+### Make workspace vs code settings
+
+In `.vscode` folder, make a `settings.json` file, with for example:
+
+```json
+{
+  "angular.enable-experimental-ivy-prompt": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.tslint": true,
+    "source.organizeImports": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "files.exclude": {
+    "bin/": true,
+    "obj/": true,
+    "*.user": true,
+    "*.csproj": true
+  },
+  "search.exclude": {
+    "**/node_modules/": true,
+    "dist/": true
+  },
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
+```
+
+## Make vs code tasks
+
+To make tasks, that can run terminal commands easy with `Terminal->Tasks` or by `F1->Tasks: Run tasks` you can create in `.vscode` folder a `tasks.json` with for example:
+
+```json
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Compile Solution",
+      "type": "shell",
+      "command": "npm run build:workbox",
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Frontend Local",
+      "type": "shell",
+      "command": "npm run start:local",
+      "presentation": {
+        "group": "workbox",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start Elements Local",
+      "type": "shell",
+      "command": "npm run start:elements",
+      "presentation": {
+        "group": "workbox",
+        "panel": "dedicated"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Start WorkBox Local",
+      "dependsOn": ["Start Frontend Local", "Start Elements Local"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Generate Certificate",
+      "type": "shell",
+      "command": "mkcert localhost",
+      "problemMatcher": []
+    }
+  ]
+}
+```

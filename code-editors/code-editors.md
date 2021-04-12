@@ -211,3 +211,9 @@ To make tasks, that can run terminal commands easy with `Terminal->Tasks` or by 
   ]
 }
 ```
+
+## Automatically exlude folders from search
+
+In `.vscode\settings.json` you can add files to be excluded from searches, when toggling "Use exlude settings and Ignore files" when searching.
+
+![exclude search](../_media/search_exclude.jpg);

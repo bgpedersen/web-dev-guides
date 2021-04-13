@@ -13,5 +13,6 @@
 ## How to gain access to HTTP domains without force redirecting to HTTPS
 
 1. Go to chrome://net-internals/#hsts
-2. Enter your url, example `3rdrevolution.com` under Delete domain security policies and press the Delete button.
-3. Now go to chrome://settings/clearBrowserData, tick the box Cached images and files and press click the button Clear data.
+2. Enter your url, example `localhost` under Delete domain security policies and press the Delete button.
+3. Go to your localhost:4200 or whatever, and refresh.
+4. Obs: You might need to go to chrome://settings/clearBrowserData, tick the box Cached images and files and press click the button Clear data.

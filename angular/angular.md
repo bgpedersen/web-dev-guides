@@ -270,6 +270,7 @@ export class LazyImgDirective {
 ### Reactive forms
 
 - [Reactive Forms](https://angular.io/guide/reactive-forms)
+- [Dynamic Nested Forms](https://stackblitz.com/edit/pjlamb12-form-array-example-inv5mh?file=src/app/app.component.ts)
 
 ?> **Use FormBuilder service** Creating form control instances manually can become repetitive when dealing with multiple forms. The FormBuilder service provides convenient methods for generating controls.
 

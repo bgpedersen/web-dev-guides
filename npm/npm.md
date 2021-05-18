@@ -1,5 +1,9 @@
 # NPM
 
+## Node versions and their bundled NPM versions
+
+- [link](https://nodejs.org/en/download/releases/)
+
 ## Setting variables in npm scripts for different environments (mac, windows etc.)
 
 - cross-env [link](https://www.npmjs.com/package/cross-env)

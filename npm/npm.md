@@ -2,7 +2,8 @@
 
 ## Node versions and their bundled NPM versions
 
-- [link](https://nodejs.org/en/download/releases/)
+- [node and npm verions bundles](https://nodejs.org/en/download/releases/)
+- [released and life spans](https://nodejs.org/en/about/releases/)
 
 ## Setting variables in npm scripts for different environments (mac, windows etc.)
 

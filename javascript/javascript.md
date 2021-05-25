@@ -104,10 +104,10 @@ a{2,}            matches at least 2 consecutive `a` characters.
 
 ### Moment alternatives
 
+- [dayjs](https://day.js.org/docs/en/installation/typescript) this library is very small and uses same function namings as Moment
+- [date-fns](https://date-fns.org/) (seems to offer best size, funtionality and locales, but its functional and not OOP)
 - Native js
 - Luxon
-- [date-fns](https://date-fns.org/) (seems to offer best size, funtionality and locales, but its functional and not OOP)
-- dayjs
 
 See full description and comparisons: [You Dont Need Momentjs](https://github.com/you-dont-need/You-Dont-Need-Momentjs)
 

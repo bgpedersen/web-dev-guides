@@ -37,6 +37,14 @@ It is different from npm install in the following ways —
 npm ci
 ```
 
+## Check dependencies of a certain package
+
+Example check all packages dependent on Webpack
+
+```bash
+npm list webpack
+```
+
 ## Installed packages
 
 List all the installed packages

@@ -282,9 +282,7 @@ export class RegisterComponent implements OnInit {
       </button>
     </mat-card-actions>
 
-    <mat-card-footer>
-      * required
-    </mat-card-footer>
+    <mat-card-footer> * required </mat-card-footer>
   </mat-card>
 </form>
 ```
@@ -340,14 +338,10 @@ HTML examples
 
 ```html
 <!-- As content key -->
-<ANY translate>
-  login.email
-</ANY>
+<ANY translate> login.email </ANY>
 
 <!-- As content key with params -->
-<ANY translate [translateParams]="{email: 'world'}">
-  login.email
-</ANY>
+<ANY translate [translateParams]="{email: 'world'}"> login.email </ANY>
 
 <!-- If translation contains html markup -->
 <ANY [innerHTML]="'login.email' | translate"> </ANY>
@@ -1195,17 +1189,13 @@ Overwrites for normal material components should be in a file, ex.: `app/styles/
     </mat-card-content>
 
     <mat-card-actions align="right">
-      <button mat-raised-button type="button" color="warning" [routerLink]="['/']">
-        Cancel
-      </button>
+      <button mat-raised-button type="button" color="warning" [routerLink]="['/']">Cancel</button>
       <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">
         Register
       </button>
     </mat-card-actions>
 
-    <mat-card-footer>
-      * required
-    </mat-card-footer>
+    <mat-card-footer> * required </mat-card-footer>
   </mat-card>
 </form>
 ```
@@ -1245,6 +1235,7 @@ mat-card-footer {
 
 ### RxJS references
 
+- [Understanding RxJS (Medium)](https://medium.com/in-depth-angular/rxjs-cheat-sheet-9a1ae72153b4)
 - [Learn RxJS](https://www.learnrxjs.io/)
 - [RxJS Official](https://rxjs.dev/)
 - [RxJS Interactive diagrams](https://rxmarbles.com/)
@@ -1357,9 +1348,7 @@ export class UserComponent implements OnInit {
 
 ```html
 <ul *ngIf="users$ | async as users; else indicator">
-  <li *ngFor="let user of users">
-    {{ user.name }}
-  </li>
+  <li *ngFor="let user of users">{{ user.name }}</li>
 </ul>
 <ng-template #indicator>
   <loading-indicator></loading-indicator>

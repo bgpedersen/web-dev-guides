@@ -2,6 +2,8 @@
 
 A collection of web development guides by _Bjarne Gerhardt-Pedersen_
 
+If you are not at the Website already - Click link [HERE](https://bgpedersen.github.io/web-dev-guides)
+
 ## About
 
 ![Bjarne Gerhardt-Pedersen](./_media/bgp_small.png)

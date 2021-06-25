@@ -10,6 +10,28 @@
 
 - [Beginner's Guide to Interactive Rebasing](https://dev.to/blakedeboer/beginners-guide-to-interactive-rebasing-1ob)
 
+## Git Stash
+
+Git stash can be used, to stash changes in a branch instead of a commit, and be able to apply thoese changes later, to any branch.
+
+- To stash uncomitted changes: `git stash push -m "my_stash"`
+- To see list of stashes: `git stash list`
+- To apply a stash `git stash apply stash@{n}` or `git stash apply n`
+- To apply a stash and remove it from stash `git stash pop stash@{n}` or `git stash pop n`
+- To remove a stash: `git stash drop stash@{n}` or `git stash drop n`
+
+## Remove all files and folder in project not staged etc
+
+```bash
+git clean -xfd
+```
+
+## Create empty commit used to restart CI pipeline
+
+```bash
+git commit -m "Empty commit." --allow-empty
+```
+
 ## GitHub
 
 ### GitHub references

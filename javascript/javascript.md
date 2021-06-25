@@ -104,10 +104,10 @@ a{2,}            matches at least 2 consecutive `a` characters.
 
 ### Moment alternatives
 
+- [dayjs](https://day.js.org/docs/en/installation/typescript) this library is very small and uses same function namings as Moment
+- [date-fns](https://date-fns.org/) (seems to offer best size, funtionality and locales, but its functional and not OOP)
 - Native js
 - Luxon
-- date-fns (seems to offer best size, funtionality and locales, but its functional and not OOP)
-- dayjs
 
 See full description and comparisons: [You Dont Need Momentjs](https://github.com/you-dont-need/You-Dont-Need-Momentjs)
 
@@ -275,7 +275,9 @@ retry = (fn, times, delay) => {
           .catch((e) => {
             times--;
             error = e;
-            console.error(`${times} attempts left. Error: ${JSON.stringify(error)}`);
+            console.error(
+              `${times} attempts left. Error: ${JSON.stringify(error)}`
+            );
             setTimeout(() => {
               attempt();
             }, delay);
@@ -291,4 +293,43 @@ use like so:
 
 ```javascript
 await retry(someAsyncFunction, 5, 2000);
+```
+
+## Retry function
+
+This retry function is created in Cypress, but the general theory is the same across languages.
+
+```javascript
+Cypress.Commands.add('getCardRetry', (orgId, fileguid) => {
+  let retries = -1;
+
+  function makeRequest() {
+    retries++;
+    return cy
+      .request(
+        `/api/workflows/admin/cards?assigneeType=VipSupporter&state=Open&organizationIds=${orgId}`
+      )
+      .then(({ body }) => {
+        let card = body.find((card) => card.fileGuid === fileguid);
+
+        try {
+          expect(card, 'card should exist in cards by fileguid from testdata')
+            .to.be.ok;
+          expect(card.ocrData, 'card should have OCR data').to.be.ok;
+        } catch (err) {
+          if (retries > 10)
+            throw new Error(
+              `getCardRetry: retried too many times (${--retries}). Card or OCR data doesn't exists`
+            );
+          cy.wait(2000);
+
+          return makeRequest();
+        }
+
+        return card;
+      });
+  }
+
+  return makeRequest();
+});
 ```

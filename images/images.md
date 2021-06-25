@@ -15,3 +15,4 @@
 
 - [Fotor](https://www.fotor.com/)
 - [Image Compressor](Imagecompressor.com)
+- [Squoosh - Very effective online image compresser with easy interface](https://squoosh.app/)

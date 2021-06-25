@@ -1,5 +1,7 @@
 # Angular
 
+- [Angular Roadmap](https://angular.io/guide/roadmap)
+
 ## Architecture
 
 ### Upgrade/update Angular
@@ -18,9 +20,9 @@ To install newest version
 npm install -g @angular/cli@latest
 ```
 
-#### Upgrade local angular project
+#### Update angular project
 
-- [Upgrade Angular guide](https://update.angular.io/)
+- [Update Angular guide](https://update.angular.io/)
 
 To see if any Angular dependencies at the current version can be upgrade
 
@@ -32,6 +34,33 @@ Upgrade Angular normally
 
 ```bash
 ng update @angular/cli @angular/core
+```
+
+If there are any dependency errors, then run update for that library, ex. ngrx:
+
+```bash
+ ng update @ngrx/store
+ ng update @angular/cli @angular/core
+```
+
+#### Angular build/serve freezes/fails/stuc without logical errors
+
+- uninstall `node-sass` lib from package.json if installed. () This lib is huge, slow and can create a performance hit in JS processes)
+- install `sass` (it should be optional, since Angular uses this by default from `@angular-devkit/build-angular` since v7, but then it displays to the developer which tools is used for scss files compilation)
+- install `fibers` to handle and avoid performance hit when build/serve
+- run `npm ci` to make sure everything is clean installed
+
+#### JavaScript Memory Heap problem
+
+Updating a large angular application might give JS memory heap problems. This example uses an update from 9 to 10.
+Roll back just the Angular core and cli versions, migrate only with increased node memory and then update the packages.
+
+Run each step, one at a time:
+
+```bash
+npm i @angular/cli@9 @angular/core@9
+node --max_old_space_size=30000 ./node_modules/@angular/cli/bin/ng update @angular/cli --from 9 --migrate-only
+ng update @angular/core @angular/cli
 ```
 
 ### Share styles
@@ -160,11 +189,88 @@ Using Differential builds, Angular makes a build for es5 for older browsers and 
 - [“Angular and Internet Explorer” by Todd Palmer](https://link.medium.com/CVNNy8Vb54)
 - [“Angular: How to support IE11” by Colum Ferry](https://link.medium.com/IB8fVsyb54)
 
+### Typescript strict mode
+
+To enable typescript strict mode, simply set `"strict": true` in `tsconfig.base.json` - but in existing projects, this will give an overload of errors, thats why you can enable one set of rules at a time:
+
+```json
+{
+  // ...,
+  "compilerOptions": {
+    // a set of cool rules
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    // a shortcut enabling 6 rules above
+    "strict": true
+    // ...
+  }
+}
+```
+
+### Shortcut / hotkey listener
+
+Shortcut listener is very easy to create, using angular pseudo events. Create it for example in a directory, and add that directory to you host element.
+
+- Link: [Angular Pseudo Events](https://medium.com/claritydesignsystem/angular-pseudo-events-d4e7f89247ee)
+
+```typescript
+import { Directive, HostListener } from '@angular/core';
+
+@Directive({
+  selector: '[appKeyboardShortcuts]',
+})
+export class KeyboardShortcutsDirective {
+  @HostListener('document:keydown.ctrl.f', ['$event'])
+  activated(event: KeyboardEvent) {
+    event.preventDefault();
+    console.log('hit');
+  }
+}
+```
+
+## Images
+
+### Lazy load images
+
+- [Lazy Load Images in Angular with Two Lines of Code](https://netbasal.com/lazy-load-images-in-angular-with-two-lines-of-code-beb13cd5a1c4)
+
+Using attribute `loading` that can be set to `auto`, `eager` and `layz` will make images load decidered way.
+
+#### Manual lazy load
+
+```html
+<img src="src.png" alt="Angular" loading="lazy" />
+```
+
+#### Automatic lazy load
+
+We check if the browser supports this feature. If that’s the case, we add the loading attribute; Otherwise, we leave the default behavior.
+
+```typescript
+import { Directive, ElementRef } from '@angular/core';
+
+@Directive({ selector: 'img' })
+export class LazyImgDirective {
+  constructor({ nativeElement }: ElementRef<HTMLImageElement>) {
+    const supports = 'loading' in HTMLImageElement.prototype;
+
+    if (supports) {
+      nativeElement.setAttribute('loading', 'lazy');
+    }
+  }
+}
+```
+
 ## Forms
 
 ### Reactive forms
 
 - [Reactive Forms](https://angular.io/guide/reactive-forms)
+- [Dynamic Nested Forms](https://stackblitz.com/edit/pjlamb12-form-array-example-inv5mh?file=src/app/app.component.ts)
 
 ?> **Use FormBuilder service** Creating form control instances manually can become repetitive when dealing with multiple forms. The FormBuilder service provides convenient methods for generating controls.
 
@@ -233,7 +339,12 @@ export class RegisterComponent implements OnInit {
     <mat-card-content>
       <mat-form-field class="full-width" appearance="standard">
         <mat-label>Email*</mat-label>
-        <input matInput placeholder="email" formControlName="email" type="email" />
+        <input
+          matInput
+          placeholder="email"
+          formControlName="email"
+          type="email"
+        />
         <mat-error *ngIf="controls.email.hasError('required')"
           >Email is <strong>required</strong></mat-error
         >
@@ -277,7 +388,12 @@ export class RegisterComponent implements OnInit {
     </mat-card-content>
 
     <mat-card-actions align="right">
-      <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">
+      <button
+        mat-raised-button
+        [disabled]="!registerForm.valid"
+        type="submit"
+        color="primary"
+      >
         Register
       </button>
     </mat-card-actions>
@@ -362,9 +478,45 @@ this.translateService
   });
 ```
 
-## Testing
+## Testing (Jest)
 
-### Introduction
+### Jest introduction
+
+- [Official docs](https://jestjs.io/docs/en/api)
+
+What is Jest ?
+
+- Jest is a testing platform, widely adapted by many large companies and swiftly adopted by the React community.
+- Sits on top of Jasmine, so the API is nearly identical.
+- Has all of it’s API documented, along with guides, examples and helpful community on forums like Reactiflux and Stack Overflow.
+- Focuses on Developer Experience (speed and ease of use is the first priority.)
+- Provides meaningful error messages.
+- Runs on Continuous Integration servers without extra tooling (abstracting the DOM with jsdom library.)
+- Provides code coverage out of the box.
+- Integrates with Babel and TypeScript seamlessly.
+- Provides a smart, immersive watch mode.
+
+Why Jest?
+
+- run your Angular tests without a browser
+- run test suite several times faster
+- rerun instantly only tests related to latest code changes
+
+### Setup Jest
+
+Follow any of these guide
+
+- [Testing Angular faster jest](https://www.xfive.co/blog/testing-angular-faster-jest/)
+- [Integrate jest into Angular](https://medium.com/angular-in-depth/integrate-jest-into-an-angular-application-and-library-163b01d977ce)
+- [How do i configure jest to test my angular 8 project](https://itnext.io/how-i-do-configure-jest-to-test-my-angular-8-project-2bd84a21d725)
+
+.. to implement [Jest-preset-angular](https://github.com/thymikee/jest-preset-angular)
+
+See example application [here](https://github.com/thymikee/jest-preset-angular/tree/master/example).
+
+## Testing (karma and Jasmine)
+
+### Introduction (Karma/Jasmine)
 
 Unit testing is as important as developing a project nowadays and it becomes an integral part of development. It actually boosts the quality of the code and confidence of developers. Unit tests are written in the Jasmine framework and executed by karma, A test runner and these are executed in the browser.
 Sometimes, we write tests before we even start developing which is called TDD. We mostly follow BDD since we are using a jasmine framework.
@@ -716,13 +868,16 @@ describe('EditImageComponent', () => {
 
   beforeEach(async(() => {
     // create spy obj and cast the type to get auto complete on the fn names inside the array
-    imageEditorServiceSpy = jasmine.createSpyObj<ImageEditorService>('ImageEditorService', [
-      'canvasToBlob',
-      'upload',
-      'retryRetrieveDownloadUrls',
-      'createImageFromImageDataUrl',
-      'canvasDraw',
-    ]);
+    imageEditorServiceSpy = jasmine.createSpyObj<ImageEditorService>(
+      'ImageEditorService',
+      [
+        'canvasToBlob',
+        'upload',
+        'retryRetrieveDownloadUrls',
+        'createImageFromImageDataUrl',
+        'canvasDraw',
+      ]
+    );
 
     TestBed.configureTestingModule({
       declarations: [EditImageComponent],
@@ -733,7 +888,10 @@ describe('EditImageComponent', () => {
           useValue: imageEditorServiceSpy,
         },
         { provide: MatBottomSheet, useValue: {} },
-        { provide: MatDialog, useValue: jasmine.createSpyObj('MatDialog', ['open']) },
+        {
+          provide: MatDialog,
+          useValue: jasmine.createSpyObj('MatDialog', ['open']),
+        },
         { provide: AngularFireStorage, useValue: {} },
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -784,11 +942,15 @@ describe('ImageEditorEditComponent', () => {
   let imageEditorServiceMock: jasmine.SpyObj<ImageEditorService>;
 
   beforeEach(async(() => {
-    imageEditorServiceMock = jasmine.createSpyObj<ImageEditorService>(['imageHandler']);
+    imageEditorServiceMock = jasmine.createSpyObj<ImageEditorService>([
+      'imageHandler',
+    ]);
 
     TestBed.configureTestingModule({
       declarations: [ImageEditorEditComponent],
-      providers: [{ provide: ImageEditorService, useValue: imageEditorServiceMock }],
+      providers: [
+        { provide: ImageEditorService, useValue: imageEditorServiceMock },
+      ],
       // Using NO_ERRORS_SCHEMA to avoid having to include all custom elements
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -1036,7 +1198,10 @@ $theme-warn: mat-palette($mat-red);
       href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500&display=swap"
       rel="stylesheet"
     />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
   </head>
   <body class="mat-typography mat-app-background">
     <app-root></app-root>
@@ -1145,7 +1310,12 @@ Overwrites for normal material components should be in a file, ex.: `app/styles/
     <mat-card-content>
       <mat-form-field class="full-width" appearance="standard">
         <mat-label>Email*</mat-label>
-        <input matInput placeholder="email" formControlName="email" type="email" />
+        <input
+          matInput
+          placeholder="email"
+          formControlName="email"
+          type="email"
+        />
         <mat-error *ngIf="controls.email.hasError('required')"
           >Email is <strong>required</strong></mat-error
         >
@@ -1189,8 +1359,20 @@ Overwrites for normal material components should be in a file, ex.: `app/styles/
     </mat-card-content>
 
     <mat-card-actions align="right">
-      <button mat-raised-button type="button" color="warning" [routerLink]="['/']">Cancel</button>
-      <button mat-raised-button [disabled]="!registerForm.valid" type="submit" color="primary">
+      <button
+        mat-raised-button
+        type="button"
+        color="warning"
+        [routerLink]="['/']"
+      >
+        Cancel
+      </button>
+      <button
+        mat-raised-button
+        [disabled]="!registerForm.valid"
+        type="submit"
+        color="primary"
+      >
         Register
       </button>
     </mat-card-actions>
@@ -1243,6 +1425,8 @@ mat-card-footer {
 ### Operators
 
 #### Creation
+
+- [Creating Observables - How to create observables in rxjs](https://medium.com/better-programming/how-to-create-observables-in-rxjs-aa3bf79b05e0)
 
 `from`: Create observable from array, promise or iterable. Takes only one value. For arrays, iterables and strings, all contained values will be emitted as a sequence
 
@@ -1378,6 +1562,69 @@ Reactive State for Angular
 - [NgRx Chuck Norris joke generator](https://github.com/wesleygrimes/angular-ngrx-chuck-norris)
 - [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)
 - [tomastrajan/angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter)
+
+#### Example 1: Chained observables using previous values
+
+```typescript
+applyContactRulesForTagSuggestions$ = createEffect(() =>
+  this._actions$.pipe(
+    ofType<ChangeCardContact>(CardActionTypes.CHANGE_CARD_CONTACT),
+    withLatestFrom(this._vipSupportStore),
+    filter(
+      ([action, state]) =>
+        !!action.payload.contactGuid.value && state.fileCard.lines?.length === 1
+    ),
+    switchMap(([action, state]) =>
+      this._cardApi
+        .getContactRules(
+          state.fileCard.organizationId,
+          action.payload.contactGuid.value
+        )
+        .pipe(
+          switchMap((contactRules) =>
+            this._crowderApi
+              .getTagSuggestions(
+                state.fileCard.organizationId,
+                contactRules.lines[0].crowderTag.value as string,
+                action.payload.selectedContact.regionKey
+              )
+              .pipe(
+                switchMap((tagSuggestions) => {
+                  if (contactRules.lines?.[0]?.crowderTag?.ruleId) {
+                    return [
+                      new GetCardContactRulesSuccess(),
+                      new AddCrowderTagToLine({
+                        index: 0,
+                        tag: {
+                          tagName: contactRules.lines[0].crowderTag
+                            .value as string,
+                          tagLabel: `#${contactRules.lines[0].crowderTag.value}`,
+                          suggestions: tagSuggestions[0].suggestions,
+                        },
+                        crowderTag: `#${contactRules.lines[0].crowderTag.value}`,
+                      }),
+                      new UpdateLineAccount({
+                        index: 0,
+                        accountId: contactRules.lines[0].accountId
+                          .value as number,
+                      }),
+                      new UpdateLineVatCode({
+                        index: 0,
+                        vatCode: contactRules.lines[0].vatCode.value as string,
+                      }),
+                    ];
+                  } else {
+                    return [new GetCardContactRulesSuccess()];
+                  }
+                })
+              )
+          ),
+          catchError(() => of(new GetCardContactRulesFailed()))
+        )
+    )
+  )
+);
+```
 
 ### NgRx update
 
@@ -1572,3 +1819,116 @@ export class LoginRoutingModule {}
 ```
 
 <!-- tabs:end -->
+
+### RxJS operators commonly used in NgRX
+
+- Article explaining mergemap, switchmap, concatmap and exhaustmap: <https://medium.com/javascript-in-plain-english/what-is-the-difference-between-mergemap-switchmap-concatmap-and-exhaustmap-173bde3de7e9>
+
+- `ofType` = Comes from `Effects`. Used to listens for one or more `Actions`. Only one of the `Actions` needs to be called.
+- `withLatestFrom` = Used on an `Observable` to take the lastest value from the `Observable` and combine current stream value into an array. If used after `ofType` the result will be `[action, state]`
+- `map` = If used in a stream, it will create a new value in the stream
+- `filter` = Can be used as an `if true` check, to continue
+- `switchMap` = Effects subscribes on `actions$`, so `switchMap` changes the subscription to a new inner subscription, for example a HTTP call. `switchMap` will also cancel any inner HTTP calls not done.
+- `mergeMap` = Same as `switchMap` but will not cancel any currently HTTP innner calls.
+- `concatMap` = Used to strictly keep the order of the values in the array, for example using an array of actions, then the actions are sure to be run in that order, making sure the state is correct for the following actions.
+- `combineLatest` = Can be used to make sure a collection og observables are completed. Used example in a resolver, where an action success or fail, needs to be called, and maybe also some data, and then use the data when all is done.
+
+### NgRx Testing
+
+Testing in NgRx is very easy because the only place in NgRx there is state changes, is in the reducer, and since the reducer are pure functions, the returned result will always be the same.
+
+#### company.reducer.spec.ts
+
+```typescript
+import * as companyActions from './../actions/company.actions';
+import { companyReducer } from './company.reducer';
+
+describe('companyReducer', () => {
+  describe('deleteCompanyActions', ()=> {
+    it('should delete a company', ()=> {
+      const currentState = [
+        { id: 1, name: 'SSW', email: 'email', phone: 123},
+        { id: 2, name: 'Microsoft', email: 'email', phone: 123},
+      ]
+
+      const expetedResult = [{ id: 2, name: 'Microsoft', email: 'email', phone: 123}];
+
+      const action = new companyActions.DeleteCompanySuccessAction(1);
+      const result = companyReducer(currentState, action)M
+
+      expect(result).toEqual(expectedResult);
+    })
+  })
+
+})
+```
+
+## Server Side Rendering (SSR)
+
+To avoid flickering on page load for SSR applications, it is important to cache get requests, so they are not made on both the server and then again on the client, rerendering the page that was already rendered on the server. Read more here:
+
+- [Angular Server Side Rendering State Transfer For HTTP Requests](https://hackernoon.com/angular-server-side-rendering-state-transfer-for-http-requests-wu263t3h)
+
+## Build configuration - deploy url
+
+For building angular app that points to assets on a different path than the web URL, you can set --deploy-url and a node var etc. DEPLOY_URL to specify an absolute or relative url for assets.
+
+Set it in the npm script:
+
+```json
+    "build": "cross-env DEPLOY_URL=%npm_config_deploy_url% ng build --deploy-url %npm_config_deploy_url%",
+```
+
+Assets that should be used are set in `angular.json` - default path is set to assets. But a custom path could be `/content`
+
+```json
+ "assets": [
+  {
+    "glob": "**/*",
+    "input": "src/content",
+    "output": "/content"
+  },
+```
+
+To use the images from this assets path together with the `deploy-url` use as such:
+
+**HTML**
+HTML is used by angular compiler when building, so it needs to be set via ts or a pipe, using the node variable
+
+```ts
+declare var DEPLOY_URL: string;
+
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'srcPipe',
+})
+export class SrcPipe implements PipeTransform {
+  transform(srcUrl: string): string {
+    return `${DEPLOY_URL ? DEPLOY_URL : '/'}${srcUrl}`;
+  }
+}
+```
+
+and then used in HTML
+
+```html
+<img
+  [src]="
+    'content/img/show_icon_eye.png'
+        | srcPipe
+    "
+/>
+```
+
+**SCSS**
+
+SCSS files are compiled by webpack by fileloader, so the path will be compiled correctly, when referencing by relative url.
+
+```scss
+.img {
+  background-image: url('../../../content/img/purchase-voucher/dk-flag.svg');
+  height: 100px;
+  width: 100px;
+}
+```

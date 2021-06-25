@@ -36,6 +36,7 @@ git commit -m "Empty commit." --allow-empty
 
 ### GitHub references
 
+- [GitHub docs for setting up SSH with Github](https://docs.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh)
 - [Windows: Setup SSH with Github](https://docs.joyent.com/public-cloud/getting-started/ssh-keys/generating-an-ssh-key-manually/manually-generating-your-ssh-key-in-windows)
 - [GitHub Markdown Cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
 - [Basic formatting syntax markdown](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)

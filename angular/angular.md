@@ -1563,69 +1563,6 @@ Reactive State for Angular
 - [NgRx small todo](https://github.com/andrewevans0102/to-do-with-ngrx)
 - [tomastrajan/angular-ngrx-material-starter](https://github.com/tomastrajan/angular-ngrx-material-starter)
 
-#### Example 1: Chained observables using previous values
-
-```typescript
-applyContactRulesForTagSuggestions$ = createEffect(() =>
-  this._actions$.pipe(
-    ofType<ChangeCardContact>(CardActionTypes.CHANGE_CARD_CONTACT),
-    withLatestFrom(this._vipSupportStore),
-    filter(
-      ([action, state]) =>
-        !!action.payload.contactGuid.value && state.fileCard.lines?.length === 1
-    ),
-    switchMap(([action, state]) =>
-      this._cardApi
-        .getContactRules(
-          state.fileCard.organizationId,
-          action.payload.contactGuid.value
-        )
-        .pipe(
-          switchMap((contactRules) =>
-            this._crowderApi
-              .getTagSuggestions(
-                state.fileCard.organizationId,
-                contactRules.lines[0].crowderTag.value as string,
-                action.payload.selectedContact.regionKey
-              )
-              .pipe(
-                switchMap((tagSuggestions) => {
-                  if (contactRules.lines?.[0]?.crowderTag?.ruleId) {
-                    return [
-                      new GetCardContactRulesSuccess(),
-                      new AddCrowderTagToLine({
-                        index: 0,
-                        tag: {
-                          tagName: contactRules.lines[0].crowderTag
-                            .value as string,
-                          tagLabel: `#${contactRules.lines[0].crowderTag.value}`,
-                          suggestions: tagSuggestions[0].suggestions,
-                        },
-                        crowderTag: `#${contactRules.lines[0].crowderTag.value}`,
-                      }),
-                      new UpdateLineAccount({
-                        index: 0,
-                        accountId: contactRules.lines[0].accountId
-                          .value as number,
-                      }),
-                      new UpdateLineVatCode({
-                        index: 0,
-                        vatCode: contactRules.lines[0].vatCode.value as string,
-                      }),
-                    ];
-                  } else {
-                    return [new GetCardContactRulesSuccess()];
-                  }
-                })
-              )
-          ),
-          catchError(() => of(new GetCardContactRulesFailed()))
-        )
-    )
-  )
-);
-```
-
 ### NgRx update
 
 ```bash
@@ -1862,6 +1799,147 @@ describe('companyReducer', () => {
 
 })
 ```
+
+### NgRx Multiple Reducers in a State using ActionReducerMap
+
+<!-- tabs:start -->
+#### **./store/reducers/upgrade.reducer.ts**
+
+```typescript
+import { createReducer, on } from '@ngrx/store';
+import { ChargebeeProduct } from '../../models/chargebee.model';
+import * as UpgradeActions from '../actions/upgrade.actions';
+
+export interface UpgradeState {
+    chargbeeProducts: ChargebeeProduct[];
+    chargbeeProductsLoading: boolean;
+    chargbeeProductsLoaded: boolean;
+}
+
+export const initialState: UpgradeState = {
+    chargbeeProducts: [],
+    chargbeeProductsLoading: false,
+    chargbeeProductsLoaded: false,
+};
+
+export const upgradeReducer = createReducer(
+    initialState,
+
+    on(
+        UpgradeActions.getChargbeeProducts,
+
+        (state, action) => ({
+            ...state,
+            chargbeeProductsLoading: true,
+        })
+    ),
+
+    on(
+        UpgradeActions.getChargbeeProductsSuccess,
+        UpgradeActions.getChargbeeProductsFailure,
+
+        (state, action) => ({
+            ...state,
+            chargbeeProductsLoading: false,
+            chargbeeProductsLoaded: true,
+        })
+    ),
+
+    on(UpgradeActions.setChargbeeProducts, (state, action) => ({
+        ...state,
+        chargbeeProducts: action.chargebeeProducts,
+    }))
+);
+```
+
+#### **./store/state.ts**
+
+```typescript
+import { InjectionToken } from '@angular/core';
+import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
+import { upgradeReducer, UpgradeState } from './reducers/upgrade.reducer';
+
+export interface State {
+    upgradeState: UpgradeState;
+}
+
+export const FEATURE_REDUCER_TOKEN = new InjectionToken<
+    ActionReducerMap<State>
+>('Feature Reducers');
+
+export function getReducers(): ActionReducerMap<State> {
+    return {
+        upgradeState: upgradeReducer,
+    };
+}
+
+export const featureKey = 'subscription';
+
+export const getSubscriptionState = createFeatureSelector<State>(featureKey);
+
+```
+
+#### **./store/upgrade.selector.ts**
+
+```typescript
+import { createSelector } from '@ngrx/store';
+import { UpgradeState } from '../reducers/upgrade.reducer';
+import * as fromFeature from '../state';
+
+export const selectUpgradeState = createSelector(
+    fromFeature.getSubscriptionState,
+    (state: fromFeature.State) => state.upgradeState
+);
+
+export const selectChargebeeProducts = createSelector(
+    selectUpgradeState,
+    (state: UpgradeState) => state.chargbeeProducts
+);
+
+export const selectUpgradePageLoaded = createSelector(
+    selectUpgradeState,
+    (state: UpgradeState) => state.chargbeeProductsLoaded
+);
+
+export const selectUpgradePageLoading = createSelector(
+    selectUpgradeState,
+    (state: UpgradeState) => state.chargbeeProductsLoading
+);
+
+```
+
+#### **./supscriptions.module.ts**
+
+```typescript
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { StoreModule } from '@ngrx/store';
+import * as fromFeature from './store/state';
+import { UpgradeComponent } from './upgrade.component';
+
+@NgModule({
+    imports: [
+        CommonModule,
+        StoreModule.forFeature(
+            fromFeature.featureKey,
+            fromFeature.FEATURE_REDUCER_TOKEN
+        ),
+    ],
+    declarations: [
+        UpgradeComponent,
+    ],
+    providers: [
+        UpgradeComponent,
+        {
+            provide: fromFeature.FEATURE_REDUCER_TOKEN,
+            useFactory: fromFeature.getReducers,
+        },
+    ],
+})
+export class SubscriptionsModule {}
+
+```
+<!-- tabs:end -->
 
 ## Server Side Rendering (SSR)
 

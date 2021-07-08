@@ -44,9 +44,15 @@ body {
 
 ## CSS GRID / Flexbox
 
+Grid
+
 - [CSS Grid Cheatsheet](https://dev.to/joyshaheb/css-grid-cheat-sheet-illustrated-in-2021-1a3)
-- [CSS Flexbox Cheatsheet](https://dev.to/joyshaheb/flexbox-cheat-sheets-in-2021-css-2021-3edl)
+- [CSS Trics - The complete grid](https://css-tricks.com/snippets/css/complete-guide-grid/)
 - [Grid Malven - CSS Grid visual web guide](http://grid.malven.co/)
+
+Flexbox
+
+- [CSS Flexbox Cheatsheet](https://dev.to/joyshaheb/flexbox-cheat-sheets-in-2021-css-2021-3edl)
 
 ### Moderne layout methods
 

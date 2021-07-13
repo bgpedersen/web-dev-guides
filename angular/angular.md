@@ -1803,133 +1803,26 @@ describe('companyReducer', () => {
 ### NgRx Multiple Reducers in a State using ActionReducerMap
 
 <!-- tabs:start -->
-#### **./store/reducers/upgrade.reducer.ts**
+
+#### **./subscriptions.module.ts**
 
 ```typescript
-import { createReducer, on } from '@ngrx/store';
-import { ChargebeeProduct } from '../../models/chargebee.model';
-import * as UpgradeActions from '../actions/upgrade.actions';
-
-export interface UpgradeState {
-    chargbeeProducts: ChargebeeProduct[];
-    chargbeeProductsLoading: boolean;
-    chargbeeProductsLoaded: boolean;
-}
-
-export const initialState: UpgradeState = {
-    chargbeeProducts: [],
-    chargbeeProductsLoading: false,
-    chargbeeProductsLoaded: false,
-};
-
-export const upgradeReducer = createReducer(
-    initialState,
-
-    on(
-        UpgradeActions.getChargbeeProducts,
-
-        (state, action) => ({
-            ...state,
-            chargbeeProductsLoading: true,
-        })
-    ),
-
-    on(
-        UpgradeActions.getChargbeeProductsSuccess,
-        UpgradeActions.getChargbeeProductsFailure,
-
-        (state, action) => ({
-            ...state,
-            chargbeeProductsLoading: false,
-            chargbeeProductsLoaded: true,
-        })
-    ),
-
-    on(UpgradeActions.setChargbeeProducts, (state, action) => ({
-        ...state,
-        chargbeeProducts: action.chargebeeProducts,
-    }))
-);
-```
-
-#### **./store/state.ts**
-
-```typescript
-import { InjectionToken } from '@angular/core';
-import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
-import { upgradeReducer, UpgradeState } from './reducers/upgrade.reducer';
-
-export interface State {
-    upgradeState: UpgradeState;
-}
-
-export const FEATURE_REDUCER_TOKEN = new InjectionToken<
-    ActionReducerMap<State>
->('Feature Reducers');
-
-export function getReducers(): ActionReducerMap<State> {
-    return {
-        upgradeState: upgradeReducer,
-    };
-}
-
-export const featureKey = 'subscription';
-
-export const getSubscriptionState = createFeatureSelector<State>(featureKey);
-
-```
-
-#### **./store/upgrade.selector.ts**
-
-```typescript
-import { createSelector } from '@ngrx/store';
-import { UpgradeState } from '../reducers/upgrade.reducer';
-import * as fromFeature from '../state';
-
-export const selectUpgradeState = createSelector(
-    fromFeature.getSubscriptionState,
-    (state: fromFeature.State) => state.upgradeState
-);
-
-export const selectChargebeeProducts = createSelector(
-    selectUpgradeState,
-    (state: UpgradeState) => state.chargbeeProducts
-);
-
-export const selectUpgradePageLoaded = createSelector(
-    selectUpgradeState,
-    (state: UpgradeState) => state.chargbeeProductsLoaded
-);
-
-export const selectUpgradePageLoading = createSelector(
-    selectUpgradeState,
-    (state: UpgradeState) => state.chargbeeProductsLoading
-);
-
-```
-
-#### **./supscriptions.module.ts**
-
-```typescript
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
-import { StoreModule } from '@ngrx/store';
+...
 import * as fromFeature from './store/state';
-import { UpgradeComponent } from './upgrade.component';
 
 @NgModule({
     imports: [
-        CommonModule,
+        ...
         StoreModule.forFeature(
             fromFeature.featureKey,
             fromFeature.FEATURE_REDUCER_TOKEN
         ),
     ],
     declarations: [
-        UpgradeComponent,
+        ...
     ],
     providers: [
-        UpgradeComponent,
+        ...
         {
             provide: fromFeature.FEATURE_REDUCER_TOKEN,
             useFactory: fromFeature.getReducers,
@@ -1939,6 +1832,173 @@ import { UpgradeComponent } from './upgrade.component';
 export class SubscriptionsModule {}
 
 ```
+
+#### **./store/state.ts**
+
+```typescript
+import { InjectionToken } from '@angular/core';
+import { ActionReducerMap, createFeatureSelector } from '@ngrx/store';
+import { productReducer, ProductState } from './reducers/product.reducer';
+import {
+  subscriptionReducer,
+  SubscriptionState,
+} from './reducers/subscriptions.reducer';
+
+export interface State {
+  productState: ProductState;
+  subscriptionState: SubscriptionState;
+}
+
+export const FEATURE_REDUCER_TOKEN = new InjectionToken<
+  ActionReducerMap<State>
+>('Feature Reducers');
+
+export function getReducers(): ActionReducerMap<State> {
+  return {
+    productState: productReducer,
+    subscriptionState: subscriptionReducer,
+  };
+}
+
+export const featureKey = 'subscription';
+
+export const getSubscriptionState = createFeatureSelector<State>(featureKey);
+```
+
+#### **./store/reducer/product.reducer.ts**
+
+```typescript
+import { createReducer, createSelector, on } from '@ngrx/store';
+import * as ProductActions from '../actions/product.actions';
+import * as fromFeature from '../state';
+
+export interface ProductState {
+  products: Product[];
+  productsLoading: boolean;
+  productsLoaded: boolean;
+}
+
+export const initialState: ProductState = {
+  products: [],
+  productsLoading: false,
+  productsLoaded: false,
+};
+
+export const productReducer = createReducer(
+  initialState,
+
+  on(
+    ProductActions.getProducts,
+
+    (state, action) => ({
+      ...state,
+      productsLoading: true,
+    })
+  ),
+
+  on(
+    ProductActions.getProductsSuccess,
+    ProductActions.getProductsFailure,
+
+    (state, action) => ({
+      ...state,
+      productsLoading: false,
+      productsLoaded: true,
+    })
+  ),
+
+  on(ProductActions.setProducts, (state, action) => ({
+    ...state,
+    products: action.products,
+  }))
+);
+
+export const selectProductState = createSelector(
+  fromFeature.getSubscriptionState,
+  (state: fromFeature.State) => state.productState
+);
+
+export const selectProducts = createSelector(
+  selectProductState,
+  (state: ProductState) => state.products
+);
+
+export const selectProductPageLoaded = createSelector(
+  selectProductState,
+  (state: ProductState) => state.productsLoaded
+);
+
+export const selectProductPageLoading = createSelector(
+  selectProductState,
+  (state: ProductState) => state.productsLoading
+);
+```
+
+#### **./store/actions/product.action.ts**
+
+```typescript
+import { createAction, props } from '@ngrx/store';
+
+export const getProducts = createAction('[Product] get Products');
+
+export const getProductsSuccess = createAction(
+  '[Product] get Products Success'
+);
+
+export const getProductsFailure = createAction(
+  '[Product] get Products Failure',
+  props<{ error: any }>()
+);
+
+export const setProducts = createAction(
+  '[Product] set Products',
+  props<{ products: Product[] }>()
+);
+```
+
+#### **./store/effects/product.effects.ts**
+
+```typescript
+import { Injectable } from '@angular/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
+import { catchError, mergeMap, withLatestFrom } from 'rxjs/operators';
+import * as ProductActions from '../actions/product.actions';
+
+@Injectable()
+export class ProductEffects {
+  constructor(
+    private actions$: Actions,
+    private _productService: ProductService,
+    private _store: Store
+  ) {}
+
+  getProducts$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ProductActions.getProducts),
+      withLatestFrom(this._store),
+      mergeMap(([action, store]) =>
+        this._productService.getProducts(store.organization.id).pipe(
+          mergeMap((products) => [
+            ProductActions.getProductsSuccess(),
+            ProductActions.setProducts({
+              products,
+            }),
+          ]),
+          catchError((error) =>
+            of(
+              ProductActions.getProductsFailure({
+                error,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+}
+```
+
 <!-- tabs:end -->
 
 ## Server Side Rendering (SSR)

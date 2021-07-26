@@ -505,6 +505,7 @@ Why Jest?
 ### Setup Jest
 
 - To be able run tun Jest directly from vs code/terminal, use [ts-jest](https://github.com/kulshekhar/ts-jest)
+- If `expect` or another Jest functions doesn't exist, it might be because you use Cypress in the same project. An easy workaround is to import the jest functions in the test file `import { expect } from '@jest/globals';`
 
 Follow any of these guide
 

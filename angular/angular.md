@@ -504,6 +504,8 @@ Why Jest?
 
 ### Setup Jest
 
+- To be able run tun Jest directly from vs code/terminal, use [ts-jest](https://github.com/kulshekhar/ts-jest)
+
 Follow any of these guide
 
 - [Testing Angular faster jest](https://www.xfive.co/blog/testing-angular-faster-jest/)

@@ -52,6 +52,15 @@ If there are any dependency errors, then run update for that library, ex. ngrx:
 
 #### JavaScript Memory Heap problem
 
+If you have problems with serve or build, with Javascript HEAP memory problem, try add `node --max_old_space_size=8048` to your package.json npm angular scripts
+
+```json
+scripts: {
+  "large-build": "node --max_old_space_size=8048 /node_modules/@angular/cli/bin/ng build",
+  "large-serve": "node --max_old_space_size=8048 ./node_modules/@angular/cli/bin/ng serve"
+}
+```
+
 Updating a large angular application might give JS memory heap problems. This example uses an update from 9 to 10.
 Roll back just the Angular core and cli versions, migrate only with increased node memory and then update the packages.
 

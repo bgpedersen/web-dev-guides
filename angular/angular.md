@@ -250,10 +250,14 @@ If you want to enforce Prettier with ESLint, you can implement eslint-plugin-pre
 - [notes for eslint plugin prettier users](https://github.com/angular-eslint/angular-eslint#notes-for-eslint-plugin-prettier-users)
 - [installation guide for eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier).
 
-You can also update your vs code settings to auto fix problems
+If you use vscode-eslint, and want to lint HTML files and inline-templates on your Angular Components, you will need to make sure you add the following to your VSCode settings.json:
 
 ```json
- "editor.codeActionsOnSave": {
+  "eslint.options": {
+    "extensions": [".ts", ".html"]
+  },
+  "eslint.validate": ["javascript", "typescript", "html"],
+  "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true,
     "source.organizeImports": true
   },

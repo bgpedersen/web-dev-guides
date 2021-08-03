@@ -241,6 +241,26 @@ export class KeyboardShortcutsDirective {
 }
 ```
 
+### Linting with ESLint
+
+Follow this [Migrate from TSLint to ESLint](https://github.com/angular-eslint/angular-eslint#migrating-an-angular-cli-project-from-codelyzer-and-tslint) guide to migrate your project from TSLint to ESLint.
+
+If you want to enforce Prettier with ESLint, you can implement eslint-plugin-prettier. Read ESLint bites about usage first and then follow installation guide from GitHub
+
+- [notes for eslint plugin prettier users](https://github.com/angular-eslint/angular-eslint#notes-for-eslint-plugin-prettier-users)
+- [installation guide for eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier).
+
+You can also update your vs code settings to auto fix problems
+
+```json
+ "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true,
+    "source.organizeImports": true
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+```
+
 ## Images
 
 ### Lazy load images

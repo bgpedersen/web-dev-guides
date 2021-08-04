@@ -321,7 +321,8 @@ Here is a full example of eslintrc.json file with prettier enforced
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:prettier/recommended"
-      ]
+      ],
+      "rules": {}
     },
     // NOTE: WE ARE NOT APPLYING PRETTIER IN THIS OVERRIDE, ONLY @ANGULAR-ESLINT/TEMPLATE
     {
@@ -336,24 +337,33 @@ Here is a full example of eslintrc.json file with prettier enforced
       "extends": ["plugin:prettier/recommended"],
       "rules": {
         // NOTE: WE ARE OVERRIDING THE DEFAULT CONFIG TO ALWAYS SET THE PARSER TO ANGULAR (SEE BELOW)
-        "prettier/prettier": [
-          "error",
-          { "singleQuote": true, "parser": "angular" }
-        ]
+        "prettier/prettier": ["error", { "parser": "angular" }]
       }
     }
   ]
 }
 ```
 
-After installing prettier `npm i prettier -D --save-exact`, example: `"prettier": "2.3.2"`, you will want to make a `format` npm script and run it for automatically fix all prettier mistakes, and after that fix all linting mistakes with prettier through ESLint
+You might want to use this root file `.prettierrc` to make sure your prettier uses correct settings
 
-package.json
+.prettierrc
 
-```json
-    "lint": "ng lint",
-    "format": "prettier \"src/**/*.{ts,html,md,scss,json}\" --write && ng lint --fix"
 ```
+{
+  "singleQuote": true,
+  "endOfLine": "auto",
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    }
+  ]
+}
+```
+
+After installing prettier `npm i prettier -D --save-exact`, example: `"prettier": "2.3.2"`, everything you should need to format all files is to run `ng lint` and `ng lint --fix`
 
 ## Images
 

@@ -241,11 +241,13 @@ export class KeyboardShortcutsDirective {
 }
 ```
 
-### Linting with ESLint
+### Migrate from TSLint to ESLint
 
 Follow this [Migrate from TSLint to ESLint](https://github.com/angular-eslint/angular-eslint#migrating-an-angular-cli-project-from-codelyzer-and-tslint) guide to migrate your project from TSLint to ESLint.
 
-If you want to enforce Prettier with ESLint, you can implement eslint-plugin-prettier. Read ESLint bites about usage first and then follow installation guide from GitHub
+### Linting with ESLint with Prettier enforced
+
+If you want to enforce Prettier with ESLint, you can implement eslint-plugin-prettier:
 
 - [notes for eslint plugin prettier users](https://github.com/angular-eslint/angular-eslint#notes-for-eslint-plugin-prettier-users)
 - [installation guide for eslint-plugin-prettier](https://github.com/prettier/eslint-plugin-prettier).
@@ -265,7 +267,44 @@ If you use vscode-eslint, and want to lint HTML files and inline-templates on yo
   "editor.formatOnSave": true,
 ```
 
-Here is a full example of eslintrc.json file, that also fixes the `delete rc` error for end of line EOF errors on windows machines
+And add plugin to workspace recommendation
+
+```json
+{
+  "recommendations": [
+    "angular.ng-template",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
+```
+
+You might also want to define the rules with an root file `.editorconfig` for CI pipeline and for user settings
+
+```json
+[*]
+indent_size = 2
+indent_style = space
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+end_of_line = lf
+
+[*.{js,ts,scss,css,html}]
+indent_size = 4
+
+[*.md]
+trim_trailing_whitespace = false
+```
+
+And a root file `.gitattributes` for editor and git
+
+```
+* text=auto eol=lf
+```
+
+Here is a full example of eslintrc.json file with prettier enforced
 
 ```json
 {
@@ -282,15 +321,7 @@ Here is a full example of eslintrc.json file, that also fixes the `delete rc` er
         "plugin:@angular-eslint/recommended",
         "plugin:@angular-eslint/template/process-inline-templates",
         "plugin:prettier/recommended"
-      ],
-      "rules": {
-        "prettier/prettier": [
-          "error",
-          {
-            "endOfLine": "auto"
-          }
-        ]
-      }
+      ]
     },
     // NOTE: WE ARE NOT APPLYING PRETTIER IN THIS OVERRIDE, ONLY @ANGULAR-ESLINT/TEMPLATE
     {
@@ -307,7 +338,7 @@ Here is a full example of eslintrc.json file, that also fixes the `delete rc` er
         // NOTE: WE ARE OVERRIDING THE DEFAULT CONFIG TO ALWAYS SET THE PARSER TO ANGULAR (SEE BELOW)
         "prettier/prettier": [
           "error",
-          { "parser": "angular", "endOfLine": "auto" }
+          { "singleQuote": true, "parser": "angular" }
         ]
       }
     }

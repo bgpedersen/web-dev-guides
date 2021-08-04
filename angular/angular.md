@@ -346,6 +346,15 @@ Here is a full example of eslintrc.json file with prettier enforced
 }
 ```
 
+After installing prettier `npm i prettier -D --save-exact`, example: `"prettier": "2.3.2"`, you will want to make a `format` npm script and run it for automatically fix all prettier mistakes, and after that fix all linting mistakes with prettier through ESLint
+
+package.json
+
+```json
+    "lint": "ng lint",
+    "format": "prettier \"src/**/*.{ts,html,md,scss,json}\" --write && ng lint --fix"
+```
+
 ## Images
 
 ### Lazy load images

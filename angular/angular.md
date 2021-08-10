@@ -371,7 +371,7 @@ Angular's Location service should be used when interacting with the browser's UR
 
 Angulars [HttpParams](https://angular.io/api/common/http/HttpParams) are used to create query params. Remember HttpParams are immutable, meaning it has to be chained when creating the values.
 
-At last, using `this._location.replaceState` to change to URL without reloading the page/route.
+At last, using `this._location.replaceState` to change to URL without reloading the page/route and native js `location.path` to get the url without params to reset the params every time.
 
 ```typescript
 constructor(

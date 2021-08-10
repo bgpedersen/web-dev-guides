@@ -348,7 +348,7 @@ You might want to use this root file `.prettierrc` to make sure your prettier us
 
 .prettierrc
 
-```
+```json
 {
   "singleQuote": true,
   "endOfLine": "auto",
@@ -364,6 +364,35 @@ You might want to use this root file `.prettierrc` to make sure your prettier us
 ```
 
 After installing prettier `npm i prettier -D --save-exact`, example: `"prettier": "2.3.2"`, everything you should need to format all files is to run `ng lint` and `ng lint --fix`
+
+### Updating browser URL query params without reloading
+
+Angular's Location service should be used when interacting with the browser's URL and not for routing. Thats why we want to use [Location](https://angular.io/api/common/Location#replaceState) service.
+
+Angulars [HttpParams](https://angular.io/api/common/http/HttpParams) are used to create query params. Remember HttpParams are immutable, meaning it has to be chained when creating the values.
+
+At last, using `this._location.replaceState` to change to URL without reloading the page/route.
+
+```typescript
+constructor(
+    private _location: Location,
+    private _router: Router
+) {}
+
+...
+
+updateURLWithNewParamsWithoutReloading() {
+    const params = new HttpParams().appendAll({
+        price: 100,
+        product: 'bag'
+    });
+
+    this._location.replaceState(
+        this._router.url,
+        params.toString()
+    );
+}
+```
 
 ## Images
 

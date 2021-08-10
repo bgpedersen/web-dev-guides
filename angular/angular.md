@@ -376,7 +376,6 @@ At last, using `this._location.replaceState` to change to URL without reloading 
 ```typescript
 constructor(
     private _location: Location,
-    private _router: Router
 ) {}
 
 ...
@@ -388,7 +387,7 @@ updateURLWithNewParamsWithoutReloading() {
     });
 
     this._location.replaceState(
-        this._router.url,
+        location.pathname,
         params.toString()
     );
 }

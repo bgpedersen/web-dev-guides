@@ -6,6 +6,17 @@
 
 ### Upgrade/update Angular
 
+#### Check support for Node and NPM
+
+Always consult Angular CLI tool to see support. This will write out if node is not supported.
+
+```bash
+npm i -g @angular/cli@latest
+ng -v
+```
+
+You can also consult this web list: <https://gist.github.com/LayZeeDK/c822cc812f75bb07b7c55d07ba2719b3>
+
 #### Update global CLI
 
 To see current version type

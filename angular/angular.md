@@ -437,6 +437,217 @@ export class LazyImgDirective {
 }
 ```
 
+## Animations
+
+### Animating ngFor lists
+
+To add animation to items in a list, where you want to be able to remove an item, and the rest of the items slides up over the removed items (and the items might also have different heights), you can use a trick, where you create a sibling div next to each item, that is is a flexbox grid with 0 width, but the height of the item, and when the item is removed, we simply animate the height of this div while making the item position absolute to allow for the other items to slide in over, without messing with the height of the item.
+
+- See [CodeSandbox Example](https://codesandbox.io/s/angular-animation-move-up-for-ngfor-list-jkrlh?file=/src/app/app.component.ts)
+
+<!-- tabs:start -->
+
+#### **app.component.ts**
+
+```typescript
+import {
+  animate,
+  group,
+  query,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('heightAnimation', [
+      transition(':leave', [
+        group([
+          query('.animation-height-handler', [
+            animate('500ms ease-in-out', style({ height: 0 })),
+          ]),
+          query('.animation-item', [
+            style({
+              position: 'absolute',
+              opacity: 1,
+            }),
+            animate('500ms', style({ opacity: 0 })),
+          ]),
+        ]),
+      ]),
+    ]),
+  ],
+})
+export class AppComponent implements OnInit {
+  private colors = ['red', 'blue', 'green', 'yellow', 'cyan', 'orange'];
+  public items = [];
+
+  ngOnInit() {
+    this.items = [
+      {
+        id: 1,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 2,
+        height: 200,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 3,
+        height: 80,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 4,
+        height: 100,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 5,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 6,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 7,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 8,
+        height: 30,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 9,
+        height: 250,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 10,
+        height: 100,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 11,
+        height: 150,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 12,
+        height: 200,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 13,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 14,
+        height: 200,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 15,
+        height: 80,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 16,
+        height: 100,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 17,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 18,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 19,
+        height: 50,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 21,
+        height: 30,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 22,
+        height: 250,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+      {
+        id: 23,
+        height: 100,
+        color: this.colors[Math.floor(Math.random() * this.colors.length)],
+      },
+    ];
+  }
+
+  public remove(id) {
+    this.items = this.items.filter((item) => item.id !== id);
+  }
+}
+```
+
+#### **app.component.html**
+
+```html
+<h1>Animating *ngFor lists</h1>
+
+<div
+  *ngFor="let item of items; let i = index"
+  [@heightAnimation]
+  class="height-container"
+>
+  <div class="animation-height-handler"></div>
+  <div
+    class="animation-item"
+    (click)="remove(item.id)"
+    [ngStyle]="{'height': item.height + 'px', 'background-color': item.color}"
+  >
+    Item ID {{item.id}}. Click to remove
+  </div>
+</div>
+```
+
+#### **app.component.css**
+
+```css
+.height-container {
+  display: flex;
+}
+
+.animation-height-container {
+  display: flex;
+}
+
+.animation-item {
+  position: relative;
+  width: 200px;
+}
+```
+
+<!-- tabs:end -->
+
 ## Forms
 
 ### Reactive forms

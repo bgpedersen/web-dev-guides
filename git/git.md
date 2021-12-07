@@ -20,6 +20,17 @@ Git stash can be used, to stash changes in a branch instead of a commit, and be 
 - To apply a stash and remove it from stash `git stash pop stash@{n}` or `git stash pop n`
 - To remove a stash: `git stash drop stash@{n}` or `git stash drop n`
 
+## Delete all local branches already merged to master
+
+Has to be run from Git Bash terminal. Be on Master and run:
+
+```bash
+git fetch --prune
+git branch -r | awk '{print $1}' | egrep -v -f /dev/fd/0 <(git branch -vv | grep origin) | awk '{print $1}' | xargs git branch -D
+```
+
+After that you can write `git branch` to see if some still remains. If some branches are 'not found' then you can delete them manually one by one, surrounding the names with "", example `git branch "some-()-not-found-branch" -D`
+
 ## Remove all files and folder in project not staged etc
 
 ```bash

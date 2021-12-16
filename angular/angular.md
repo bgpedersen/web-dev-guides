@@ -254,7 +254,8 @@ export class KeyboardShortcutsDirective {
 
 ### Migrate from TSLint to ESLint
 
-Follow this [Migrate from TSLint to ESLint](https://github.com/angular-eslint/angular-eslint#migrating-an-angular-cli-project-from-codelyzer-and-tslint) guide to migrate your project from TSLint to ESLint.
+- Follow this [Migrate from TSLint to ESLint](https://github.com/angular-eslint/angular-eslint#migrating-an-angular-cli-project-from-codelyzer-and-tslint) guide to migrate your project from TSLint to ESLint.
+- This guide is good to remember all the correct rules to set [migrating-angular-projects-from-tslint-to-eslint-and-prettier](https://medium.com/acute-angular/migrating-angular-projects-from-tslint-to-eslint-and-prettier-cd87eea9ffcd)
 
 ### Linting with ESLint with Prettier enforced
 

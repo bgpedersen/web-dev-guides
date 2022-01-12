@@ -292,3 +292,23 @@ Add `overflow: auto` on parent element of the element that should have scroll. I
   height: 5000px;
 }
 ```
+
+### Dark theme
+
+You can either use a class to change to dark theme, or you can use the OS to read if the user prefers dark theme in the browser:
+
+```scss
+@media (prefers-color-scheme: dark) {
+  html {
+    background: #000;
+    filter: invert(1) hue-rotate(180deg);
+  }
+  img,
+  video,
+  iframe,
+  canvas,
+  svg {
+    filter: invert(1) hue-rotate(180deg);
+  }
+}
+```

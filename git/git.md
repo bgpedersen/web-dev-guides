@@ -10,6 +10,24 @@
 
 - [Beginner's Guide to Interactive Rebasing](https://dev.to/blakedeboer/beginners-guide-to-interactive-rebasing-1ob)
 
+### Undo a rebase
+
+Get a list of previous git actions.
+
+```bash
+git reflog
+```
+
+Find the line where it says `commit`, that will be your latest normal commit before the rebase happend. If that commit has the name `HEAD@{84}` and you want to go back to that, write:
+
+```bash
+git reset --hard HEAD@{84}
+```
+
+`git reflog` stores all your actions, even after a `reset --hard`, meaning that if you wrote a wront HEAD, you can still write `git reflog` again after that, and find the correct HEAD to go back to. Remember that HEAD numbers are changed, so you can't use the same as before.
+
+If you pushed to origin, then write `git push -f` to push your local changes to origin.
+
 ## Git Stash
 
 Git stash can be used, to stash changes in a branch instead of a commit, and be able to apply thoese changes later, to any branch.

@@ -71,6 +71,16 @@ git commit -m "Empty commit." --allow-empty
 - [Basic formatting syntax markdown](https://help.github.com/en/github/writing-on-github/basic-writing-and-formatting-syntax)
 - [GitHub Corners - adding github svg in the corner](http://tholman.com/github-corners/)
 
+### Manually make GitHub compare multiple commits
+
+- Open PR conversation
+- Find the last commit that have already been reviewed and click its hash link, your URL will look like <https://github.com/airbnb/javascript/pull/188/commits/2b6c524e6984f300f6c6e08e57c8dbab9497e798>
+- Change commits to files and add ..HEAD to the end of URL such as <https://github.com/airbnb/javascript/pull/188/files/2b6c524e6984f300f6c6e08e57c8dbab9497e798..HEAD>
+
+You'll see commits range you want to review in context of the PR.
+
+P.S. Now GitHub provides functionality to view "Changes since your previous code review" but sometimes it is useful to select changes manually
+
 ### Mirror repository
 
 - [Mirror GitHub Repo](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/duplicating-a-repository#mirroring-a-repository-in-another-location)

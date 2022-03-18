@@ -10,6 +10,21 @@
 
 - [Beginner's Guide to Interactive Rebasing](https://dev.to/blakedeboer/beginners-guide-to-interactive-rebasing-1ob)
 
+### Using git rebase in VS Code as interactive editor instead of the terminal
+
+Write in terminal
+
+- git config --global core.editor "code --wait"
+- git config --global -e
+- Append this to the file
+
+```
+[diff]
+  tool = default-difftool
+[difftool "default-difftool"]
+  cmd = code --wait --diff $LOCAL $REMOTE
+```
+
 ### Undo a rebase
 
 Get a list of previous git actions.

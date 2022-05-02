@@ -33,7 +33,80 @@ npm install -g @angular/cli@latest
 
 #### Update angular project
 
+You should follow the officiel guide to uprade:
+
 - [Update Angular guide](https://update.angular.io/)
+
+---
+
+You might run into npm errors if you are using other libraries, such as `@angular-builders/custom-webpack` or `@angular-eslint`. Read below for instructions. Make sure to discard package-lock.json and run a fresh `npm i` after each error.
+
+ERROR #1
+
+```bash
+    Updating package.json with dependency @angular/compiler @ "13.3.5" (was "12.1.3")...
+    Updating package.json with dependency @angular/core @ "13.3.5" (was "12.1.3")...
+    Updating package.json with dependency @angular/elements @ "13.3.5" (was "12.1.3")...
+    Updating package.json with dependency @angular/forms @ "13.3.5" (was "12.1.3")...
+    Updating package.json with dependency @angular/language-service @ "13.3.5" (was "12.1.3")...
+    Updating package.json with dependency @angular/platform-browser @ "13.3.5" (was "12.1.3")...
+    Updating package.json with dependency @angular/platform-browser-dynamic @ "13.3.5" (was "12.1.3")...
+    Updating package.json with dependency @angular/router @ "13.3.5" (was "12.1.3")...
+  UPDATE package.json (6615 bytes)
+npm ERR! code ERESOLVE
+npm ERR! ERESOLVE could not resolve
+npm ERR!
+npm ERR! While resolving: dinero-frontend-angular@1.0.0
+npm ERR! Found: @angular-devkit/build-angular@12.1.3
+npm ERR! node_modules/@angular-devkit/build-angular
+npm ERR!   dev @angular-devkit/build-angular@"~13.3.4" from the root project
+npm ERR!   @angular-devkit/build-angular@"^12.0.0" from @angular-builders/custom-webpack@12.1.0
+npm ERR!   node_modules/@angular-builders/custom-webpack
+npm ERR!     dev @angular-builders/custom-webpack@"~12.1.0" from the root project
+npm ERR!
+npm ERR! Could not resolve dependency:
+npm ERR! dev @angular-devkit/build-angular@"~13.3.4" from the root project
+npm ERR!
+npm ERR! Conflicting peer dependency: @angular/compiler-cli@13.3.5
+npm ERR! node_modules/@angular/compiler-cli
+npm ERR!   peer @angular/compiler-cli@"^13.0.0 || ^13.3.0-rc.0" from @angular-devkit/build-angular@13.3.4
+npm ERR!   node_modules/@angular-devkit/build-angular
+npm ERR!     dev @angular-devkit/build-angular@"~13.3.4" from the root project
+npm ERR!
+npm ERR! Fix the upstream dependency conflict, or retry
+npm ERR! this command with --force, or --legacy-peer-deps
+npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+npm ERR!
+npm ERR! See C:\Users\bjarn\AppData\Local\npm-cache\eresolve-report.txt for a full report.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     C:\Users\bjarn\AppData\Local\npm-cache\_logs\2022-05-02T11_13_38_665Z-debug-0.log
+✖ Package install failed, see above.
+
+```
+
+To solve an error looking something like this, look for the dependency where it fails, in this case it's the `@angular-builders/custom-webpack@"~12.1.0"` library. So update this single library first with `npx @angular/cli@13 update @angular-builders/custom-webpack@13`.
+
+ERROR #2
+
+```
+The installed local Angular CLI version is older than the latest stable version.
+Installing a temporary version to perform the update.
+✔ Package successfully installed.
+Using package manager: 'npm'
+Collecting installed dependencies...
+Found 77 dependencies.
+Fetching dependency metadata from registry...
+                  Package "@angular-eslint/builder" has an incompatible peer dependency to "@angular/cli" (requires ">= 12.0.0 < 13.0.0", would install "13.3.4").
+× Migration failed: Incompatible peer dependencies found.
+Peer dependency warnings when installing dependencies means that those dependencies might not work correctly together.
+You can use the '--force' option to ignore incompatible peer dependencies and instead address these warnings later.
+  See "C:\Users\bjarn\AppData\Local\Temp\ng-hbg8YJ\angular-errors.log" for further details.
+```
+
+When you are using the guide and see this errors, just add the library that has an incompatible peer dependency together with Angular Core and Angular CLI. So here you would write `npx @angular/cli@13 update @angular/core@13 @angular/cli@13 @angular-eslint/builder@13 @angular-eslint/schematics@13 @angular-eslint/eslint-plugin-template@13 @angular-eslint/eslint-plugin@13 @angular-eslint/template-parser@13`.
+
+If you keep getting peer dependency error and it's just some patch mismatch, use `--force` in the end `npx @angular/cli@13 update @angular/core@13 @angular/cli@13 @angular-eslint/builder@13 @angular-eslint/schematics@13 @angular-eslint/eslint-plugin-template@13 @angular-eslint/eslint-plugin@13 @angular-eslint/template-parser@13 --force`.
 
 To see if any Angular dependencies at the current version can be upgrade
 

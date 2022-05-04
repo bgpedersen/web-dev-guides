@@ -108,7 +108,7 @@ When you are using the guide and see this errors, just add the library that has 
 
 ERROR #3
 
-```
+```bash
  npm i
 npm ERR! code ERESOLVE
 npm ERR! ERESOLVE could not resolve
@@ -132,7 +132,6 @@ npm ERR! this command with --force, or --legacy-peer-deps
 npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
 npm ERR!
 npm ERR! See C:\Users\bjarn\AppData\Local\npm-cache\eresolve-report.txt for a full report.
-
 ```
 
 If you see this error, but you have the correct dependencies, you need to update package-lock.json by using `npm i --save --legacy-peer-deps`

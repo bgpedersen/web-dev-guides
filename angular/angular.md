@@ -106,6 +106,37 @@ You can use the '--force' option to ignore incompatible peer dependencies and in
 
 When you are using the guide and see this errors, just add the library that has an incompatible peer dependency together with Angular Core and Angular CLI. So here you would write `npx @angular/cli@13 update @angular/core@13 @angular/cli@13 @angular-eslint/builder@13 @angular-eslint/schematics@13 @angular-eslint/eslint-plugin-template@13 @angular-eslint/eslint-plugin@13 @angular-eslint/template-parser@13`.
 
+ERROR #3
+
+```
+ npm i
+npm ERR! code ERESOLVE
+npm ERR! ERESOLVE could not resolve
+npm ERR!
+npm ERR! While resolving: dinero-frontend-angular@1.0.0
+npm ERR! Found: @ngrx/effects@12.3.0
+npm ERR! node_modules/@ngrx/effects
+npm ERR!   @ngrx/effects@"~13.2.0" from the root project
+npm ERR!
+npm ERR! Could not resolve dependency:
+npm ERR! @ngrx/effects@"~13.2.0" from the root project
+npm ERR!
+npm ERR! Conflicting peer dependency: @ngrx/store@13.2.0
+npm ERR! node_modules/@ngrx/store
+npm ERR!   peer @ngrx/store@"13.2.0" from @ngrx/effects@13.2.0
+npm ERR!   node_modules/@ngrx/effects
+npm ERR!     @ngrx/effects@"~13.2.0" from the root project
+npm ERR!
+npm ERR! Fix the upstream dependency conflict, or retry
+npm ERR! this command with --force, or --legacy-peer-deps
+npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+npm ERR!
+npm ERR! See C:\Users\bjarn\AppData\Local\npm-cache\eresolve-report.txt for a full report.
+
+```
+
+If you see this error, but you have the correct dependencies, you need to update package-lock.json by using `npm i --save --legacy-peer-deps`
+
 If you keep getting peer dependency error and it's just some patch mismatch, use `--force` in the end `npx @angular/cli@13 update @angular/core@13 @angular/cli@13 @angular-eslint/builder@13 @angular-eslint/schematics@13 @angular-eslint/eslint-plugin-template@13 @angular-eslint/eslint-plugin@13 @angular-eslint/template-parser@13 --force`.
 
 To see if any Angular dependencies at the current version can be upgrade

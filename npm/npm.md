@@ -96,6 +96,11 @@ Versions:
 
 List current packages and new versions. If `Current` and `Wanted` is different, they can be updated.
 
+If you already have installed node_modules, runnin `npm i` will not install newer versions according to your semver versions in package.json - for this you have to use `npm outdated` and `npm update`:
+
+- [npm outdated](https://docs.npmjs.com/cli/v8/commands/npm-outdated)
+- [npm update](https://docs.npmjs.com/cli/v8/commands/npm-update)
+
 ```bash
 npm outdated
 
@@ -106,10 +111,10 @@ npm outdated --long
 
 ![npm update](../_media/npm-update.png)
 
-Update all packages accordingly to the package.json and `^` and `~`
+Update all packages accordingly to the package.json and `^` and `~` and also update the versions in the package.json with --save
 
 ```bash
-npm update
+npm update --save
 ```
 
 If you are using the caret `^` in front of your versions in package.json, the major versions will not be updated (hence the yellow rows). This is good, cause there might be breaking changes updating to a new major version.

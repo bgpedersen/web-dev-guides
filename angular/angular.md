@@ -41,6 +41,65 @@ You should follow the officiel guide to uprade:
 
 You might run into npm errors if you are using other libraries, such as `@angular-builders/custom-webpack` or `@angular-eslint`. Read below for instructions. Make sure to discard package-lock.json and run a fresh `npm i` after each error.
 
+ERROR #0
+
+The 'compilation' argument must be an instance of Compilation
+
+```
+TypeError: The 'compilation' argument must be an instance of Compilation
+    at Function.getCompilationHooks (C:\Code\dinero-web\Dinero.Frontend\node_modules\webpack\lib\NormalModule.js:227:10)
+    at WebpackAssetsManifest.handleCompilation (C:\Code\dinero-web\Dinero.Frontend\node_modules\webpack-assets-manifest\src\WebpackAssetsManifest.js:784:18)
+    at _next1 (eval at create (C:\Code\dinero-web\Dinero.Frontend\node_modules\tapable\lib\HookCodeFactory.js:19:10), <anonymous>:231:1)
+    at Hook.eval [as call] (eval at create (C:\Code\dinero-web\Dinero.Frontend\node_modules\tapable\lib\HookCodeFactory.js:19:10), <anonymous>:290:1)
+    at Hook.CALL_DELEGATE [as _call] (C:\Code\dinero-web\Dinero.Frontend\node_modules\tapable\lib\Hook.js:14:14)
+    at Compiler.newCompilation (C:\Code\dinero-web\Dinero.Frontend\node_modules\@angular-devkit\build-angular\node_modules\webpack\lib\Compiler.js:1122:26)
+    at C:\Code\dinero-web\Dinero.Frontend\node_modules\@angular-devkit\build-angular\node_modules\webpack\lib\Compiler.js:1166:29
+    at eval (eval at create (C:\Code\dinero-web\Dinero.Frontend\node_modules\tapable\lib\HookCodeFactory.js:33:10), <anonymous>:31:1)
+```
+
+This error occours when multiple versions of webpack is installed. Check to see which versions are installed by writing `npm ls webpack`:
+
+```
+$ npm ls webpack
+dinero-frontend-angular@1.0.0 C:\Code\dinero-web\Dinero.Frontend
+├─┬ @angular-devkit/build-angular@14.1.0
+│ ├─┬ @angular-devkit/build-webpack@0.1401.0
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ @ngtools/webpack@14.1.0
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ babel-loader@8.2.5
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ copy-webpack-plugin@11.0.0
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ css-loader@6.7.1
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ less-loader@11.0.0
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ mini-css-extract-plugin@2.6.1
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ postcss-loader@7.0.1
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ sass-loader@13.0.2
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ source-map-loader@4.0.0
+│ │ └── webpack@5.73.0 deduped
+│ ├─┬ stylus-loader@7.0.0
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ webpack-dev-middleware@5.3.3
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ webpack-dev-server@4.9.3
+│ │ └── webpack@5.74.0 deduped
+│ ├─┬ webpack-subresource-integrity@5.1.0
+│ │ └── webpack@5.74.0 deduped
+│ └─┬ webpack@5.73.0
+│   └─┬ terser-webpack-plugin@5.3.3
+│     └── webpack@5.74.0 deduped
+└─┬ webpack-assets-manifest@5.1.0
+  └── webpack@5.74.0
+```
+
+Here you can see version 5.73.0 is used 1 place, and all others use 5.74.0. To fix this, install the lower version with `npm i webpack@5.73.0 -D` and run your angular application again. Now it should work.
+
 ERROR #1
 
 ```bash

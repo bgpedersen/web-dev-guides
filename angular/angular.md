@@ -98,7 +98,7 @@ dinero-frontend-angular@1.0.0 C:\Code\dinero-web\Dinero.Frontend
   └── webpack@5.74.0
 ```
 
-Here you can see version 5.73.0 is used 1 place, and all others use 5.74.0. To fix this, install the lower version with `npm i webpack@5.73.0 -D` and run your angular application again. Now it should work.
+Here you can see version 5.73.0 is used 1 place, and all others use 5.74.0. To fix this, install the higher version with `npm i webpack@5.74.0 -D --save-exact`, delete `package-lock.json`, `npm i` and rerun your angular application again. Now it should work.
 
 ERROR #1
 

@@ -39,6 +39,12 @@ Find the line where it says `commit`, that will be your latest normal commit bef
 git reset --hard HEAD@{84}
 ```
 
+or with "" if its says error
+
+```bash
+git reset --hard "HEAD@{84}"
+```
+
 `git reflog` stores all your actions, even after a `reset --hard`, meaning that if you wrote a wront HEAD, you can still write `git reflog` again after that, and find the correct HEAD to go back to. Remember that HEAD numbers are changed, so you can't use the same as before.
 
 If you pushed to origin, then write `git push -f` to push your local changes to origin.

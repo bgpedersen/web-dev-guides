@@ -126,3 +126,11 @@ git remote set-url --push origin https://github.com/exampleuser/mirrored
 git fetch -p origin
 git push --mirror
 ```
+
+## Searching through older versions of files
+
+Search for added and removed lines by writing:
+
+```bash
+git log -S'Afslut 2021' -p
+```

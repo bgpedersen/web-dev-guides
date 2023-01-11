@@ -61,7 +61,7 @@ Git stash can be used, to stash changes in a branch instead of a commit, and be 
 
 ## Delete all local branches already merged to master
 
-Has to be run from Git Bash terminal. Be on Master and run:
+Has to be run from Git Bash terminal. Be on Master and run (if `git fetch --prune` says "create warning: There are too many unreachable loose objects; run 'git prune' to remove them.", just run `git prune`):
 
 ```bash
 git fetch --prune

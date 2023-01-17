@@ -197,6 +197,42 @@ If you see this error, but you have the correct dependencies, you need to update
 
 If you keep getting peer dependency error and it's just some patch mismatch, use `--force` in the end `npx @angular/cli@13 update @angular/core@13 @angular/cli@13 @angular-eslint/builder@13 @angular-eslint/schematics@13 @angular-eslint/eslint-plugin-template@13 @angular-eslint/eslint-plugin@13 @angular-eslint/template-parser@13 --force`.
 
+ERROR #4
+If you upgraded without errors, but you get Angular CLI version error:
+
+```bash
+This version of CLI is only compatible with Angular versions ^14.0.0,
+but Angular version 15.1.0 was found instead.
+
+Please visit the link below to find instructions on how to update Angular.
+```
+
+Try and run `npm i`. This will likely show some dependency errors, that still needs to be installed correctly. Example:
+
+```bash
+npm ERR! Could not resolve dependency:
+npm ERR! peer @angular/compiler-cli@"^14.0.0" from @angular-builders/custom-webpack@14.1.0
+npm ERR! node_modules/@angular-builders/custom-webpack
+npm ERR!   dev @angular-builders/custom-webpack@"^14.1.0" from the root project
+npm ERR!
+npm ERR! Conflicting peer dependency: @angular/compiler-cli@14.2.12
+npm ERR! node_modules/@angular/compiler-cli
+npm ERR!   peer @angular/compiler-cli@"^14.0.0" from @angular-builders/custom-webpack@14.1.0
+npm ERR!   node_modules/@angular-builders/custom-webpack
+npm ERR!     dev @angular-builders/custom-webpack@"^14.1.0" from the root project
+npm ERR!
+npm ERR! Fix the upstream dependency conflict, or retry
+npm ERR! this command with --force, or --legacy-peer-deps
+npm ERR! to accept an incorrect (and potentially broken) dependency resolution.
+npm ERR!
+npm ERR! See C:\Users\bjarn\AppData\Local\npm-cache\eresolve-report.txt for a full report.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     C:\Users\bjarn\AppData\Local\npm-cache\_logs\2023-01-17T08_44_49_551Z-debug-0.log
+```
+
+---
+
 To see if any Angular dependencies at the current version can be upgrade
 
 ```bash

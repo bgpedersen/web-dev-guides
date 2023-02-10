@@ -25,6 +25,16 @@ Write in terminal
   cmd = code --wait --diff $LOCAL $REMOTE
 ```
 
+## Search for a deleted file
+
+Search for file "dashboard.gif" in git history:
+
+```bash
+git log --all --full-history -- "**/dashboard.*"
+```
+
+Then you can ctrl+click the commit, click the three dots on the file and select "restore" (aka checkout), to add the file again to your current working space.
+
 ### Undo a rebase
 
 Get a list of previous git actions.

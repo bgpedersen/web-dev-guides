@@ -4,6 +4,23 @@
 
 ## Architecture
 
+### Migrations
+
+See all migrations [here](https://angular.dev/reference/migrations)
+
+#### Control flow migration
+
+Control flow syntax is available from Angular v17. The new syntax is baked into the template, so you don't need to import CommonModule anymore.
+
+This schematic migrates all existing code in your application to use new Control Flow Syntax.
+
+Run the schematic using the following command:
+[read more](https://angular.dev/reference/migrations/control-flow)
+
+```bash
+ng generate @angular/core:control-flow --path src/app/pages/accounts/deposit/create --format
+```
+
 ### Upgrade/update Angular
 
 #### Check support for Node and NPM

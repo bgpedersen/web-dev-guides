@@ -2,6 +2,43 @@
 
 ## Dart Sass (scss) migrating to new module system in Angular
 
+### Track progress of migrating @import to @use
+
+You can keep track of files that still uses the old `@import` in scss files by running a local node script that lists all files still using `@import` in the cli:
+
+```js
+// check-scss-imports.js
+const fs = require('fs');
+const path = require('path');
+
+const directory = './src/'; // your application directory
+
+function checkImports(dir) {
+    fs.readdirSync(dir).forEach((file) => {
+        const fullPath = path.join(dir, file);
+        if (fs.lstatSync(fullPath).isDirectory()) {
+            checkImports(fullPath);
+        } else if (file.endsWith('.scss')) {
+            const content = fs.readFileSync(fullPath, 'utf8');
+            if (content.includes('@import')) {
+                console.log(`@import found in: ${fullPath}`);
+            }
+        }
+    });
+}
+
+checkImports(directory);
+
+```
+
+and run it:
+
+```bash
+node check-scss-imports.js
+```
+
+### Migrate to the new Dart Sass module system
+
 In order to use the Sass migrating tool to migrate automatically to the new module system, some ground work needs to be done first.
 
 1) the migration should be done in smaller steps, so first focus on your primary src/styles.scss file, and all the shared scss files like _colors.scss,_typography.scss, _system-icons.scss etc.

@@ -1,3 +1,4 @@
+
 # CSS and SCSS
 
 ## Dart Sass (scss) migrating to new module system in Angular
@@ -46,13 +47,13 @@ In order to use the Sass migrating tool to migrate automatically to the new modu
 3) then run your script, you can start by running it just on src/styles.scss to see if everything looks alright (macOS pwsh):
 
 ```bash
-sass-migrator module `  --migrate-deps `  --load-path src `  --load-path src/content/scss/defaults `  --load-path src/content/scss/components `  --load-path src/content/scss/utilities `  --load-path node_modules `  src/styles.scss
+sass-migrator module --migrate-deps --load-path src --load-path src/content/scss/defaults --load-path src/content/scss/components --load-path src/content/scss/utilities --load-path node_modules src/styles.scss
 ```
 
 4) then you can go ahead and migrate all the scss files in the shared folder:
 
 ```bash
-sass-migrator module `  --migrate-deps `  --load-path src `  --load-path src/content/scss/defaults `  --load-path src/content/scss/components `  --load-path src/content/scss/utilities `  --load-path node_modules `  "src/content/scss/**/*.scss"
+sass-migrator module --migrate-deps --load-path src --load-path src/content/scss/defaults --load-path src/content/scss/components --load-path src/content/scss/utilities --load-path node_modules src/app/components/**/**/*.scss
 ```
 
 ## Architecture

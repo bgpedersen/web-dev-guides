@@ -45,13 +45,13 @@ In order to use the Sass migrating tool to migrate automatically to the new modu
 2) manually go into each of these files, and make sure all the imports are in the order of the primaries first that just export variables, like colors etc., and after thoese comes the shared scss files that combines these to build _buttons.scss,_alert.scss etc. This step is crucial for the tool migrator to understand that colors come from _colors.scss and not via_alert.scss (because _alert.scss technically also can export_colors.scss)
 3) then run your script, you can start by running it just on src/styles.scss to see if everything looks alright (macOS pwsh):
 
-```pwsh
+```bash
 sass-migrator module `  --migrate-deps `  --load-path src `  --load-path src/content/scss/defaults `  --load-path src/content/scss/components `  --load-path src/content/scss/utilities `  --load-path node_modules `  src/styles.scss
 ```
 
 4) then you can go ahead and migrate all the scss files in the shared folder:
 
-```pwsh
+```bash
 sass-migrator module `  --migrate-deps `  --load-path src `  --load-path src/content/scss/defaults `  --load-path src/content/scss/components `  --load-path src/content/scss/utilities `  --load-path node_modules `  "src/content/scss/**/*.scss"
 ```
 

@@ -12,9 +12,16 @@ You can keep track of files that still uses the old `@import` in scss files by r
 const fs = require('fs');
 const path = require('path');
 
-const directory = './src/'; // your application directory
+// Get the directory from command-line arguments or default to './src/app'
+const directory = process.argv[2] || './src/app';
+let importCount = 0; // Counter for files using @import
 
 function checkImports(dir) {
+    if (!fs.existsSync(dir)) {
+        console.error(`❌ Error: The directory "${dir}" does not exist.`);
+        process.exit(1);
+    }
+
     fs.readdirSync(dir).forEach((file) => {
         const fullPath = path.join(dir, file);
         if (fs.lstatSync(fullPath).isDirectory()) {
@@ -23,19 +30,25 @@ function checkImports(dir) {
             const content = fs.readFileSync(fullPath, 'utf8');
             if (content.includes('@import')) {
                 console.log(`@import found in: ${fullPath}`);
+                importCount++; // Increment counter
             }
         }
     });
 }
 
+// Run the function
 checkImports(directory);
+
+console.log(
+    `\n🔍 Scan complete. Found ${importCount} SCSS files still using @import.`,
+);
 
 ```
 
-and run it:
+Run example:
 
 ```bash
-node check-scss-imports.js
+node check-scss-imports.js ./src/app/pages
 ```
 
 ### Migrate to the new Dart Sass module system

@@ -123,6 +123,10 @@ Flexbox
 
 - [CSS Flexbox Cheatsheet](https://dev.to/joyshaheb/flexbox-cheat-sheets-in-2021-css-2021-3edl)
 
+## Using Grid layout to make repeating flexible wrapping grid
+
+[Watch youtube video](https://www.youtube.com/watch?v=EeM5wnhO9iI&ab_channel=CSSWeekly)
+
 ### Moderne layout methods
 
 #### auto vs 1fr
